@@ -41,11 +41,11 @@ return (
           style={{ backgroundImage: `url('${p.img}')` }}
         />
         <div className="container position-relative z-1">
-          <p className="fs-xs text-accent-light text-uppercase mb-2 ls-1">
-            <button onClick={() => handleNavigate('home')} className="breadcrumb-link">Home</button>
-            {' / '}
-            <button onClick={() => handleNavigate('products')} className="breadcrumb-link">Products</button>
-            {` / ${p.name}`}
+          <p className="d-flex align-items-center gap-2 mb-2 text-uppercase ls-2 fw-700 fs-xs">
+            <button onClick={() => onNavigate('home')} className="breadcrumb-link text-info">Home</button>
+             <span className="text-white" style={{ opacity: 0.5 }}> / </span>
+            <button onClick={() => onNavigate('products')} className="breadcrumb-link text-info">Products</button>
+            <span className="text-gold">{` / ${p.name}`}</span>
           </p>
           <h1 className="text-white fs-2xl fw-900">{p.name}</h1>
         </div>

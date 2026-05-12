@@ -315,36 +315,43 @@ export default function Resources({ onNavigate }: ResourcesProps) {
   const openPdfViewer = (url: string, title: string) => setActivePdf({ url, title });
   const closePdfViewer = () => setActivePdf(null);
 
-  // Loading UI
-  if (loading) {
-    return (
-      <div className="pt-navbar">
-        <div className="text-center py-5">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-          <p className="mt-3">Loading resources...</p>
-        </div>
-      </div>
-    );
-  }
+// Loading UI – enterprise grade
+if (loading) {
+  return (
+    <div className="loading-overlay" role="status" aria-live="polite">
+      <div className="loading-container">
+        <div className="loading-ring" aria-hidden="true"></div>
 
-  // Error UI
-  if (error) {
-    return (
-      <div className="pt-navbar">
-        <div className="container text-center py-5">
-          <div className="alert alert-danger" role="alert">
-            <i className="fas fa-exclamation-triangle me-2"></i>
-            {error}
-          </div>
-          <button className="btn btn-primary mt-3" onClick={fetchResources}>
-            <i className="fas fa-sync-alt me-2"></i>Retry
-          </button>
+        <div className="loading-content">
+          <h3 className="loading-title">Loading resources</h3>
+          <p className="loading-message">Please wait while we prepare your content</p>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
+
+// Error UI – professional & accessible
+if (error) {
+  return (
+    <div className="error-container">
+      <div className="error-card" role="alert">
+        <div className="error-icon" aria-hidden="true">
+          <i className="fas fa-exclamation-triangle"></i>
+        </div>
+
+        <h3 className="error-title">Unable to load resources</h3>
+        <p className="error-message">{error}</p>
+
+        <button className="btn btn-primary error-retry-btn" onClick={fetchResources}>
+          <i className="fas fa-sync-alt me-2" aria-hidden="true"></i>
+          Retry
+        </button>
+      </div>
+    </div>
+  );
+}
+
 
   return (
     <div className="pt-navbar">
@@ -358,13 +365,12 @@ export default function Resources({ onNavigate }: ResourcesProps) {
           }}
         />
         <div className="container position-relative z-1">
-          <p className="fs-xs text-accent-light text-uppercase mb-2 ls-1">
-            <button onClick={() => onNavigate('home')} className="breadcrumb-link">
-              Home
-            </button>
-            {' / Resources'}
-          </p>
-          <h1 className="text-white fs-2xl fw-900">Resources (Catalogues &amp; Videos)</h1>
+          <div className="d-flex align-items-center gap-2 mb-2 text-uppercase ls-2 fw-700 fs-xs">
+            <button onClick={() => onNavigate('home')} className="breadcrumb-link text-info">HOME</button>
+            <span className="text-white" style={{ opacity: 0.5 }}> / </span>
+            <span className="text-gold">RESOURCES</span>
+          </div>
+          <h1 className="text-white fs-2xl fw-900">Resources (Catalogues & Videos)</h1>
         </div>
       </div>
 

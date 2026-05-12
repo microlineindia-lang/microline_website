@@ -62,7 +62,7 @@ export default function Achievements({ onNavigate }: AchievementsProps) {
             <span className="text-gold">ACHIEVEMENTS</span>
           </div>
           <h1 className="text-white fs-2xl fw-900">Our Achievements</h1>
-          </div>
+        </div>
       </div>
 
       {/* Content */}

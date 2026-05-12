@@ -111,10 +111,11 @@ export default function Products({ onNavigate }: ProductsProps) {
           style={{ backgroundImage: "url('https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=1200')" }}
         />
         <div className="container position-relative z-1">
-          <p className="fs-xs text-accent-light text-uppercase mb-2 ls-1">
-            <button onClick={() => onNavigate('home')} className="breadcrumb-link">Home</button>
-            {' / Products'}
-          </p>
+          <div className="d-flex align-items-center gap-2 mb-2 text-uppercase ls-2 fw-700 fs-xs">
+            <button onClick={() => onNavigate('home')} className="breadcrumb-link text-info">HOME</button>
+            <span className="text-white" style={{ opacity: 0.5 }}> / </span>
+            <span className="text-gold">PRODUCTS</span>
+          </div>
           <h1 className="text-white fs-2xl fw-900">Our Products</h1>
         </div>
       </div>
