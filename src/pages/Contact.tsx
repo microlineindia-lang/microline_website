@@ -37,65 +37,70 @@ return (
 
       {/* Content */}
       <div className="section py-5">
+        <h2 className="section-title text-center">
+                Get <span className="text-accent">In Touch</span>
+              </h2>
         <div className="container">
           <div className="grid grid-cols-2 gap-5">
             {/* Left: Info + Map */}
             <div>
-              <h2 className="section-title text-left mb-3">Get In Touch</h2>
-              <p className="text-secondary mb-4">
-                We are always happy to help you. Reach out to us for any inquiries, quotes or collaborations.
-              </p>
 
-              <div className="d-flex flex-column gap-3 mb-4">
-                {/* Phone */}
-                <div className="contact-info-card">
-                  <div className="contact-info-icon"><i className="fas fa-phone"></i></div>
-                  <div>
-                    <p className="fw-700 text-accent fs-xs mb-1">Phone</p>
-                    <p className="text-secondary fs-sm">+91 98310 46924</p>
-                    <p className="text-secondary fs-sm">+91 92268 30914</p>
-                  </div>
-                </div>
+  <p className="text-secondary mb-4">
+    We are always happy to help you. Reach out to us for any inquiries, quotes or collaborations.
+  </p>
 
-                {/* Email */}
-                <div className="contact-info-card">
-                  <div className="contact-info-icon"><i className="fas fa-envelope"></i></div>
-                  <div>
-                    <p className="fw-700 text-accent fs-xs mb-1">Email</p>
-                    <p className="text-secondary fs-sm">sales@microlineindia.com</p>
-                    <p className="text-secondary fs-sm">info@microlineindia.com</p>
-                  </div>
-                </div>
+  <div className="d-flex flex-column gap-3 mb-4">
+    {/* Phone */}
+    <div className="contact-info-card">
+      <div className="contact-info-icon"><i className="fas fa-phone"></i></div>
+      <div>
+        <p className="fw-700 text-accent fs-xs mb-1">Phone / Mobile</p>
+        <p className="text-secondary fs-sm">+91 98747 90272 / +91 87773 84302</p>
+        <p className="text-secondary fs-sm">Landline: 033-79620301</p>
+      </div>
+    </div>
 
-                {/* Address */}
-                <div className="contact-info-card">
-                  <div className="contact-info-icon"><i className="fas fa-map-marker-alt"></i></div>
-                  <div>
-                    <p className="fw-700 text-accent fs-xs mb-1">Address</p>
-                    <p className="text-secondary fs-sm">
-                      Microline India<br />Kolkata, West Bengal, India
-                    </p>
-                  </div>
-                </div>
-              </div>
+    {/* Email */}
+    <div className="contact-info-card">
+      <div className="contact-info-icon"><i className="fas fa-envelope"></i></div>
+      <div>
+        <p className="fw-700 text-accent fs-xs mb-1">Email</p>
+        <p className="text-secondary fs-sm">info@microlineindia.in</p>
+        <p className="text-secondary fs-sm">microlineindia@gmail.com</p>
+      </div>
+    </div>
 
-              <div className="map-container">
-                <iframe src={mapSrc} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Location" />
-              </div>
-            </div>
+    {/* Address */}
+    <div className="contact-info-card">
+      <div className="contact-info-icon"><i className="fas fa-map-marker-alt"></i></div>
+      <div>
+        <p className="fw-700 text-accent fs-xs mb-1">Address</p>
+        <p className="text-secondary fs-sm">
+          Microline India<br />
+          27 Harimati Sarani, Garia<br />
+          Kolkata - 700084, West Bengal, India
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div className="map-container">
+    <iframe src={mapSrc} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Location" />
+  </div>
+</div>
 
             {/* Right: Form */}
             <div>
               {submitted ? (
                 <div className="text-center py-5">
                   <i className="fas fa-check-circle text-accent fs-4xl mb-3"></i>
-                  <h3 className="fs-2xl fw-900 mb-2 text-primary">Message Sent!</h3>
+                  <h3 className="fs-2xl fw-900 mb-2 text-soft">Message Sent!</h3>
                   <p className="text-secondary mb-4">Thank you for reaching out...</p>
                   <button onClick={() => setSubmitted(false)} className="btn btn-outline">Send another message</button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
-                  <h3 className="fs-2xl fw-900 mb-4 text-primary">Send a Message</h3>
+                  <h3 className="fw-900 mb-4 text-soft">Send a Message</h3>
 
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div>

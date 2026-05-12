@@ -73,7 +73,9 @@ export default function Applications({ onNavigate }: ApplicationsProps) {
         <div className="container">
           <div className="services-intro mb-12">
             <p className="subheading">Industry Verticals</p>
-            <h2>Where Our <span className="highlight">Solutions Are Applied</span></h2>
+            <h2 className="section-title text-center">
+                Where Our <span className="text-accent">Solutions Are Applied</span>
+              </h2>
           </div>
 
           <div className="grid grid-cols-3 gap-4 mb-20">

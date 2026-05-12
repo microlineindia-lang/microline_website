@@ -357,7 +357,7 @@ useEffect(() => {
       </div>
 
       <div className="stat-item">
-        <div className="stat-icon"><i className="fas fa-cogs"></i></div>
+        <div className="stat-icon"><i className="fas fa-cogs fa-spin"></i></div>
         <div className="stat-text">
           <strong><AnimatedCounter targetValue="100" suffix="%" /></strong>
           <span>In-house Development</span>
@@ -373,7 +373,7 @@ useEffect(() => {
       </div>
 
       <div className="stat-item">
-        <div className="stat-icon"><i className="fas fa-globe"></i></div>
+        <div className="stat-icon"><i className="fas fa-globe "></i></div>
         <div className="stat-text">
           <strong>Pan India</strong>
           <span>Support & Services</span>

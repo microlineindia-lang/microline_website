@@ -31,26 +31,30 @@ export default function About({ onNavigate }: AboutProps) {
       </div>
 
       <div className="section py-5">
-        <div className="container">
-          {/* Who We Are */}
-          <div className="grid grid-cols-2 gap-5 mb-20">
-            <div>
-              <div className="text-center">
+        {/* Who We Are */}
+        <div className="text-center">
                 <h2 className="section-title">
                   Who <span className="text-accent">We Are</span>
                 </h2>
               </div>
+        <div className="container">
+          
+          <div className="grid grid-cols-2 gap-5 mb-20">
+            <div>
+              
               <p className="text-secondary mb-3">
-                 Microline India, a name resonant with innovation in microwave technology, offers a cutting-edge technology in visualization of electromagnetic waves. Since 1997 we are providing innovative Microwave and RF solutions, advancing the technology to global reach with new heights.
-              </p>
-              <p className="text-secondary mb-3">
-                With the designing experience and innovations ideas backed by skilled manpower, Microline produces finest quality products designed in-house assuring the products to be versatile and rugged in trend with modern technologies.
-              </p>
-              <p className="text-secondary">
-                Our distinction is our satisfied customers; we take all efforts to serve them with best of our expertise.
-              </p>
+              Microline India is a trusted name in Microwave and RF technology, recognized for innovation in the visualization and analysis of electromagnetic waves. Since 1997, we have been delivering advanced Microwave and RF solutions that support academic, industrial, and research-driven applications across India.
+            </p>
+
+            <p className="text-secondary mb-3">
+              Backed by extensive design expertise, innovative engineering, and a skilled technical workforce, Microline India develops high-quality products entirely in-house. Our solutions are designed to be reliable, versatile, and aligned with evolving modern technologies and industry requirements.
+            </p>
+
+            <p className="text-secondary">
+              Our strength lies in the trust and satisfaction of our customers. We remain committed to delivering dependable solutions, technical excellence, and dedicated support through every stage of development and implementation.
+            </p>
             </div>
-            <div className="mt-5">
+            <div>
               <img
                 src={collage}
                 alt="Microline India Office"

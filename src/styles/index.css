@@ -3370,19 +3370,23 @@ textarea.form-input {
   margin-bottom: 1.5rem;
 }
 
-
 /* ==========================================
-   ACHIEVEMENTS PAGE SPECIFIC
+   ACHIEVEMENTS PAGE
 ========================================== */
 
-/* --- Client stat cards (blue gradient) --- */
+/* ---------- Client stat cards (blue gradient) ---------- */
 .client-stat-card {
   text-align: center;
   padding: 1.5rem;
-  background: linear-gradient(135deg, var(--primary-accent-2), var(--primary-accent));
-  color: #fff;
+  background: var(--bg-granite);
+  /* color: #fff; */
   border-radius: var(--radius-lg);
   transition: var(--transition);
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .client-stat-card:hover {
@@ -3394,20 +3398,26 @@ textarea.form-input {
   font-size: 2.5rem;
   font-weight: 900;
   margin-bottom: 0.25rem;
+  color: var(--text-slate);
+  line-height: 1;
 }
 
 .client-stat-card .name {
   font-weight: 700;
   font-size: 0.9rem;
   margin-bottom: 0.25rem;
+  color: var(--text-cyan-soft);
+  line-height: 1.45;
 }
 
 .client-stat-card .desc {
   font-size: 0.75rem;
   opacity: 0.8;
+  color: var(--text-muted);
+  line-height: 1.4;
 }
 
-/* --- Achievement list items --- */
+/* ---------- Achievement list items ---------- */
 .achievement-item {
   display: flex;
   align-items: flex-start;
@@ -3433,24 +3443,27 @@ textarea.form-input {
   color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.5;
+  margin: 0;
 }
 
-/* --- Visual cards (image + dark caption) --- */
+/* ---------- Visual cards (image + dark caption) ---------- */
 .visual-card {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   background: var(--card-bg);
   margin-bottom: 1.5rem;
+  max-width: 100%;
 }
 
 .visual-card-img {
   width: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .visual-card-img-tall {
-  height: 14rem;    /* 56 * 0.25rem */
+  height: 14rem;
 }
 
 .visual-card-img-short {
@@ -3466,47 +3479,62 @@ textarea.form-input {
   font-weight: 700;
   font-size: 0.9rem;
   color: #fff;
+  margin: 0;
 }
 
 .visual-card-caption .subtitle {
   font-size: 0.75rem;
   color: var(--text-muted);
-  margin-top: 0.25rem;
+  margin: 0;
 }
 
-/* --- Timeline --- */
+
+/* ---------- Timeline (desktop: grid‑based, mobile: left line) ---------- */
 .timeline {
   position: relative;
   margin-bottom: 4rem;
+  padding-top: 1rem;
+}
+
+.timeline .section-title {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 3rem;
 }
 
 .timeline-line {
   position: absolute;
   left: 50%;
+  top: 7rem;               /* starts below title */
+  bottom: 0;
   transform: translateX(-50%);
   width: 2px;
-  height: 100%;
-  background: var(--primary-accent-light);
-  opacity: 0.3;
-  top: 0;
+  height: auto;
+  background: var(--primary-accent);
+  opacity: 0.25;
 }
 
 .timeline-item {
-  display: flex;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 2rem;
   margin-bottom: 2rem;
 }
 
 .timeline-item-reverse {
-  flex-direction: row-reverse;
+  direction: rtl;
+}
+
+.timeline-item-reverse > * {
+  direction: ltr;
 }
 
 .timeline-content {
-  flex: 1;
+  flex: unset;
 }
 
-/* text alignment depending on direction */
 .timeline-item:not(.timeline-item-reverse) .timeline-content {
   text-align: right;
 }
@@ -3517,28 +3545,35 @@ textarea.form-input {
 
 .timeline-card {
   display: inline-block;
-  padding: 1rem;
-  background: var(--card-bg);
+  width: min(100%, 500px);
+  padding: 1.1rem 1.25rem;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
-  text-align: left;  /* inner text stays left */
+  text-align: left;
 }
 
 .timeline-card:hover {
+  transform: translateY(-3px);
   box-shadow: var(--shadow-md);
+  border-color: rgba(14, 165, 233, 0.35);
 }
 
 .timeline-card .year {
+  margin: 0 0 0.25rem;
   color: var(--primary-accent);
   font-weight: 900;
-  font-size: 1.2rem;
+  font-size: 1.35rem;
+  line-height: 1;
 }
 
 .timeline-card .event {
+  margin: 0;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
 }
 
 .timeline-dot {
@@ -3547,40 +3582,293 @@ textarea.form-input {
   border-radius: 50%;
   background: var(--primary-accent);
   border: 3px solid var(--bg-primary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
   flex-shrink: 0;
-  z-index: 1;
+  z-index: 2;
 }
 
 .timeline-spacer {
-  flex: 1;
+  display: block;
 }
 
-/* mobile timeline adjustments */
-@media (max-width: 768px) {
-  .timeline-line {
-    left: 1rem;
-  }
-  .timeline-item,
-  .timeline-item.timeline-item-reverse {
-    flex-direction: row !important;
-    gap: 1.5rem;
-  }
-  .timeline-content,
-  .timeline-item:not(.timeline-item-reverse) .timeline-content,
-  .timeline-item.timeline-item-reverse .timeline-content {
-    text-align: left !important;
-  }
-  .timeline-spacer {
-    display: none;
-  }
-}
-
-/* Additional grid help (if not already defined) */
+/* ---------- Additional grid helper ---------- */
 .lg-grid-cols-4 {
   grid-template-columns: repeat(4, 1fr);
 }
 
+/* ==========================================
+   TABLET FIXES (≤1024px)
+========================================== */
+@media (max-width: 1024px) {
+  .client-stat-card {
+    min-height: 160px;
+    padding: 1.25rem;
+  }
+  .client-stat-card .count {
+    font-size: 2.15rem;
+  }
+  .client-stat-card .name {
+    font-size: 0.85rem;
+  }
+  .client-stat-card .desc {
+    font-size: 0.72rem;
+  }
+}
+
+/* ==========================================
+   MOBILE FIXES (≤768px)
+========================================== */
+@media (max-width: 768px) {
+  /* Page spacing */
+  .section.py-16 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .page-hero {
+    padding: 3rem 0;
+  }
+
+  .page-hero .container {
+    padding: 0 1.5rem;
+  }
+
+  .page-hero h1 {
+    font-size: 1.85rem;
+    line-height: 1.2;
+  }
+
+  /* Client stats: keep 2 columns on mobile */
+  .grid.grid-cols-2.lg-grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .client-stat-card {
+    min-height: 145px;
+    padding: 1rem 0.75rem;
+    border-radius: 16px;
+  }
+
+  .client-stat-card .count {
+    font-size: 2rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .client-stat-card .name {
+    font-size: 0.78rem;
+    line-height: 1.35;
+    margin-bottom: 0.35rem;
+  }
+
+  .client-stat-card .desc {
+    font-size: 0.68rem;
+    line-height: 1.35;
+  }
+
+  /* Title alignment */
+  .section-title.text-left {
+    text-align: left !important;
+  }
+
+  .section-title.text-left::after {
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  /* Achievements list */
+  .achievement-item {
+    padding: 0.95rem;
+    gap: 0.65rem;
+    border-radius: 14px;
+  }
+
+  .achievement-item i {
+    font-size: 1.05rem;
+    margin-top: 0.2rem;
+  }
+
+  .achievement-item p {
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  /* Visual cards */
+  .visual-card {
+    border-radius: 18px;
+    margin-bottom: 1.25rem;
+  }
+
+  .visual-card-img-tall,
+  .visual-card-img-short {
+    height: 12rem;
+  }
+
+  .visual-card-caption {
+    padding: 0.9rem 1rem;
+  }
+
+  .visual-card-caption .title {
+    font-size: 0.86rem;
+  }
+
+  .visual-card-caption .subtitle {
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+
+  /* Gap between list and visual cards */
+  .grid.lg-grid-cols-2.gap-12 {
+    gap: 2.5rem;
+  }
+
+  /* Timeline – switched to left‑line mobile layout */
+  .timeline {
+    margin-top: 2.5rem;
+    padding-left: 0;
+    margin-bottom: 3rem;
+  }
+
+  .timeline .section-title {
+    text-align: center !important;
+    margin-bottom: 2.5rem;
+  }
+
+  .timeline .section-title::after {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .timeline-line {
+    left: 0.55rem;
+    top: 6.8rem;
+    bottom: 0.75rem;
+    transform: none;
+    width: 2px;
+    height: auto;
+    background: var(--primary-accent);
+    opacity: 0.25;
+  }
+
+  .timeline-item,
+  .timeline-item.timeline-item-reverse {
+    display: grid;
+    grid-template-columns: 1.1rem 1fr;
+    gap: 1rem;
+    align-items: start;
+    margin-bottom: 1.5rem;
+    direction: ltr;
+  }
+
+  .timeline-content,
+  .timeline-item:not(.timeline-item-reverse) .timeline-content,
+  .timeline-item.timeline-item-reverse .timeline-content {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: left !important;
+  }
+
+  .timeline-dot {
+    grid-column: 1;
+    grid-row: 1;
+    width: 0.85rem;
+    height: 0.85rem;
+    margin-top: 1.2rem;
+    border-width: 3px;
+    justify-self: center;
+  }
+
+  .timeline-spacer {
+    display: none;
+  }
+
+  .timeline-card {
+    width: 100%;
+    display: block;
+    padding: 1rem;
+    border-radius: 14px;
+  }
+
+  .timeline-card .year {
+    font-size: 1.25rem;
+  }
+
+  .timeline-card .event {
+    font-size: 0.84rem;
+  }
+}
+
+/* ==========================================
+   EXTRA SMALL MOBILE (≤480px)
+========================================== */
+@media (max-width: 480px) {
+  .container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .page-hero {
+    padding: 2.75rem 0;
+  }
+
+  .page-hero h1 {
+    font-size: 1.65rem;
+  }
+
+  .grid.grid-cols-2.lg-grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .client-stat-card {
+    min-height: 132px;
+    padding: 0.9rem 0.55rem;
+  }
+
+  .client-stat-card .count {
+    font-size: 1.8rem;
+  }
+
+  .client-stat-card .name {
+    font-size: 0.72rem;
+  }
+
+  .client-stat-card .desc {
+    font-size: 0.65rem;
+  }
+
+  .section-title {
+    font-size: 1.55rem;
+    margin-bottom: 2rem;
+  }
+
+  .achievement-item {
+    padding: 0.9rem;
+  }
+
+  .achievement-item p {
+    font-size: 0.82rem;
+  }
+
+  .visual-card-img-tall,
+  .visual-card-img-short {
+    height: 11rem;
+  }
+
+  .timeline-line {
+    left: 0.5rem;
+  }
+
+  .timeline-item,
+  .timeline-item.timeline-item-reverse {
+    grid-template-columns: 1rem 1fr;
+    gap: 0.9rem;
+  }
+
+  .timeline-card {
+    padding: 0.95rem;
+  }
+}
 
 /* ==========================================
    APPLICATION CARDS
@@ -4257,6 +4545,12 @@ textarea.form-input {
 .pl-5 { padding-left: 3rem; }
 .pr-5 { padding-right: 3rem; }
 
+.p-6 { padding: 4rem; }
+.pt-6 { padding-top: 4rem; }
+.pb-6 { padding-bottom: 4rem; }
+.pl-6 { padding-left: 4rem; }
+.pr-6 { padding-right: 4rem; }
+
 /* ---------- Layout / Display ---------- */
 .d-block           { display: block; }
 .d-inline-block    { display: inline-block; }
@@ -4272,6 +4566,7 @@ textarea.form-input {
 .gap-3             { gap: 1rem; }
 .gap-4             { gap: 1.5rem; }
 .gap-5             { gap: 3rem; }
+.gap-6             { gap: 4rem; }
 
 /* Width & Height */
 .w-100 { width: 100%; }
@@ -4576,3 +4871,180 @@ textarea.form-input {
   font-size: 0.75rem;
   margin: 0;
 }
+
+
+/* ==============================
+   BOOTSTRAP-STYLE GRID SYSTEM
+   (12 columns, responsive)
+   ============================== */
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+/* All columns share base styles */
+.col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6,
+.col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
+.col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6,
+.col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12,
+.col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6,
+.col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12,
+.col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6,
+.col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12,
+.col-xl, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6,
+.col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12,
+.col-auto {
+  position: relative;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* ----- COL (auto width) ----- */
+.col {
+  flex: 1 0 0%;
+  max-width: 100%;
+}
+.col-auto {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+}
+
+/* ----- NUMERIC COLS (default, all breakpoints) ----- */
+.col-1  { flex: 0 0 8.333333%; max-width: 8.333333%; }
+.col-2  { flex: 0 0 16.666667%; max-width: 16.666667%; }
+.col-3  { flex: 0 0 25%; max-width: 25%; }
+.col-4  { flex: 0 0 33.333333%; max-width: 33.333333%; }
+.col-5  { flex: 0 0 41.666667%; max-width: 41.666667%; }
+.col-6  { flex: 0 0 50%; max-width: 50%; }
+.col-7  { flex: 0 0 58.333333%; max-width: 58.333333%; }
+.col-8  { flex: 0 0 66.666667%; max-width: 66.666667%; }
+.col-9  { flex: 0 0 75%; max-width: 75%; }
+.col-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+.col-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+.col-12 { flex: 0 0 100%; max-width: 100%; }
+
+/* ----- SM (≥576px) ----- */
+@media (min-width: 576px) {
+  .col-sm {
+    flex: 1 0 0%;
+    max-width: 100%;
+  }
+  .col-sm-auto {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+  }
+  .col-sm-1  { flex: 0 0 8.333333%; max-width: 8.333333%; }
+  .col-sm-2  { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-sm-3  { flex: 0 0 25%; max-width: 25%; }
+  .col-sm-4  { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-sm-5  { flex: 0 0 41.666667%; max-width: 41.666667%; }
+  .col-sm-6  { flex: 0 0 50%; max-width: 50%; }
+  .col-sm-7  { flex: 0 0 58.333333%; max-width: 58.333333%; }
+  .col-sm-8  { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-sm-9  { flex: 0 0 75%; max-width: 75%; }
+  .col-sm-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+  .col-sm-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+  .col-sm-12 { flex: 0 0 100%; max-width: 100%; }
+}
+
+/* ----- MD (≥768px) ----- */
+@media (min-width: 768px) {
+  .col-md {
+    flex: 1 0 0%;
+    max-width: 100%;
+  }
+  .col-md-auto {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+  }
+  .col-md-1  { flex: 0 0 8.333333%; max-width: 8.333333%; }
+  .col-md-2  { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-md-3  { flex: 0 0 25%; max-width: 25%; }
+  .col-md-4  { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-md-5  { flex: 0 0 41.666667%; max-width: 41.666667%; }
+  .col-md-6  { flex: 0 0 50%; max-width: 50%; }
+  .col-md-7  { flex: 0 0 58.333333%; max-width: 58.333333%; }
+  .col-md-8  { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-md-9  { flex: 0 0 75%; max-width: 75%; }
+  .col-md-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+  .col-md-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+  .col-md-12 { flex: 0 0 100%; max-width: 100%; }
+}
+
+/* ----- LG (≥992px) ----- */
+@media (min-width: 992px) {
+  .col-lg {
+    flex: 1 0 0%;
+    max-width: 100%;
+  }
+  .col-lg-auto {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+  }
+  .col-lg-1  { flex: 0 0 8.333333%; max-width: 8.333333%; }
+  .col-lg-2  { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-lg-3  { flex: 0 0 25%; max-width: 25%; }
+  .col-lg-4  { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-lg-5  { flex: 0 0 41.666667%; max-width: 41.666667%; }
+  .col-lg-6  { flex: 0 0 50%; max-width: 50%; }
+  .col-lg-7  { flex: 0 0 58.333333%; max-width: 58.333333%; }
+  .col-lg-8  { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-lg-9  { flex: 0 0 75%; max-width: 75%; }
+  .col-lg-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+  .col-lg-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+  .col-lg-12 { flex: 0 0 100%; max-width: 100%; }
+}
+
+/* ----- XL (≥1200px) ----- */
+@media (min-width: 1200px) {
+  .col-xl {
+    flex: 1 0 0%;
+    max-width: 100%;
+  }
+  .col-xl-auto {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+  }
+  .col-xl-1  { flex: 0 0 8.333333%; max-width: 8.333333%; }
+  .col-xl-2  { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-xl-3  { flex: 0 0 25%; max-width: 25%; }
+  .col-xl-4  { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-xl-5  { flex: 0 0 41.666667%; max-width: 41.666667%; }
+  .col-xl-6  { flex: 0 0 50%; max-width: 50%; }
+  .col-xl-7  { flex: 0 0 58.333333%; max-width: 58.333333%; }
+  .col-xl-8  { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-xl-9  { flex: 0 0 75%; max-width: 75%; }
+  .col-xl-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+  .col-xl-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+  .col-xl-12 { flex: 0 0 100%; max-width: 100%; }
+}
+
+/* Optional: order utilities */
+.order-1 { order: 1; }
+.order-2 { order: 2; }
+.order-3 { order: 3; }
+.order-4 { order: 4; }
+.order-5 { order: 5; }
+.order-6 { order: 6; }
+.order-7 { order: 7; }
+.order-8 { order: 8; }
+.order-9 { order: 9; }
+.order-10 { order: 10; }
+.order-11 { order: 11; }
+.order-12 { order: 12; }
+.order-first { order: -1; }
+.order-last  { order: 13; }
+
+/* Optional: alignment classes for columns (if needed) */
+.align-self-start { align-self: flex-start; }
+.align-self-center { align-self: center; }
+.align-self-end { align-self: flex-end; }
