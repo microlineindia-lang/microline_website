@@ -76,10 +76,14 @@ body {
   --glow-logo: 0 0 30px rgba(56, 189, 248, 0.4);
   
   /* Border Radius */
+  --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 18px;
   --radius-xl: 24px;
-  
+  --radius-2xl: 32px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+    
   /* Fonts */
   --font-sans: "Inter", system-ui, sans-serif;
   --font-heading: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
@@ -261,6 +265,33 @@ body {
   background: var(--bg-info-3) !important;
 }
 
+
+/* =========================================================
+   REVERSE VERSION OF bg-secondary-3
+   Light = softer/lighter
+   Dark = deeper/darker
+   ========================================================= */
+
+/* ---------- LIGHT THEME ---------- */
+:root {
+  --bg-secondary-3-reverse:
+    linear-gradient(135deg,#dbeafe, #93c5fd,#bfdbfe);
+}
+
+/* ---------- DARK THEME ---------- */
+[data-theme="dark"] {
+  --bg-secondary-3-reverse:
+    linear-gradient(135deg, #0f172a, #1e3a8a, #172554);
+}
+
+
+/* =========================================================
+   UTILITY CLASS
+   ========================================================= */
+
+.bg-secondary-3-reverse {
+  background: var(--bg-secondary-3-reverse) !important;
+}
 /* =========================================================
    EXTENDED BACKGROUND OPTIONS (NON-BRAND, THEME-AWARE)
    ========================================================= */
@@ -570,6 +601,715 @@ body {
   background-repeat: no-repeat;
 }
 
+/* =========================================================
+   EXTENDED TEXT COLOR SYSTEM (LIGHT + DARK THEME)
+   Professional utility text classes
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   LIGHT THEME VARIABLES
+--------------------------------------------------------- */
+:root {
+
+  /* Core text hierarchy */
+  --text-heading: #0f172a;
+  --text-body: #334155;
+  --text-soft: #64748b;
+  --text-faint: #94a3b8;
+
+  /* Brand text */
+  --text-brand: #0ea5e9;
+  --text-brand-dark: #0284c7;
+  --text-brand-light: #38bdf8;
+
+  /* Semantic text */
+  --text-success: #15803d;
+  --text-warning: #b45309;
+  --text-danger: #dc2626;
+  --text-info: #2563eb;
+
+  /* Premium / elegant */
+  --text-gold: #b8860b;
+  --text-silver: #64748b;
+  --text-bronze: #92400e;
+
+  /* Neutral modern */
+  --text-charcoal: #1e293b;
+  --text-steel: #475569;
+  --text-slate: #64748b;
+  --text-cloud: #cbd5e1;
+
+  /* Reverse */
+  --text-white: #ffffff;
+  --text-black: #020617;
+
+  /* Gradient text */
+  --text-gradient-primary:
+    linear-gradient(135deg, #0ea5e9, #2563eb);
+
+  --text-gradient-premium:
+    linear-gradient(135deg, #f59e0b, #d97706);
+
+  --text-gradient-modern:
+    linear-gradient(135deg, #334155, #0f172a);
+
+  /* Glow text shadows */
+  --text-glow-primary:
+    0 0 12px rgba(14, 165, 233, 0.35);
+
+  --text-glow-light:
+    0 0 14px rgba(255,255,255,0.3);
+}
+
+
+/* ---------------------------------------------------------
+   DARK THEME VARIABLES
+--------------------------------------------------------- */
+[data-theme="dark"] {
+
+  /* Core text hierarchy */
+  --text-heading: #f8fafc;
+  --text-body: #e2e8f0;
+  --text-soft: #cbd5e1;
+  --text-faint: #94a3b8;
+
+  /* Brand text */
+  --text-brand: #38bdf8;
+  --text-brand-dark: #0ea5e9;
+  --text-brand-light: #7dd3fc;
+
+  /* Semantic text */
+  --text-success: #4ade80;
+  --text-warning: #fbbf24;
+  --text-danger: #f87171;
+  --text-info: #60a5fa;
+
+  /* Premium / elegant */
+  --text-gold: #facc15;
+  --text-silver: #cbd5e1;
+  --text-bronze: #fb923c;
+
+  /* Neutral modern */
+  --text-charcoal: #f1f5f9;
+  --text-steel: #cbd5e1;
+  --text-slate: #94a3b8;
+  --text-cloud: #64748b;
+
+  /* Reverse */
+  --text-white: #ffffff;
+  --text-black: #020617;
+
+  /* Gradient text */
+  --text-gradient-primary:
+    linear-gradient(135deg, #38bdf8, #2563eb);
+
+  --text-gradient-premium:
+    linear-gradient(135deg, #facc15, #fb923c);
+
+  --text-gradient-modern:
+    linear-gradient(135deg, #f8fafc, #cbd5e1);
+
+  /* Glow text shadows */
+  --text-glow-primary:
+    0 0 16px rgba(56, 189, 248, 0.55);
+
+  --text-glow-light:
+    0 0 18px rgba(255,255,255,0.22);
+}
+
+
+/* =========================================================
+   TEXT UTILITY CLASSES
+   ========================================================= */
+
+/* Core */
+.text-heading {
+  color: var(--text-heading) !important;
+}
+
+.text-body {
+  color: var(--text-body) !important;
+}
+
+.text-soft {
+  color: var(--text-soft) !important;
+}
+
+.text-faint {
+  color: var(--text-faint) !important;
+}
+
+
+/* Brand */
+.text-brand {
+  color: var(--text-brand) !important;
+}
+
+.text-brand-dark {
+  color: var(--text-brand-dark) !important;
+}
+
+.text-brand-light {
+  color: var(--text-brand-light) !important;
+}
+
+
+/* Semantic */
+.text-success {
+  color: var(--text-success) !important;
+}
+
+.text-warning {
+  color: var(--text-warning) !important;
+}
+
+.text-danger {
+  color: var(--text-danger) !important;
+}
+
+.text-info {
+  color: var(--text-info) !important;
+}
+
+
+/* Premium */
+.text-gold {
+  color: var(--text-gold) !important;
+}
+
+.text-silver {
+  color: var(--text-silver) !important;
+}
+
+.text-bronze {
+  color: var(--text-bronze) !important;
+}
+
+
+/* Modern neutrals */
+.text-charcoal {
+  color: var(--text-charcoal) !important;
+}
+
+.text-steel {
+  color: var(--text-steel) !important;
+}
+
+.text-slate {
+  color: var(--text-slate) !important;
+}
+
+.text-cloud {
+  color: var(--text-cloud) !important;
+}
+
+
+/* Reverse */
+.text-white {
+  color: var(--text-white) !important;
+}
+
+.text-black {
+  color: var(--text-black) !important;
+}
+
+
+/* =========================================================
+   GRADIENT TEXTS
+   ========================================================= */
+
+.text-gradient-primary {
+  background: var(--text-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-premium {
+  background: var(--text-gradient-premium);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-modern {
+  background: var(--text-gradient-modern);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+/* =========================================================
+   GLOW EFFECTS
+   ========================================================= */
+
+.text-glow-primary {
+  text-shadow: var(--text-glow-primary);
+}
+
+.text-glow-light {
+  text-shadow: var(--text-glow-light);
+}
+
+
+/* =========================================================
+   HOVER UTILITIES
+   ========================================================= */
+
+.hover-text-brand:hover {
+  color: var(--text-brand) !important;
+}
+
+.hover-text-white:hover {
+  color: var(--text-white) !important;
+}
+
+.hover-text-gold:hover {
+  color: var(--text-gold) !important;
+}
+
+.hover-text-success:hover {
+  color: var(--text-success) !important;
+}
+
+
+/* =========================================================
+   MUTED / TRANSPARENCY HELPERS
+   ========================================================= */
+
+.text-opacity-90 {
+  opacity: 0.9;
+}
+
+.text-opacity-75 {
+  opacity: 0.75;
+}
+
+.text-opacity-60 {
+  opacity: 0.6;
+}
+
+.text-opacity-40 {
+  opacity: 0.4;
+}
+
+
+/* =========================================================
+   OPTIONAL FONT WEIGHT UTILITIES
+   ========================================================= */
+
+.fw-300 {
+  font-weight: 300;
+}
+
+.fw-400 {
+  font-weight: 400;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.fw-700 {
+  font-weight: 700;
+}
+
+.fw-800 {
+  font-weight: 800;
+}
+
+.fw-900 {
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   BREADCRUMB / HERO ACCENT COLORS
+   ========================================================= */
+
+/* ---------- LIGHT THEME ---------- */
+:root {
+
+  /* Breadcrumb colors */
+  --breadcrumb-home: #38bdf8;
+  --breadcrumb-separator: rgba(255,255,255,0.45);
+  --breadcrumb-current: #facc15;
+
+  /* Hover states */
+  --breadcrumb-home-hover: #7dd3fc;
+  --breadcrumb-current-hover: #fde047;
+
+  /* Optional glow */
+  --breadcrumb-glow:
+    0 0 12px rgba(56, 189, 248, 0.35);
+}
+
+/* ---------- DARK THEME ---------- */
+[data-theme="dark"] {
+
+  --breadcrumb-home: #7dd3fc;
+  --breadcrumb-separator: rgba(255,255,255,0.35);
+  --breadcrumb-current: #fbbf24;
+
+  --breadcrumb-home-hover: #bae6fd;
+  --breadcrumb-current-hover: #fde68a;
+
+  --breadcrumb-glow:
+    0 0 16px rgba(125, 211, 252, 0.45);
+}
+
+/* =========================================================
+   ADVANCED TEXT COLOR SYSTEM
+   Additional reusable text utilities
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   LIGHT THEME VARIABLES
+--------------------------------------------------------- */
+:root {
+
+  /* Reverse-aware */
+  --text-charcoal-reverse: #f8fafc;
+  --text-steel-reverse: #e2e8f0;
+  --text-muted-reverse: #cbd5e1;
+
+  /* Elegant tones */
+  --text-ice: #dbeafe;
+  --text-frost: #bfdbfe;
+  --text-royal: #1d4ed8;
+  --text-navy: #0f172a;
+  --text-cyan-soft: #0891b2;
+
+  /* Luxury */
+  --text-platinum: #94a3b8;
+  --text-champagne: #d97706;
+  --text-copper: #b45309;
+
+  /* Warm neutrals */
+  --text-stone: #78716c;
+  --text-smoke: #6b7280;
+  --text-ash: #9ca3af;
+
+  /* Cool neutrals */
+  --text-graphite: #374151;
+  --text-carbon: #111827;
+  --text-midnight: #020617;
+
+  /* Accent helpers */
+  --text-accent-soft: #38bdf8;
+  --text-accent-strong: #0284c7;
+
+  /* Overlay text */
+  --text-overlay-light: rgba(255,255,255,0.92);
+  --text-overlay-dark: rgba(15,23,42,0.92);
+
+  /* Decorative gradients */
+  --text-gradient-ocean:
+    linear-gradient(135deg, #0ea5e9, #2563eb, #1e3a8a);
+
+  --text-gradient-fire:
+    linear-gradient(135deg, #f59e0b, #ea580c);
+
+  --text-gradient-silver:
+    linear-gradient(135deg, #cbd5e1, #64748b);
+
+  /* Fancy shadows */
+  --text-shadow-soft:
+    0 2px 8px rgba(0,0,0,0.12);
+
+  --text-shadow-strong:
+    0 4px 18px rgba(0,0,0,0.22);
+}
+
+
+/* ---------------------------------------------------------
+   DARK THEME VARIABLES
+--------------------------------------------------------- */
+[data-theme="dark"] {
+
+  /* Reverse-aware */
+  --text-charcoal-reverse: #0f172a;
+  --text-steel-reverse: #334155;
+  --text-muted-reverse: #475569;
+
+  /* Elegant tones */
+  --text-ice: #eff6ff;
+  --text-frost: #dbeafe;
+  --text-royal: #60a5fa;
+  --text-navy: #e2e8f0;
+  --text-cyan-soft: #67e8f9;
+
+  /* Luxury */
+  --text-platinum: #e2e8f0;
+  --text-champagne: #fbbf24;
+  --text-copper: #fb923c;
+
+  /* Warm neutrals */
+  --text-stone: #d6d3d1;
+  --text-smoke: #d1d5db;
+  --text-ash: #9ca3af;
+
+  /* Cool neutrals */
+  --text-graphite: #e5e7eb;
+  --text-carbon: #f3f4f6;
+  --text-midnight: #ffffff;
+
+  /* Accent helpers */
+  --text-accent-soft: #7dd3fc;
+  --text-accent-strong: #38bdf8;
+
+  /* Overlay text */
+  --text-overlay-light: rgba(255,255,255,0.96);
+  --text-overlay-dark: rgba(15,23,42,0.96);
+
+  /* Decorative gradients */
+  --text-gradient-ocean:
+    linear-gradient(135deg, #7dd3fc, #60a5fa, #2563eb);
+
+  --text-gradient-fire:
+    linear-gradient(135deg, #facc15, #fb923c);
+
+  --text-gradient-silver:
+    linear-gradient(135deg, #f8fafc, #94a3b8);
+
+  /* Fancy shadows */
+  --text-shadow-soft:
+    0 2px 10px rgba(0,0,0,0.35);
+
+  --text-shadow-strong:
+    0 6px 22px rgba(0,0,0,0.55);
+}
+
+
+/* =========================================================
+   ADDITIONAL TEXT UTILITIES
+   ========================================================= */
+
+/* Reverse-aware */
+.text-charcoal-reverse {
+  color: var(--text-charcoal-reverse) !important;
+}
+
+.text-steel-reverse {
+  color: var(--text-steel-reverse) !important;
+}
+
+.text-muted-reverse {
+  color: var(--text-muted-reverse) !important;
+}
+
+
+/* Elegant tones */
+.text-ice {
+  color: var(--text-ice) !important;
+}
+
+.text-frost {
+  color: var(--text-frost) !important;
+}
+
+.text-royal {
+  color: var(--text-royal) !important;
+}
+
+.text-navy {
+  color: var(--text-navy) !important;
+}
+
+.text-cyan-soft {
+  color: var(--text-cyan-soft) !important;
+}
+
+
+/* Luxury */
+.text-platinum {
+  color: var(--text-platinum) !important;
+}
+
+.text-champagne {
+  color: var(--text-champagne) !important;
+}
+
+.text-copper {
+  color: var(--text-copper) !important;
+}
+
+
+/* Warm neutrals */
+.text-stone {
+  color: var(--text-stone) !important;
+}
+
+.text-smoke {
+  color: var(--text-smoke) !important;
+}
+
+.text-ash {
+  color: var(--text-ash) !important;
+}
+
+
+/* Cool neutrals */
+.text-graphite {
+  color: var(--text-graphite) !important;
+}
+
+.text-carbon {
+  color: var(--text-carbon) !important;
+}
+
+.text-midnight {
+  color: var(--text-midnight) !important;
+}
+
+
+/* Accent helpers */
+.text-accent-soft {
+  color: var(--text-accent-soft) !important;
+}
+
+.text-accent-strong {
+  color: var(--text-accent-strong) !important;
+}
+
+
+/* Overlay text */
+.text-overlay-light {
+  color: var(--text-overlay-light) !important;
+}
+
+.text-overlay-dark {
+  color: var(--text-overlay-dark) !important;
+}
+
+
+/* =========================================================
+   ADVANCED GRADIENT TEXTS
+   ========================================================= */
+
+.text-gradient-ocean {
+  background: var(--text-gradient-ocean);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-fire {
+  background: var(--text-gradient-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-silver {
+  background: var(--text-gradient-silver);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+/* =========================================================
+   TEXT SHADOW HELPERS
+   ========================================================= */
+
+.text-shadow-soft {
+  text-shadow: var(--text-shadow-soft);
+}
+
+.text-shadow-strong {
+  text-shadow: var(--text-shadow-strong);
+}
+
+
+/* =========================================================
+   INTERACTIVE HOVER UTILITIES
+   ========================================================= */
+
+.hover-text-accent:hover {
+  color: var(--text-accent-strong) !important;
+}
+
+.hover-text-platinum:hover {
+  color: var(--text-platinum) !important;
+}
+
+.hover-text-royal:hover {
+  color: var(--text-royal) !important;
+}
+
+.hover-text-fire:hover {
+  color: #f97316 !important;
+}
+
+.hover-text-ocean:hover {
+  color: #38bdf8 !important;
+}
+
+
+/* =========================================================
+   HERO / OVERLAY FRIENDLY UTILITIES
+   ========================================================= */
+
+.text-hero {
+  color: var(--text-overlay-light);
+  text-shadow: var(--text-shadow-strong);
+}
+
+.text-subhero {
+  color: rgba(255,255,255,0.78);
+}
+
+.text-on-dark {
+  color: #f8fafc !important;
+}
+
+.text-on-light {
+  color: #0f172a !important;
+}
+
+/* =========================================================
+   BREADCRUMB STYLING
+   ========================================================= */
+
+.hero-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero-breadcrumb-home {
+  color: var(--breadcrumb-home);
+  transition: var(--transition);
+}
+
+.hero-breadcrumb-home:hover {
+  color: var(--breadcrumb-home-hover);
+  text-shadow: var(--breadcrumb-glow);
+}
+
+.hero-breadcrumb-separator {
+  color: var(--breadcrumb-separator);
+}
+
+.hero-breadcrumb-current {
+  color: var(--breadcrumb-current);
+  transition: var(--transition);
+}
+
+.hero-breadcrumb-current:hover {
+  color: var(--breadcrumb-current-hover);
+}
 
 /* ------------------------------
    Typography
@@ -2216,9 +2956,22 @@ textarea.form-input {
 
 .stats-card:hover {
   transform: translateY(-3px);
-  border-color: var(--primary-accent-light);
   box-shadow: var(--shadow-md);
 }
+
+/* Icon animation */
+.stats-card:hover i {
+  transform: scale(1.15);
+}
+
+.stats-card .fa,
+.stats-card i {
+  font-size: 2.5rem;
+  color: var(--primary-accent);
+  margin-bottom: 0.75rem;
+  display: inline-block;
+}
+
 
 .stats-card .fa {
   font-size: 2.5rem;
@@ -2295,8 +3048,12 @@ textarea.form-input {
 }
 
 .strength-card:hover {
-  border-color: var(--primary-accent-light);
-  box-shadow: var(--shadow-md);
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 1px rgba(56, 189, 248, 0.18),
+    0 0 18px rgba(56, 189, 248, 0.22),
+    0 0 36px rgba(56, 189, 248, 0.12);
+
   transform: translateY(-2px);
 }
 
@@ -2344,8 +3101,9 @@ textarea.form-input {
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   width: 100%;
-  height: 18rem;
+  height: 20rem;
   object-fit: cover;
+  object-position: top;
 }
 
 /* Utility: gap-12 if needed */
@@ -2459,7 +3217,7 @@ textarea.form-input {
 
 .service-card {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1.5rem;
   padding: 1.5rem;
   border: 1px solid var(--card-border);
@@ -2469,15 +3227,33 @@ textarea.form-input {
 }
 
 .service-card:hover {
-  border-color: var(--primary-accent-light);
+  /* border-color: var(--primary-accent-light); */
   box-shadow: var(--shadow-lg);
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   .service-card {
     flex-direction: row;
   }
+} */
+
+@media (max-width: 767px) {
+  .service-card {
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .service-icon-circle {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+
+  .service-icon-circle i {
+    font-size: 1.5rem;
+  }
+
 }
+
 
 .service-icon-circle {
   width: 3.5rem;
@@ -2526,6 +3302,12 @@ textarea.form-input {
   margin-bottom: 0.5rem;
 }
 
+@media (max-width: 767px) {
+  .service-title {
+    font-size: 1rem;
+  }
+}
+
 .service-desc {
   font-size: 0.9rem;
   color: var(--text-secondary);
@@ -2543,8 +3325,8 @@ textarea.form-input {
   align-items: center;
   gap: 0.25rem;
   font-size: 0.75rem;
-  color: var(--primary-accent-2);
-  background: var(--bg-secondary);
+  color: var(--text-silver);
+  background: var(--bg-fade-2);
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-pill);
   font-weight: 600;
@@ -2569,22 +3351,22 @@ textarea.form-input {
    CTA DARK BOX
 ========================================== */
 
-.cta-dark {
-  background: linear-gradient(135deg, var(--primary-dark-2), var(--primary-dark));
+.cta {
+  background: var(--bg-tertiary);
   border-radius: var(--radius-xl);
   padding: 2.5rem;
   text-align: center;
 }
 
-.cta-dark h3 {
-  color: #fff;
+.cta h3 {
+  color: var(--text-slate);
   font-weight: 800;
   margin-bottom: 0.75rem;
   font-size: 1.5rem;
 }
 
-.cta-dark p {
-  color: var(--text-muted);
+.cta p {
+  color: var(--text-faint);
   margin-bottom: 1.5rem;
 }
 
@@ -2939,8 +3721,8 @@ textarea.form-input {
 }
 
 [data-theme="dark"] .file-badge {
-  background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
+  background: rgba(73, 16, 16, 0.445);
+  color: #e0dbdb;
 }
 
 .catalogue-title {
@@ -3768,4 +4550,29 @@ textarea.form-input {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+
+/* Video card error placeholder */
+.video-error-placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.video-error-placeholder i {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-accent);
+}
+
+.video-error-placeholder p {
+  font-size: 0.75rem;
+  margin: 0;
 }

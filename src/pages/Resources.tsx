@@ -1,165 +1,226 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { datoClient } from '../lib/datocms';
+import { gql } from 'graphql-request';
+import videoThumb from '../assets/images/video_thumbnail.jpeg';
 
-// Import all catalogue PDFs (Vite will bundle them)
-import antennaSetupPdf from '../assets/catalogues/3D AUTOMATED ANTENNA RADIATION PATTERN MEASUREMENT SET UP_NEW.pdf';
-import dacPdf from '../assets/catalogues/Addressable expandable voltage output DAC.pdf';
-import pneumaticPdf from '../assets/catalogues/Advance Pneumatic Trainer Kit2.pdf';
-import hydraulicPdf from '../assets/catalogues/Hydraulic Trainer Kit2.pdf';
-import kaBandPdf from '../assets/catalogues/Ka Band 26 Ghz to 40GHz Microwave components_Microline_India.pdf';
-import pcbEquipPdf from '../assets/catalogues/Microline PCB Manufacturing Equipment.pdf';
-import hornAntennaPdf from '../assets/catalogues/Microline_Double_Ridged_Horn_Antenna.pdf';
-import testBench2008APdf from '../assets/catalogues/Microline_Microwave Test Bench 2008A.pdf';
-import testBench2008A2Pdf from '../assets/catalogues/Microwave Test Bench 2008A.pdf';
-import testBench2008BPdf from '../assets/catalogues/Microwave Test Bench 2008B.pdf';
-import wavePropPdf from '../assets/catalogues/MICROWAVE WAVE PROPAGATION SET UP.pdf';
-import xBandPdf from '../assets/catalogues/Microwave X Band Components.pdf';
-import escalatorPdf from '../assets/catalogues/Model_Escalator.pdf';
 
-// Import local video
-import microlineDacVideo from '../assets/videos/Microline DAC.mp4';
+// ----------------------------------------------------------------------
+// GraphQL Query (correct Mux structure)
+// ----------------------------------------------------------------------
+const RESOURCES_QUERY = gql`
+{
+  allCatalogueItems(orderBy: title_ASC) {
+    id
+    title
+    description
+    fileType
+    fileSize
+    catalogueFile { url }
+  }
+  allVideoResources(orderBy: title_ASC) {
+    id
+    title
+    duration
+    videoUrl
+    thumbnail { url }
+  }
+}
+`;
 
+// ----------------------------------------------------------------------
+// Interfaces
+// ----------------------------------------------------------------------
 interface ResourcesProps {
   onNavigate: (page: string) => void;
 }
 
-const catalogues = [
-  {
-    title: '3D Automated Antenna Measurement Setup',
-    type: 'PDF',
-    size: '4.2 MB',
-    desc: 'Complete product line catalogue with specifications.',
-    url: antennaSetupPdf,
-  },
-  {
-    title: 'Addressable Expandable Voltage Output DAC',
-    type: 'PDF',
-    size: '1.5 MB',
-    desc: 'Details on our addressable DAC solutions.',
-    url: dacPdf,
-  },
-  {
-    title: 'Advance Pneumatic Trainer Kit',
-    type: 'PDF',
-    size: '2.1 MB',
-    desc: 'Information on the pneumatic trainer kit.',
-    url: pneumaticPdf,
-  },
-  {
-    title: 'Hydraulic Trainer Kit',
-    type: 'PDF',
-    size: '2.3 MB',
-    desc: 'Hydraulic trainer kit brochure.',
-    url: hydraulicPdf,
-  },
-  {
-    title: 'Ka Band 26-40 GHz Components',
-    type: 'PDF',
-    size: '3.5 MB',
-    desc: 'Microwave components for Ka band.',
-    url: kaBandPdf,
-  },
-  {
-    title: 'PCB Manufacturing Equipment',
-    type: 'PDF',
-    size: '1.8 MB',
-    desc: 'Equipment for PCB production.',
-    url: pcbEquipPdf,
-  },
-  {
-    title: 'Double Ridged Horn Antenna',
-    type: 'PDF',
-    size: '2.0 MB',
-    desc: 'Specifications of our horn antenna.',
-    url: hornAntennaPdf,
-  },
-  {
-    title: 'Microwave Test Bench 2008A (Microline)',
-    type: 'PDF',
-    size: '1.2 MB',
-    desc: 'Test bench details.',
-    url: testBench2008APdf,
-  },
-  {
-    title: 'Microwave Test Bench 2008A',
-    type: 'PDF',
-    size: '1.2 MB',
-    desc: 'Another version of the test bench.',
-    url: testBench2008A2Pdf,
-  },
-  {
-    title: 'Microwave Test Bench 2008B',
-    type: 'PDF',
-    size: '1.3 MB',
-    desc: 'Test bench 2008B brochure.',
-    url: testBench2008BPdf,
-  },
-  {
-    title: 'Microwave Wave Propagation Setup',
-    type: 'PDF',
-    size: '2.8 MB',
-    desc: 'Wave propagation measurement setup.',
-    url: wavePropPdf,
-  },
-  {
-    title: 'Microwave X Band Components',
-    type: 'PDF',
-    size: '2.6 MB',
-    desc: 'Components for X band.',
-    url: xBandPdf,
-  },
-  {
-    title: 'Model Escalator',
-    type: 'PDF',
-    size: '1.1 MB',
-    desc: 'Escalator model details.',
-    url: escalatorPdf,
-  },
-  {
-    title: 'Test PDF Example',
-    type: 'PDF',
-    size: '0.5 MB',
-    desc: 'This is a test PDF for demonstration purposes.',
-    url: 'https://pdfobject.com/pdf/sample.pdf',
-  }
-];
+interface CatalogueItem {
+  id: string;
+  title: string;
+  description: string;
+  fileType: string;
+  fileSize: string;
+  catalogueFile: { url: string };
+}
 
-const videos = [
-  {
-    title: 'Microwave 3D Anechoic Chamber Demo',
-    duration: '5:32',
-    thumb: 'https://images.pexels.com/photos/3912981/pexels-photo-3912981.jpeg?auto=compress&cs=tinysrgb&w=400',
-    url: 'https://www.youtube.com/watch?v=bhp5PZfjvIo',
-  },
-  {
-    title: 'Antenna Measurement System Walkthrough',
-    duration: '8:14',
-    thumb: 'https://images.pexels.com/photos/1167355/pexels-photo-1167355.jpeg?auto=compress&cs=tinysrgb&w=400',
-    url: microlineDacVideo,
-  },
-  {
-    title: 'NIT Lab Setup Installation',
-    duration: '3:45',
-    thumb: 'https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=400',
-    url: 'https://www.youtube.com/watch?v=example3',
-  },
-  {
-    title: 'RF Component Manufacturing Process',
-    duration: '6:20',
-    thumb: 'https://images.pexels.com/photos/163100/circuit-circuit-board-resistor-computer-163100.jpeg?auto=compress&cs=tinysrgb&w=400',
-    url: 'https://www.youtube.com/watch?v=example4',
-  },
-];
+interface VideoResource {
+  id: string;
+  title: string;
+  duration: string;
+  videoUrl?: string;
+  thumbnail?: { url: string };
+  videoFile?: {
+    id: string;
+    video: {
+      muxPlaybackId: string;
+      streamingUrl: string;
+      mp4High?: string;
+      mp4Med?: string;
+      mp4Low?: string;
+      thumbJpg?: string;
+    };
+  };
+}
 
+// ----------------------------------------------------------------------
+// Enterprise Video Player Component (built-in)
+// ----------------------------------------------------------------------
+interface VideoPlayerProps {
+  url: string;          // HLS (.m3u8) or direct MP4
+  fallbackUrl?: string; // direct MP4 when HLS fails
+  poster?: string;
+}
+
+const EnterpriseVideoPlayer: React.FC<VideoPlayerProps> = ({ url, fallbackUrl, poster }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    let hls: any = null;
+    let mounted = true;
+
+    const clearHls = () => {
+      if (hls) {
+        hls.destroy();
+        hls = null;
+      }
+    };
+
+    const setSource = (src: string) => {
+      if (!mounted) return;
+      setLoading(true);
+      setError(null);
+      video.src = src;
+      video.load();
+      video.play().catch((e) => console.warn('Autoplay prevented:', e));
+    };
+
+    const handleCanPlay = () => mounted && setLoading(false);
+    const handleError = () => {
+      if (!mounted) return;
+      if (fallbackUrl && video.src !== fallbackUrl) {
+        console.log('HLS failed, falling back to MP4');
+        clearHls();
+        setSource(fallbackUrl);
+      } else {
+        setError('Failed to play video. Please try again.');
+        setLoading(false);
+      }
+    };
+
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('error', handleError);
+
+    const isHls = url.includes('.m3u8') || url.includes('streaming.datocms.com') || url.includes('mux.com');
+    if (isHls) {
+      // Safari native HLS
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        setSource(url);
+      } else if (window.Hls?.isSupported()) {
+        hls = new window.Hls({ enableWorker: true, lowLatencyMode: true });
+        hls.loadSource(url);
+        hls.attachMedia(video);
+        hls.on(window.Hls.Events.MANIFEST_PARSED, () => mounted && setLoading(false));
+        hls.on(window.Hls.Events.ERROR, (_, data) => {
+          if (data.fatal && mounted) {
+            console.error('HLS fatal error', data);
+            if (fallbackUrl) {
+              clearHls();
+              setSource(fallbackUrl);
+            } else {
+              setError('Video cannot be played. Try a different browser.');
+              setLoading(false);
+            }
+          }
+        });
+      } else {
+        setError('Your browser does not support HLS streaming.');
+        setLoading(false);
+      }
+    } else {
+      setSource(url);
+    }
+
+    return () => {
+      mounted = false;
+      clearHls();
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('error', handleError);
+      video.pause();
+      video.src = '';
+    };
+  }, [url, fallbackUrl]);
+
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      {loading && !error && (
+        <div className="video-loading-overlay">
+          <div className="spinner-border text-light" role="status">
+            <span className="visually-hidden">Loading video...</span>
+          </div>
+        </div>
+      )}
+      {error && (
+        <div className="video-error-overlay">
+          <i className="fas fa-exclamation-triangle fa-2x mb-2"></i>
+          <p>{error}</p>
+          <button className="btn btn-sm btn-light" onClick={() => window.location.reload()}>
+            Retry
+          </button>
+        </div>
+      )}
+      <video
+        ref={videoRef}
+        className="custom-video-player"
+        controls
+        autoPlay
+        playsInline
+        poster={poster}
+        style={{ width: '100%', height: '100%', display: error ? 'none' : 'block' }}
+      />
+    </div>
+  );
+};
+
+// ----------------------------------------------------------------------
+// Main Resources Component
+// ----------------------------------------------------------------------
 export default function Resources({ onNavigate }: ResourcesProps) {
+  const [catalogues, setCatalogues] = useState<CatalogueItem[]>([]);
+  const [videos, setVideos] = useState<VideoResource[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [activeVideo, setActiveVideo] = useState<{
-    type: 'youtube' | 'local';
+    type: 'embed' | 'stream';
     url: string;
+    fallbackUrl?: string;
   } | null>(null);
 
-  const [activePdf, setActivePdf] = useState<{
-    url: string;
-    title: string;
-  } | null>(null);
+  const [activePdf, setActivePdf] = useState<{ url: string; title: string } | null>(null);
+
+  useEffect(() => {
+    fetchResources();
+  }, []);
+
+  const fetchResources = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await datoClient.request(RESOURCES_QUERY);
+      setCatalogues(data.allCatalogueItems);
+      setVideos(data.allVideoResources);
+    } catch (err) {
+      console.error('DatoCMS Fetch Error:', err);
+      setError('Failed to load resources. Please refresh the page or try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleDownload = (fileUrl: string, fileName: string) => {
     const link = document.createElement('a');
@@ -170,32 +231,137 @@ export default function Resources({ onNavigate }: ResourcesProps) {
     document.body.removeChild(link);
   };
 
-  const openVideo = (url: string) => {
-    if (url.includes('youtube.com/watch')) {
-      const videoId = url.split('v=')[1]?.split('&')[0];
-      if (videoId) {
-        setActiveVideo({ type: 'youtube', url: `https://www.youtube.com/embed/${videoId}?autoplay=1` });
+  const getVideoThumbnail = (video: VideoResource): string => {
+    // 1. Custom uploaded thumbnail
+    if (video.thumbnail?.url) return video.thumbnail.url;
+    // 2. Mux auto thumbnail
+    if (video.videoFile?.video?.thumbJpg) return video.videoFile.video.thumbJpg;
+    // 3. YouTube thumbnail
+    const url = video.videoUrl || '';
+    if (url.includes('youtube.com/watch') || url.includes('youtu.be/')) {
+      let videoId = '';
+      if (url.includes('youtube.com/watch')) {
+        videoId = url.split('v=')[1]?.split('&')[0] || '';
+      } else if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1]?.split('?')[0] || '';
       }
-    } else {
-      setActiveVideo({ type: 'local', url });
+      if (videoId) return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
     }
+    // 4. Fallback
+    return videoThumb;
+  };
+
+  const openVideo = (video: VideoResource) => {
+    // PRIORITY 1: DatoCMS uploaded video (Mux) → HLS + MP4 fallback
+    if (video.videoFile?.video?.streamingUrl) {
+      setActiveVideo({
+        type: 'stream',
+        url: video.videoFile.video.streamingUrl,
+        fallbackUrl: video.videoFile.video.mp4High || video.videoFile.video.mp4Med,
+      });
+      return;
+    }
+
+    const url = video.videoUrl || '';
+    if (!url) return;
+
+    // YouTube
+    if (url.includes('youtube.com/watch') || url.includes('youtu.be/')) {
+      let videoId = '';
+      if (url.includes('youtube.com/watch')) {
+        videoId = url.split('v=')[1]?.split('&')[0] || '';
+      } else if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1]?.split('?')[0] || '';
+      }
+      if (videoId) {
+        setActiveVideo({
+          type: 'embed',
+          url: `https://www.youtube.com/embed/${videoId}?autoplay=1`,
+        });
+        return;
+      }
+    }
+
+    // Vimeo
+    if (url.includes('vimeo.com')) {
+      const videoId = url.split('/').pop()?.split('?')[0];
+      if (videoId) {
+        setActiveVideo({
+          type: 'embed',
+          url: `https://player.vimeo.com/video/${videoId}?autoplay=1`,
+        });
+        return;
+      }
+    }
+
+    // Google Drive
+    if (url.includes('drive.google.com')) {
+      const match = url.match(/\/d\/(.*?)\//);
+      const fileId = match?.[1];
+      if (fileId) {
+        setActiveVideo({
+          type: 'embed',
+          url: `https://drive.google.com/file/d/${fileId}/preview`,
+        });
+        return;
+      }
+    }
+
+    // Direct video file or unknown – treat as stream
+    setActiveVideo({ type: 'stream', url });
   };
 
   const closeVideo = () => setActiveVideo(null);
   const openPdfViewer = (url: string, title: string) => setActivePdf({ url, title });
   const closePdfViewer = () => setActivePdf(null);
 
+  // Loading UI
+  if (loading) {
+    return (
+      <div className="pt-navbar">
+        <div className="text-center py-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-3">Loading resources...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error UI
+  if (error) {
+    return (
+      <div className="pt-navbar">
+        <div className="container text-center py-5">
+          <div className="alert alert-danger" role="alert">
+            <i className="fas fa-exclamation-triangle me-2"></i>
+            {error}
+          </div>
+          <button className="btn btn-primary mt-3" onClick={fetchResources}>
+            <i className="fas fa-sync-alt me-2"></i>Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="pt-navbar">
-      {/* Hero */}
+      {/* Hero Section */}
       <div className="page-hero bg-gradient-dark">
         <div
           className="page-hero-overlay"
-          style={{ backgroundImage: "url('https://images.pexels.com/photos/1262304/pexels-photo-1262304.jpeg?auto=compress&cs=tinysrgb&w=1200')" }}
+          style={{
+            backgroundImage:
+              "url('https://images.pexels.com/photos/1262304/pexels-photo-1262304.jpeg?auto=compress&cs=tinysrgb&w=1200')",
+          }}
         />
         <div className="container position-relative z-1">
           <p className="fs-xs text-accent-light text-uppercase mb-2 ls-1">
-            <button onClick={() => onNavigate('home')} className="breadcrumb-link">Home</button>
+            <button onClick={() => onNavigate('home')} className="breadcrumb-link">
+              Home
+            </button>
             {' / Resources'}
           </p>
           <h1 className="text-white fs-2xl fw-900">Resources (Catalogues &amp; Videos)</h1>
@@ -204,34 +370,36 @@ export default function Resources({ onNavigate }: ResourcesProps) {
 
       <div className="section py-5">
         <div className="container">
-          {/* Catalogues */}
+          {/* Catalogues Section */}
           <div className="mb-20">
             <div className="resources-heading">
               <i className="fas fa-file-alt"></i>
-              <h2>Catalogues &amp; <span>Brochures</span></h2>
+              <h2>Catalogues & <span>Brochures</span></h2>
             </div>
             <div className="d-flex flex-column gap-4">
-              {catalogues.map(cat => (
-                <div key={cat.title} className="catalogue-item">
+              {catalogues.map((cat) => (
+                <div key={cat.id} className="catalogue-item">
                   <div className="catalogue-info">
-                    <div className="file-badge">{cat.type}</div>
+                    <div className="file-badge">{cat.fileType}</div>
                     <div>
                       <p className="catalogue-title">{cat.title}</p>
-                      <p className="catalogue-meta">{cat.desc} • {cat.size}</p>
+                      <p className="catalogue-meta">
+                        {cat.description} • {cat.fileSize}
+                      </p>
                     </div>
                   </div>
                   <div className="catalogue-actions">
                     <button
                       className="btn btn-outline"
-                      onClick={() => openPdfViewer(cat.url, cat.title)}
+                      onClick={() => openPdfViewer(cat.catalogueFile.url, cat.title)}
                     >
-                      <i className="fas fa-eye mr-2"></i> View
+                      <i className="fas fa-eye me-2"></i> View
                     </button>
                     <button
                       className="btn btn-primary"
-                      onClick={() => handleDownload(cat.url, cat.title + '.pdf')}
+                      onClick={() => handleDownload(cat.catalogueFile.url, cat.title + '.pdf')}
                     >
-                      <i className="fas fa-download mr-2"></i> Download
+                      <i className="fas fa-download me-2"></i> Download
                     </button>
                   </div>
                 </div>
@@ -239,17 +407,22 @@ export default function Resources({ onNavigate }: ResourcesProps) {
             </div>
           </div>
 
-          {/* Videos */}
+          {/* Videos Section */}
           <div>
             <div className="resources-heading">
               <i className="fas fa-play"></i>
               <h2>Product <span>Videos</span></h2>
             </div>
             <div className="grid grid-cols-4 gap-4">
-              {videos.map(video => (
-                <div key={video.title} className="video-card" onClick={() => openVideo(video.url)}>
+              {videos.map((video) => (
+                <div
+                  key={video.id}
+                  className="video-card"
+                  onClick={() => openVideo(video)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="video-thumb">
-                    <img src={video.thumb} alt={video.title} />
+                    <img src={getVideoThumbnail(video)} alt={video.title} loading="lazy" />
                     <div className="video-play-overlay">
                       <div className="video-play-btn">
                         <i className="fas fa-play"></i>
@@ -268,26 +441,23 @@ export default function Resources({ onNavigate }: ResourcesProps) {
       {/* Video Modal */}
       {activeVideo && (
         <div className="video-modal-overlay" onClick={closeVideo}>
-          <div className="video-modal-content" onClick={e => e.stopPropagation()}>
+          <div className="video-modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="video-modal-close" onClick={closeVideo}>
               <i className="fas fa-times"></i>
             </button>
-            {activeVideo.type === 'youtube' ? (
+            {activeVideo.type === 'embed' ? (
               <iframe
                 src={activeVideo.url}
-                title="YouTube Video Player"
+                title="Video Player"
                 allow="autoplay; fullscreen"
                 allowFullScreen
+                className="video-iframe"
               />
             ) : (
-              <video
-                className="custom-video-player"
-                controls
-                autoPlay
-                src={activeVideo.url}
-              >
-                Your browser does not support the video tag.
-              </video>
+              <EnterpriseVideoPlayer
+                url={activeVideo.url}
+                fallbackUrl={activeVideo.fallbackUrl}
+              />
             )}
           </div>
         </div>
@@ -296,21 +466,24 @@ export default function Resources({ onNavigate }: ResourcesProps) {
       {/* PDF Viewer Modal */}
       {activePdf && (
         <div className="pdf-modal-overlay" onClick={closePdfViewer}>
-          <div className="pdf-modal-content" onClick={e => e.stopPropagation()}>
+          <div className="pdf-modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="pdf-modal-header">
               <h3 className="pdf-modal-title">{activePdf.title}</h3>
               <button className="pdf-modal-close" onClick={closePdfViewer}>
                 <i className="fas fa-times"></i>
               </button>
             </div>
-            <iframe
-              src={activePdf.url}
-              title={activePdf.title}
-              className="pdf-iframe"
-            />
+            <iframe src={activePdf.url} title={activePdf.title} className="pdf-iframe" />
           </div>
         </div>
       )}
     </div>
   );
+}
+
+// Extend Window interface for Hls (TypeScript)
+declare global {
+  interface Window {
+    Hls: any;
+  }
 }

@@ -38,14 +38,13 @@ export default function Achievements({ onNavigate }: AchievementsProps) {
           }}
         />
         <div className="container position-relative z-1">
-          <p className="fs-xs text-accent-light text-uppercase mb-2 ls-1">
-            <button onClick={() => onNavigate('home')} className="breadcrumb-link">
-              Home
-            </button>
-            {' / Achievements'}
-          </p>
+          <div className="d-flex align-items-center gap-2 mb-2 text-uppercase ls-2 fw-700 fs-xs">
+            <button onClick={() => onNavigate('home')} className="breadcrumb-link text-info">HOME</button>
+            <span className="text-white" style={{ opacity: 0.5 }}> / </span>
+            <span className="text-gold">ACHIEVEMENTS</span>
+          </div>
           <h1 className="text-white fs-2xl fw-900">Our Achievements</h1>
-        </div>
+          </div>
       </div>
 
       {/* Content */}

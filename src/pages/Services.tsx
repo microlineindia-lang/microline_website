@@ -47,20 +47,25 @@ export default function Services({ onNavigate }: ServicesProps) {
           style={{ backgroundImage: "url('https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=1200')" }}
         />
         <div className="container position-relative z-1">
-          <p className="fs-xs text-accent-light text-uppercase mb-2 ls-1">
-            <button onClick={() => onNavigate('home')} className="breadcrumb-link">Home</button>
-            {' / Services'}
-          </p>
+          <div className="d-flex align-items-center gap-2 mb-2 text-uppercase ls-2 fw-700 fs-xs">
+            <button onClick={() => onNavigate('home')} className="breadcrumb-link text-info">HOME</button>
+            <span className="text-white" style={{ opacity: 0.5 }}> / </span>
+            <span className="text-gold">SERVICES</span>
+          </div>
           <h1 className="text-white fs-2xl fw-900">Our Services</h1>
+          </div>
         </div>
-      </div>
 
       <div className="section py-5">
         <div className="container">
           <div className="services-intro">
             <p className="subheading">What We Do</p>
-            <h2>Comprehensive <span className="highlight">RF & Microwave Services</span></h2>
-            <p>From design and fabrication to lab setup and technical consultation...</p>
+              <div className="text-center">
+                <h2 className="section-title">
+                  Comprehensive <span className="text-accent">RF & Microwave Services</span>
+                </h2>
+                <p>From design and fabrication to lab setup and technical consultation...</p>
+              </div>            
           </div>
 
           <div className="service-list">
@@ -80,7 +85,7 @@ export default function Services({ onNavigate }: ServicesProps) {
                   <div className="service-tags">
                     {service.highlights.map(h => (
                       <span key={h} className="service-tag">
-                        <i className="fas fa-chevron-right"></i> {h}
+                        <i className="fas fa-hand-point-right"></i> {h}
                       </span>
                     ))}
                   </div>
@@ -89,7 +94,7 @@ export default function Services({ onNavigate }: ServicesProps) {
             ))}
           </div>
 
-          <div className="cta-dark">
+          <div className="cta">
             <h3>Need a Custom Solution?</h3>
             <p>Talk to our experts today and let us help you achieve your goals.</p>
             <button onClick={() => onNavigate('contact')} className="btn btn-primary">Contact Us</button>
