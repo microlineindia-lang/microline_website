@@ -140,8 +140,17 @@ export default function ProductDetail({ onNavigate }: ProductDetailProps) {
             </div>
             <div ref={rightColumnRef}>
               <span className="product-badge badge-inline">{p.category.name}</span>
+
+
               <h2 className="fs-2xl fw-900 mb-3 text-primary">{p.name}</h2>
               <p className="text-secondary mb-4">{p.description}</p>
+
+              {/* Model display (conditional) */}
+              {p.model && (
+                <p className="text-muted mb-2" style={{ fontSize: "0.9rem" }}>
+                  Model: <strong>{p.model}</strong>
+                </p>
+              )}
 
               {features.length > 0 && (
                 <>
@@ -183,7 +192,6 @@ export default function ProductDetail({ onNavigate }: ProductDetailProps) {
               </div>
               <div className="tab-panel">
                 {activeSection ? (
-                  // Specification tab – always single column
                   isSpecificationSection(activeSection) ? (
                     <div>
                       {activeSection.specifications.map((spec) => (
@@ -194,26 +202,24 @@ export default function ProductDetail({ onNavigate }: ProductDetailProps) {
                       ))}
                     </div>
                   ) : isProductListSection(activeSection) ? (
-                      activeSection.items.length > 6 ? (
-                        /* Multi‑column grid (≥7 items) */
-                        <div className="list-grid">
-                          {activeSection.items.map((item) => (
-                            <div key={item} className="list-grid-item">
-                              <i className="fas fa-caret-right"></i> {item}
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        /* Single column – same card style */
-                        <div className="list-column">
-                          {activeSection.items.map((item) => (
-                            <div key={item} className="list-grid-item">
-                              <i className="fas fa-caret-right"></i> {item}
-                            </div>
-                          ))}
-                        </div>
-                      )
-                    ) : null
+                    activeSection.items.length > 6 ? (
+                      <div className="list-grid">
+                        {activeSection.items.map((item) => (
+                          <div key={item} className="list-grid-item">
+                            <i className="fas fa-chevron-right"></i> {item}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="list-column">
+                        {activeSection.items.map((item) => (
+                          <div key={item} className="list-grid-item">
+                            <i className="fas fa-chevron-right"></i> {item}
+                          </div>
+                        ))}
+                      </div>
+                    )
+                  ) : null
                 ) : (
                   <p>No data available.</p>
                 )}
@@ -222,9 +228,7 @@ export default function ProductDetail({ onNavigate }: ProductDetailProps) {
           )}
 
           {/* Related Products */}
-          <h3 className="section-title text-center">
-                Related <span className="text-accent">Products</span>
-              </h3>
+          <h3 className="section-title text-left mb-4">Related Products</h3>
           <div className="related-products-grid grid grid-cols-3 gap-4">
             {allProducts
               .filter((rel) => rel.slug !== p.slug)
