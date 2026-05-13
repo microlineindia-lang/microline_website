@@ -1,51 +1,72 @@
-import React, { Component, type ErrorInfo, type ReactNode } from 'react'
+import { Component, type ErrorInfo, type ReactNode } from 'react';
 
-interface Props {
-  children: ReactNode
-  fallback?: ReactNode
+interface ErrorBoundaryProps {
+  children: ReactNode;
+  /** Custom fallback UI (overrides default) */
+  fallback?: ReactNode;
+  /** Optional custom reset handler (e.g., state reset). Defaults to window.location.reload() */
+  onReset?: () => void;
+  /** Optional custom error logging function */
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
-interface State {
-  hasError: boolean
-  error?: Error
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
 }
 
-export class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  public state: ErrorBoundaryState = {
     hasError: false,
+  };
+
+  public static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
   }
 
-  public static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error }
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    // Log error to console (or your reporting service)
+    console.error('Uncaught error in ErrorBoundary:', error, errorInfo);
+
+    // Call custom error reporter if provided
+    this.props.onError?.(error, errorInfo);
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo)
-    // Here you could send to error reporting service
-  }
+  private handleRetry = (): void => {
+    if (this.props.onReset) {
+      this.props.onReset();
+    } else {
+      window.location.reload();
+    }
+  };
 
-  public render() {
+  public render(): ReactNode {
     if (this.state.hasError) {
-      return this.props.fallback || (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-          <div className="text-center p-8">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Something went wrong
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              We apologize for the inconvenience. Please try refreshing the page.
-            </p>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Refresh Page
+      // Use custom fallback if provided
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
+      // Default professional error UI (matches your CSS theme)
+      const errorMessage = this.state.error?.message || 'An unexpected error occurred. Our team has been notified.';
+
+      return (
+        <div className="error-container">
+          <div className="error-card">
+            <div className="error-icon">
+              <i className="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 className="error-title">Application Error</h3>
+            <p className="error-message">{errorMessage}</p>
+            <button className="btn btn-primary error-retry-btn" onClick={this.handleRetry}>
+              <i className="fas fa-sync-alt me-2"></i>
+              Retry
             </button>
           </div>
         </div>
-      )
+      );
     }
 
-    return this.props.children
+    return this.props.children;
   }
 }

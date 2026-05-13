@@ -1,17 +1,22 @@
 // src/pages/About.tsx
 import React from 'react';
+import { useTheme } from "../components/ui/ThemeProvider.tsx";
 import collage from '../assets/images/product-collage.png';
+import aboutHeroLight from '../assets/images/about-us-light.png';
+import aboutHeroDark from '../assets/images/about-us-dark.png';
+
 
 interface AboutProps { onNavigate: (page: string) => void; }
 
 export default function About({ onNavigate }: AboutProps) {
+  const { isDarkMode } = useTheme();
   return (
     <div className="pt-navbar">
       {/* Hero */}
       <div className="page-hero bg-gradient-dark">
         <div
           className="page-hero-overlay"
-          style={{ backgroundImage: "url('https://images.pexels.com/photos/1262304/pexels-photo-1262304.jpeg?auto=compress&cs=tinysrgb&w=1200')" }}
+          style={{ backgroundImage: `url(${isDarkMode ? aboutHeroDark : aboutHeroLight})` }}
         />
         <div className="container position-relative z-1">
           <div className="d-flex align-items-center gap-2 mb-2 text-uppercase ls-2 fw-700 fs-xs">

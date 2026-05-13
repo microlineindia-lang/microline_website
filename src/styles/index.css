@@ -3145,10 +3145,20 @@ textarea.form-input {
   inset: 0;
   background-size: cover;
   background-position: center;
-  opacity: 0.1;
   z-index: 0;
 }
 
+/* gradient opacity effect */
+.page-hero-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right,
+    rgba(0, 0, 0, 0.9),   /* left side darker = image looks faded */
+    rgba(0, 0, 0, 0)     /* right side clear = image fully visible */
+  );
+  pointer-events: none;
+}
 .page-hero-content {
   position: relative;
   z-index: 1;
@@ -4181,6 +4191,7 @@ textarea.form-input {
   font-weight: 600;
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-pill);
+  width:fit-content;
 }
 
 .product-card-body {
@@ -4243,19 +4254,6 @@ textarea.form-input {
   z-index: 0;
 }
 
-.product-detail-image {
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  height: 20rem;
-}
-
-.product-detail-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .feature-list {
   list-style: none;
   padding: 0;
@@ -4283,6 +4281,74 @@ textarea.form-input {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+}
+
+.product-detail-layout {
+  display: flex;
+  gap: 1.25rem;            /* gap-5 */
+  align-items: stretch;
+  margin-bottom: 5rem;     /* mb-20 */
+}
+
+/* ---------- Desktop: height matches right column ---------- */
+@media (min-width: 769px) {
+  .product-detail-layout > .product-detail-image {
+    flex: 1;
+    position: relative;    /* anchor for absolute image */
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    min-height: 0;         /* allows flex to shrink correctly */
+  }
+
+  .product-detail-layout > .product-detail-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;     /* cover the area */
+    display: block;
+  }
+
+  .product-detail-layout > div:last-child {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* ---------- Mobile: stack vertically, fixed image height ---------- */
+@media (max-width: 768px) {
+  .product-detail-layout {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .product-detail-layout > .product-detail-image {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    height: 18rem;         /* fixed height, image always visible */
+  }
+
+  .product-detail-layout > .product-detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: static;      /* override absolute positioning */
+  }
+
+  .product-detail-layout > div:last-child {
+    flex: 1;
+  }
+}
+
+.product-detail-layout > .product-detail-image {
+  /* Remove any fixed height, keep flex for centering */
+  height: auto;  /* will be set by JS */
+  transition: height 0.05s ease; /* smooth sync */
 }
 
 /* Tab buttons */
@@ -4610,14 +4676,7 @@ textarea.form-input {
 }
 
 /* ---------- Hero / Page overrides ---------- */
-.page-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.1;
-  z-index: 0;
-}
+
 
 /* Override breadcrumb-link (already exists, we just ensure accessibility) */
 .breadcrumb-link {
@@ -5464,4 +5523,83 @@ textarea.form-input {
   .error-retry-btn {
     width: 100%;
   }
+}
+
+/* ==========================================
+   SUSPENSE LOADER (Enterprise inline version)
+   ========================================== */
+
+.suspense-loader-wrapper {
+  min-height: calc(100vh - 74px - 400px); /* fallback, but flex auto works better */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+
+/* Optional: adjust card width for better mobile experience */
+@media (max-width: 640px) {
+  .suspense-loader-wrapper .loading-container {
+    width: 90%;
+    max-width: 360px;
+    padding: 1.75rem 1.25rem;
+  }
+}
+
+
+/* ----------------------------------------------
+   Multi‑Column List Grid (for lists with >6 items)
+   ---------------------------------------------- */
+.list-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .list-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .list-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.list-grid-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.list-grid-item:hover {
+  border-color: var(--primary-accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.list-grid-item i {
+  color: var(--primary-accent);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+/* ----------------------------------------------
+   Single‑Column List (≤6 items, same card style)
+   ---------------------------------------------- */
+.list-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: max-content;
 }

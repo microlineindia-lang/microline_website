@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { datoClient } from '../lib/datocms';
 import { gql } from 'graphql-request';
 import videoThumb from '../assets/images/video_thumbnail.jpeg';
+import { useTheme } from "../components/ui/ThemeProvider.tsx";
+import resourcesHeroLight from '../assets/images/resources-light.png';
+import resourcesHeroDark from '../assets/images/resources-dark.png';
+
 
 
 // ----------------------------------------------------------------------
@@ -125,7 +129,7 @@ const EnterpriseVideoPlayer: React.FC<VideoPlayerProps> = ({ url, fallbackUrl, p
         hls.loadSource(url);
         hls.attachMedia(video);
         hls.on(window.Hls.Events.MANIFEST_PARSED, () => mounted && setLoading(false));
-        hls.on(window.Hls.Events.ERROR, (_, data) => {
+        hls.on(window.Hls.Events.ERROR, (_: any, data: { fatal: any; }) => {
           if (data.fatal && mounted) {
             console.error('HLS fatal error', data);
             if (fallbackUrl) {
@@ -194,6 +198,7 @@ export default function Resources({ onNavigate }: ResourcesProps) {
   const [videos, setVideos] = useState<VideoResource[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isDarkMode } = useTheme();
 
   const [activeVideo, setActiveVideo] = useState<{
     type: 'embed' | 'stream';
@@ -225,6 +230,7 @@ export default function Resources({ onNavigate }: ResourcesProps) {
   const handleDownload = (fileUrl: string, fileName: string) => {
     const link = document.createElement('a');
     link.href = fileUrl;
+    link.target = '_blank';
     link.download = fileName;
     document.body.appendChild(link);
     link.click();
@@ -361,7 +367,7 @@ if (error) {
           className="page-hero-overlay"
           style={{
             backgroundImage:
-              "url('https://images.pexels.com/photos/1262304/pexels-photo-1262304.jpeg?auto=compress&cs=tinysrgb&w=1200')",
+              `url(${isDarkMode ? resourcesHeroDark : resourcesHeroLight})`
           }}
         />
         <div className="container position-relative z-1">
@@ -370,7 +376,7 @@ if (error) {
             <span className="text-white" style={{ opacity: 0.5 }}> / </span>
             <span className="text-gold">RESOURCES</span>
           </div>
-          <h1 className="text-white fs-2xl fw-900">Resources (Catalogues & Videos)</h1>
+          <h1 className="text-white fs-2xl fw-900">Brochures & Videos</h1>
         </div>
       </div>
 

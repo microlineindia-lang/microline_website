@@ -1,3 +1,4 @@
+// src/lib/datocms.ts
 import { GraphQLClient } from 'graphql-request';
 
 export const datoClient = new GraphQLClient(

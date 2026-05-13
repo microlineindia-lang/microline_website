@@ -1,5 +1,9 @@
 // src/pages/Services.tsx
 import React from 'react';
+import { useTheme } from "../components/ui/ThemeProvider.tsx";
+import servicesHeroLight from '../assets/images/services-light.png';
+import servicesHeroDark from '../assets/images/services-dark.png';
+
 
 interface ServicesProps {
   onNavigate: (page: string) => void;
@@ -39,12 +43,13 @@ const services = [
 ];
 
 export default function Services({ onNavigate }: ServicesProps) {
+  const { isDarkMode } = useTheme();
   return (
     <div className="pt-navbar">
       <div className="page-hero bg-gradient-dark">
         <div
           className="page-hero-overlay"
-          style={{ backgroundImage: "url('https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=1200')" }}
+          style={{ backgroundImage: `url(${isDarkMode ? servicesHeroDark : servicesHeroLight})` }}
         />
         <div className="container position-relative z-1">
           <div className="d-flex align-items-center gap-2 mb-2 text-uppercase ls-2 fw-700 fs-xs">

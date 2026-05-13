@@ -6,6 +6,10 @@ import academicResearch from '../assets/images/applications/academic-research.pn
 import industrialMicrowave from '../assets/images/applications/industrial-microwave.png';
 import telecommunications from '../assets/images/applications/telecommunications.png';
 import automotiveRadar from '../assets/images/applications/automotive-radar.png';
+import { useTheme } from "../components/ui/ThemeProvider.tsx";
+import applicationsHeroLight from '../assets/images/applications-light.png';
+import applicationsHeroDark from '../assets/images/applications-dark.png';
+
 
 
 interface ApplicationsProps {
@@ -52,12 +56,13 @@ const apps = [
 ];
 
 export default function Applications({ onNavigate }: ApplicationsProps) {
+  const { isDarkMode } = useTheme();
   return (
     <div className="pt-navbar">
       <div className="page-hero bg-gradient-dark">
         <div
           className="page-hero-overlay"
-          style={{ backgroundImage: "url('https://images.pexels.com/photos/1262304/pexels-photo-1262304.jpeg?auto=compress&cs=tinysrgb&w=1200')" }}
+          style={{ backgroundImage: `url(${isDarkMode ? applicationsHeroDark : applicationsHeroLight})` }}
         />
         <div className="container position-relative z-1">
           <div className="d-flex align-items-center gap-2 mb-2 text-uppercase ls-2 fw-700 fs-xs">

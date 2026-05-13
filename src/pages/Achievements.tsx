@@ -2,6 +2,10 @@
 import React from 'react';
 import anechoicChamber from '../assets/images/products/anechoic-chamber.png';
 import mircrowaveLab from '../assets/images/products/microwave-lab.png';
+import { useTheme } from "../components/ui/ThemeProvider.tsx";
+import achievementsHeroLight from '../assets/images/achievements-light.png';
+import achievementsHeroDark from '../assets/images/achievements-dark.png';
+
 
 interface AchievementsProps {
   onNavigate: (page: string) => void;
@@ -44,6 +48,7 @@ const clients = [
 ];
 
 export default function Achievements({ onNavigate }: AchievementsProps) {
+  const { isDarkMode } = useTheme();
   return (
     <div className="pt-navbar">
       {/* Hero */}
@@ -51,8 +56,7 @@ export default function Achievements({ onNavigate }: AchievementsProps) {
         <div
           className="page-hero-overlay"
           style={{
-            backgroundImage:
-              "url('https://images.pexels.com/photos/1262304/pexels-photo-1262304.jpeg?auto=compress&cs=tinysrgb&w=1200')",
+            backgroundImage: `url(${isDarkMode ? achievementsHeroDark : achievementsHeroLight})`,
           }}
         />
         <div className="container position-relative z-1">

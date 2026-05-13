@@ -1,17 +1,13 @@
 // src/App.tsx
-import { Suspense, lazy, useState } from "react";
+import { Suspense, lazy } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
 import { ScrollToTop } from "./components/ui/ScrollToTop";
-import { productData } from "./pages/Products";
 
-/* ========================================
-   Lazy Loaded Pages
-======================================== */
-
+// Lazy imports
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const Products = lazy(() => import("./pages/Products"));
@@ -22,97 +18,48 @@ const Achievements = lazy(() => import("./pages/Achievements"));
 const Resources = lazy(() => import("./pages/Resources"));
 const Contact = lazy(() => import("./pages/Contact"));
 
-/* ========================================
-   App Component
-======================================== */
-
-
+const EnterprisePageLoader = () => (
+  <div className="suspense-loader-wrapper">
+    <div className="loading-container">
+      <div className="loading-ring"></div>
+      <div className="loading-content">
+        <h3 className="loading-title">Loading page</h3>
+        <p className="loading-message">Please wait while we prepare your content</p>
+      </div>
+    </div>
+  </div>
+);
 
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  /* ========================================
-     Navigation Handler
-  ======================================== */
-
-  const navigateTo = (
-    page: string,
-    data?: any
-  ) => {
-    // Product detail route
+  const navigateTo = (page: string, data?: any) => {
     if (data && page === "product-detail") {
-      navigate(`/product/${data.id}`, {
-        state: { product: data },
-      });
+      // ✅ use the slug field from the CMS product
+      navigate(`/product/${data.slug}`, { state: { product: data } });
     } else {
-      // Normal routes
-      navigate(
-        `/${page === "home" ? "" : page}`
-      );
+      navigate(`/${page === "home" ? "" : page}`);
     }
-
-    // Smooth scroll top
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  /* ========================================
-     Current Page
-  ======================================== */
-
-  const currentPage =
-    location.pathname.substring(1) || "home";
-
-
-    
-  /* ========================================
-     Render
-  ======================================== */
+  const currentPage = location.pathname.substring(1) || "home";
 
   return (
     <>
-      {/* Scroll Reset */}
       <ScrollToTop />
-
-      {/* Navbar */}
-      <Navbar
-        currentPage={currentPage}
-        onNavigate={navigateTo}
-      />
-
-      {/* Animated Page Transitions */}
+      <Navbar currentPage={currentPage} onNavigate={navigateTo} />
       <AnimatePresence mode="wait">
         <motion.main
           key={location.pathname}
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          exit={{
-            opacity: 0,
-            y: -20,
-          }}
-          transition={{
-            duration: 0.35,
-          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.35 }}
         >
-          {/* Lazy Loading */}
-          <Suspense
-            fallback={
-              <div className="page-loader">
-                <div className="loader-spinner"></div>
-              </div>
-            }
-          >
+          <Suspense fallback={<EnterprisePageLoader />}>
             <Routes location={location}>
-              {/* All your routes remain the same */}
               <Route path="/" element={<Home onNavigate={navigateTo} />} />
               <Route path="/home" element={<Home onNavigate={navigateTo} />} />
               <Route path="/about" element={<About onNavigate={navigateTo} />} />
@@ -127,8 +74,6 @@ export default function App() {
           </Suspense>
         </motion.main>
       </AnimatePresence>
-
-      {/* Footer - Appears on all pages */}
       <Footer onNavigate={navigateTo} />
     </>
   );

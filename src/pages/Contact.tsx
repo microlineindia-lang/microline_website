@@ -1,5 +1,8 @@
 // src/pages/Contact.tsx
 import { useState } from 'react';
+import { useTheme } from "../components/ui/ThemeProvider.tsx";
+import contactHeroLight from '../assets/images/contact-us-light.png';
+import contactHeroDark from '../assets/images/contact-us-dark.png';
 
 interface ContactProps {
   onNavigate: (page: string) => void;
@@ -8,6 +11,7 @@ interface ContactProps {
 export default function Contact({ onNavigate }: ContactProps) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const { isDarkMode } = useTheme();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +28,7 @@ return (
       <div className="page-hero bg-gradient-dark">
         <div
           className="page-hero-overlay"
-          style={{ backgroundImage: "url('https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg?auto=compress&cs=tinysrgb&w=1200')" }}
+          style={{ backgroundImage: `url(${isDarkMode ? contactHeroDark : contactHeroLight})` }}
         />
         <div className="container position-relative z-1">
           <div className="d-flex align-items-center gap-2 mb-2 text-uppercase ls-2 fw-700 fs-xs">
