@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "../ui/ThemeProvider";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import logo from '../../assets/images/microline-logo.png';
 
 interface NavbarProps {
   currentPage: string;
@@ -77,7 +78,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
           whileTap={{ scale: 0.98 }}
           onClick={() => onNavigate('home')}
         >
-          <img src="/src/assets/images/microline-logo.png" alt="Microline India" />
+          <img src={logo} alt="Microline India" />
         </motion.div>
 
         {/* Desktop Navigation - Hidden on tablet/medium screens */}
