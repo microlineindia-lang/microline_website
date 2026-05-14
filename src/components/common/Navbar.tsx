@@ -97,11 +97,11 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
           </ul>
 
           {/* Desktop Request Quote button */}
-          <div className="desktop-cta">
+          {/* <div className="desktop-cta">
             <button className="btn btn-primary" onClick={() => onNavigate("contact")}>
               Request Quote
             </button>
-          </div>
+          </div> */}
 
           {/* Desktop Theme Toggle */}
           <div className="desktop-theme-toggle">
@@ -170,7 +170,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
               </button>
             </div>
             
-            <button
+            {/* <button
               className="btn btn-primary mobile-cta"
               onClick={() => {
                 onNavigate("contact");
@@ -178,7 +178,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
               }}
             >
               Request Quote
-            </button>
+            </button> */}
           </motion.div>
         )}
       </AnimatePresence>
