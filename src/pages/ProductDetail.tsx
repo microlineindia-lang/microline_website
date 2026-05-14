@@ -202,11 +202,11 @@ export default function ProductDetail({ onNavigate }: ProductDetailProps) {
                       ))}
                     </div>
                   ) : isProductListSection(activeSection) ? (
-                    activeSection.items.length > 6 ? (
+                    activeSection.items.length > 5 ? (
                       <div className="list-grid">
                         {activeSection.items.map((item) => (
                           <div key={item} className="list-grid-item">
-                            <i className="fas fa-chevron-right"></i> {item}
+                            <i className="fas fa-circle-chevron-right"></i> {item}
                           </div>
                         ))}
                       </div>
@@ -214,7 +214,7 @@ export default function ProductDetail({ onNavigate }: ProductDetailProps) {
                       <div className="list-column">
                         {activeSection.items.map((item) => (
                           <div key={item} className="list-grid-item">
-                            <i className="fas fa-chevron-right"></i> {item}
+                            <i className="fas fa-circle-chevron-right"></i> {item}
                           </div>
                         ))}
                       </div>

@@ -60,11 +60,11 @@ const Footer: FC<FooterProps> = ({ onNavigate }) => {
             </div>
             <div className="footer-contact-item">
               <i className="fas fa-envelope"></i>
-              <span>sales@microlineindia.com</span>
+              <span>info@microlineindia.in</span>
             </div>
             <div className="footer-contact-item">
               <i className="fas fa-phone-alt"></i>
-              <span>+91 33 1234 5678</span>
+              <span>+91 98747 90272</span>
             </div>
             <div className="footer-contact-item">
               <i className="fas fa-clock"></i>
@@ -75,7 +75,7 @@ const Footer: FC<FooterProps> = ({ onNavigate }) => {
 
         <div className="footer-bottom">
           <p>&copy; {currentYear} Microline India. All rights reserved.</p>
-          <p>Innovating Microwave & RF Technology Since 1997</p>
+          <p>Innovating Microwave & RF Technology</p>
         </div>
       </div>
     </footer>

@@ -18,10 +18,52 @@ export default function Products({ onNavigate }: ProductsProps) {
   const { isDarkMode } = useTheme();
   const { products: allProducts, loading, error } = useDatoProducts();
 
-  if (loading) return <div className="pt-navbar flex justify-center items-center h-screen">Loading products...</div>;
-  if (error) return <div className="pt-navbar flex justify-center items-center h-screen text-red-500">Failed to load products.</div>;
+  // Loading UI – same as Resources page
+  if (loading) {
+    return (
+      <div className="loading-overlay" role="status" aria-live="polite">
+        <div className="loading-container">
+          <div className="loading-ring" aria-hidden="true"></div>
+
+          <div className="loading-content">
+            <h3 className="loading-title">Loading products</h3>
+            <p className="loading-message">Please wait while we prepare your content</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error UI – same style as Resources page
+  if (error) {
+    return (
+      <div className="pt-navbar">
+        <div className="error-container">
+          <div className="error-card" role="alert">
+            <div className="error-icon" aria-hidden="true">
+              <i className="fas fa-exclamation-triangle"></i>
+            </div>
+
+            <h3 className="error-title">Unable to load products</h3>
+            <p className="error-message">
+              Failed to load products. Please refresh the page or try again later.
+            </p>
+
+            <button
+              className="btn btn-primary error-retry-btn"
+              onClick={() => window.location.reload()}
+            >
+              <i className="fas fa-sync-alt me-2" aria-hidden="true"></i>
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const categories = getCategoriesFromProducts(allProducts);
+
   const filtered =
     activeCategory === 'All'
       ? allProducts
@@ -32,14 +74,22 @@ export default function Products({ onNavigate }: ProductsProps) {
       <div className="page-hero bg-gradient-dark">
         <div
           className="page-hero-overlay"
-          style={{ backgroundImage: `url(${isDarkMode ? productsHeroDark : productsHeroLight})` }}
+          style={{
+            backgroundImage: `url(${isDarkMode ? productsHeroDark : productsHeroLight})`
+          }}
         />
         <div className="container position-relative z-1">
           <div className="d-flex align-items-center gap-2 mb-2 text-uppercase ls-2 fw-700 fs-xs">
-            <button onClick={() => onNavigate('home')} className="breadcrumb-link text-info">HOME</button>
+            <button
+              onClick={() => onNavigate('home')}
+              className="breadcrumb-link text-info"
+            >
+              HOME
+            </button>
             <span className="text-white" style={{ opacity: 0.5 }}> / </span>
             <span className="text-gold">PRODUCTS</span>
           </div>
+
           <h1 className="text-white fs-2xl fw-900">Our Products</h1>
         </div>
       </div>
@@ -65,14 +115,18 @@ export default function Products({ onNavigate }: ProductsProps) {
                   <img src={product.image.url} alt={product.name} />
                   <span className="product-badge">{product.category.name}</span>
                 </div>
+
                 <div className="product-card-body">
                   <h3>{product.name}</h3>
                   <p className="desc">{product.shortDescription}</p>
+
                   <button
                     onClick={() => onNavigate('product-detail', product)}
                     className="view-details-btn d-flex align-items-center gap-2"
                   >
-                    <i className="fas fa-eye"></i> View Details <i className="fas fa-chevron-right"></i>
+                    <i className="fas fa-eye"></i>
+                    View Details
+                    <i className="fas fa-chevron-right"></i>
                   </button>
                 </div>
               </div>
