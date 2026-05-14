@@ -1,5 +1,4 @@
 // src/pages/Applications.tsx
-import React from 'react';
 import defenseSecurity from '../assets/images/applications/defense-security.png';
 import spaceSatellite from '../assets/images/applications/space-satellite.png';
 import academicResearch from '../assets/images/applications/academic-research.png';

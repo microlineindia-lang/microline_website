@@ -1,5 +1,5 @@
 // hooks/useMatchHeight.ts
-import { useEffect, useRef, RefObject } from 'react';
+import { useEffect, type RefObject } from 'react';
 
 export function useMatchHeight<T extends HTMLElement = HTMLDivElement>(
   leftRef: RefObject<T>,

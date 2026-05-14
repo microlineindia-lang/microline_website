@@ -1,5 +1,4 @@
 // src/pages/About.tsx
-import React from 'react';
 import { useTheme } from "../components/ui/ThemeProvider.tsx";
 import collage from '../assets/images/product-collage.png';
 import aboutHeroLight from '../assets/images/about-us-light.png';

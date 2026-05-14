@@ -1,5 +1,4 @@
 // src/pages/Achievements.tsx
-import React from 'react';
 import anechoicChamber from '../assets/images/products/anechoic-chamber.png';
 import mircrowaveLab from '../assets/images/products/microwave-lab.png';
 import { useTheme } from "../components/ui/ThemeProvider.tsx";

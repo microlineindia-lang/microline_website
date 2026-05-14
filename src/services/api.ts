@@ -38,13 +38,13 @@ api.interceptors.response.use(
   }
 )
 
-export const contactService = {
-  submitForm: async (data: any) => {
-    // In production, replace with actual API endpoint
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ success: true, message: 'Form submitted successfully' })
-      }, 1000)
-    })
-  },
-}
+// export const contactService = {
+//   submitForm: async (data: any) => {
+//     // In production, replace with actual API endpoint
+//     return new Promise((resolve) => {
+//       setTimeout(() => {
+//         resolve({ success: true, message: 'Form submitted successfully' })
+//       }, 1000)
+//     })
+//   },
+// }

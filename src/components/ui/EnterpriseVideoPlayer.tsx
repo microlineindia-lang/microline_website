@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
 
 interface Props {
@@ -73,7 +73,7 @@ export default function EnterpriseVideoPlayer({ url, fallbackUrl, poster }: Prop
         hls.on(Hls.Events.ERROR, (_, data) => {
           console.error('HLS error:', data);
           if (data.fatal && mounted && fallbackUrl) {
-            hls.destroy();
+            if (hls) hls.destroy();
             setSource(fallbackUrl);
           } else if (data.fatal) {
             setError('HLS error: ' + data.type);

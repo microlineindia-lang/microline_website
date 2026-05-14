@@ -1,5 +1,4 @@
 // src/pages/Services.tsx
-import React from 'react';
 import { useTheme } from "../components/ui/ThemeProvider.tsx";
 import servicesHeroLight from '../assets/images/services-light.png';
 import servicesHeroDark from '../assets/images/services-dark.png';
