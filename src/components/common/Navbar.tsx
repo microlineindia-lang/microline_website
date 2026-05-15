@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useTheme } from "../ui/ThemeProvider";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from '../../assets/images/microline-logo.png';
+import logoLight from '../../assets/images/microline-logo-light.png';
+import logoDark from '../../assets/images/microline-logo-dark.png';
+
 
 interface NavbarProps {
   currentPage: string;
@@ -45,10 +47,10 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
   }, [menuOpen]);
 
 
-  useEffect(() => {
+useEffect(() => {
   const handleResize = () => {
-    // auto‑close if switching to desktop
-    if (window.innerWidth > 1024) {
+    // auto-close menu when returning to desktop (≥1200px)
+    if (window.innerWidth >= 1200) {
       setMenuOpen(false);
       document.body.style.overflow = "unset";
     }
@@ -61,7 +63,6 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
   }
 
   window.addEventListener("resize", handleResize);
-
   return () => {
     document.body.style.overflow = "unset";
     window.removeEventListener("resize", handleResize);
@@ -78,7 +79,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
           whileTap={{ scale: 0.98 }}
           onClick={() => onNavigate('home')}
         >
-          <img src={logo} alt="Microline India" />
+          <img src={isDarkMode ? logoDark : logoLight} alt="Microline India" />
         </motion.div>
 
         {/* Desktop Navigation - Hidden on tablet/medium screens */}
@@ -111,7 +112,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
           </div>
         </div>
 
-        {/* Mobile/Tablet toggle button - Now visible on medium screens */}
+        {/* Mobile/Tablet toggle button - Visible on medium screens */}
         <button
           className="mobile-toggle"
           onClick={() => setMenuOpen(!menuOpen)}
