@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from "../components/ui/ThemeProvider";
 import productsHeroLight from '../assets/images/products-light.png';
 import productsHeroDark from '../assets/images/products-dark.png';
@@ -17,6 +17,15 @@ export default function Products({ onNavigate }: ProductsProps) {
   const [activeCategory, setActiveCategory] = useState('All');
   const { isDarkMode } = useTheme();
   const { products: allProducts, loading, error } = useDatoProducts();
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen width
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Loading UI – same as Resources page
   if (loading) {
@@ -24,7 +33,6 @@ export default function Products({ onNavigate }: ProductsProps) {
       <div className="loading-overlay" role="status" aria-live="polite">
         <div className="loading-container">
           <div className="loading-ring" aria-hidden="true"></div>
-
           <div className="loading-content">
             <h3 className="loading-title">Loading products</h3>
             <p className="loading-message">Please wait while we prepare your content</p>
@@ -43,12 +51,10 @@ export default function Products({ onNavigate }: ProductsProps) {
             <div className="error-icon" aria-hidden="true">
               <i className="fas fa-exclamation-triangle"></i>
             </div>
-
             <h3 className="error-title">Unable to load products</h3>
             <p className="error-message">
               Failed to load products. Please refresh the page or try again later.
             </p>
-
             <button
               className="btn btn-primary error-retry-btn"
               onClick={() => window.location.reload()}
@@ -71,6 +77,7 @@ export default function Products({ onNavigate }: ProductsProps) {
 
   return (
     <div className="pt-navbar">
+      {/* Hero */}
       <div className="page-hero bg-gradient-dark">
         <div
           className="page-hero-overlay"
@@ -89,37 +96,55 @@ export default function Products({ onNavigate }: ProductsProps) {
             <span className="text-white" style={{ opacity: 0.5 }}> / </span>
             <span className="text-gold">PRODUCTS</span>
           </div>
-
           <h1 className="text-white fs-2xl fw-900">Our Products</h1>
         </div>
       </div>
 
+      {/* Products section */}
       <div className="section py-5">
         <div className="container">
+          {/* Category filters: dropdown on mobile, buttons on desktop */}
           <div className="category-filters">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`filter-btn${cat === activeCategory ? ' active' : ''}`}
-              >
-                {cat}
-              </button>
-            ))}
+            {isMobile ? (
+              <div className="mobile-category-select-wrapper">
+                <select
+                  value={activeCategory}
+                  onChange={(e) => setActiveCategory(e.target.value)}
+                  className="mobile-category-select"
+                  aria-label="Filter products by category"
+                >
+                  {categories.map(cat => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+                <i className="fas fa-chevron-down select-arrow" aria-hidden="true"></i>
+              </div>
+            ) : (
+              categories.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`filter-btn${cat === activeCategory ? ' active' : ''}`}
+                >
+                  {cat}
+                </button>
+              ))
+            )}
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          {/* Responsive product grid */}
+          <div className="product-grid">
             {filtered.map(product => (
               <div key={product.slug} className="product-card">
                 <div className="product-card-img">
                   <img src={product.image.url} alt={product.name} />
                   <span className="product-badge">{product.category.name}</span>
                 </div>
-
                 <div className="product-card-body">
                   <h3>{product.name}</h3>
                   <p className="desc">{product.shortDescription}</p>
-
                   <button
                     onClick={() => onNavigate('product-detail', product)}
                     className="view-details-btn d-flex align-items-center gap-2"

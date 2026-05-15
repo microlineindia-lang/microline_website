@@ -2100,6 +2100,8 @@ a {
   margin-bottom: 1.2rem;
 }
 
+
+
 /* Client Logos */
 .client-logos {
   display: flex;
@@ -4049,7 +4051,7 @@ textarea.form-input {
   border-radius: var(--radius-pill);
   border: 1px solid var(--primary-accent-light);
   background: transparent;
-  color: var(--primary-accent-2);
+  color: var(--text-silver);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -4061,6 +4063,77 @@ textarea.form-input {
   background: var(--primary-accent);
   color: #fff;
   border-color: var(--primary-accent);
+}
+
+/* ---------- Mobile Category Dropdown ---------- */
+.mobile-category-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.mobile-category-select {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border: 1px solid var(--primary-accent-light);
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.mobile-category-select:hover {
+  border-color: var(--primary-accent);
+}
+
+.mobile-category-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+  border-color: var(--primary-accent);
+}
+
+.select-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary-accent);
+  font-size: 0.8rem;
+  pointer-events: none;
+}
+
+/* ==========================================
+   PRODUCTS GRID – RESPONSIVE
+   ========================================== */
+.product-grid {
+  display: grid;
+  gap: 1.5rem; /* matches gap-4 (16px) but adjust to taste */
+}
+
+/* Large screens: 3 columns */
+@media (min-width: 1025px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Medium screens: 2 columns */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 767px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ==========================================
@@ -4274,7 +4347,34 @@ textarea.form-input {
   border-radius: var(--radius-lg);
   overflow: hidden;
   margin-bottom: 4rem;
+  background: var(--card-bg);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
 }
+
+[data-theme="dark"] .tabs {
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+}
+
+@media (max-width: 767px) {
+  .tabs {
+    border-radius: var(--radius-lg);
+    margin-bottom: 3rem;
+  }
+
+  .accordion {
+    border-radius: inherit;
+  }
+
+  .list-column {
+    width: 100%;
+  }
+
+  .list-grid-item {
+    width: 100%;
+  }
+}
+
+
 
 .tab-header {
   display: flex;
@@ -4309,12 +4409,21 @@ textarea.form-input {
 }
 
 /* Accordion (mobile tabs replacement) */
-.accordion-item {
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  margin-bottom: 0.75rem;
+
+.accordion {
   background: var(--card-bg);
+  border-radius: var(--radius-lg);
   overflow: hidden;
+}
+
+.accordion-item {
+  border: none;
+  margin: 0;
+  background: transparent;
+}
+
+.accordion-item + .accordion-item {
+  border-top: 1px solid var(--border-light);
 }
 
 .accordion-trigger {
@@ -4322,14 +4431,18 @@ textarea.form-input {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  gap: 1rem;
   padding: 1rem 1.25rem;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-primary);
-  background: transparent;
+  background: var(--card-bg);
   border: none;
   cursor: pointer;
-  transition: background 0.2s;
+  text-align: left;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .accordion-trigger:hover {
@@ -4341,26 +4454,49 @@ textarea.form-input {
   background: var(--bg-secondary);
 }
 
+.accordion-trigger span {
+  line-height: 1.35;
+}
+
 .accordion-icon {
+  flex-shrink: 0;
   font-size: 0.8rem;
   color: var(--text-muted);
-  transition: transform 0.2s;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.accordion-trigger.open .accordion-icon {
+  color: var(--primary-accent);
+}
+
+.accordion-trigger:focus-visible {
+  outline: 2px solid rgba(14, 165, 233, 0.35);
+  outline-offset: -2px;
 }
 
 .accordion-panel {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease;
+  display: grid;
+  grid-template-rows: 0fr;
+  background: var(--card-bg);
+  transition: grid-template-rows 0.28s ease;
 }
 
 .accordion-panel.open {
-  max-height: 2000px; /* large enough for content */
+  grid-template-rows: 1fr;
 }
 
 .accordion-content {
-  padding: 1rem 1.25rem 1.25rem;
-  border-top: 1px solid var(--border-light);
+  overflow: hidden;
+  padding: 0 1.25rem;
+  border-top: 0;
 }
+
+.accordion-panel.open .accordion-content {
+  padding: 1rem 1.25rem 1.25rem;
+}
+
 
 .spec-row {
   display: flex;

@@ -144,7 +144,7 @@ export default function ProductDetail({ onNavigate }: ProductDetailProps) {
   // Zoom in towards cursor
   const zoomIn = (clientX?: number, clientY?: number) => {
     setScale((prev) => {
-      const newScale = Math.min(prev + 0.5, 3);
+      const newScale = Math.min(prev + 0.5, 2);
 
       if (
         clientX !== undefined &&
@@ -577,98 +577,108 @@ if (!p) {
                 </>
               )}
 
-              {isMobile &&
-                tabs.map((tab) => {
-                  const section = p.sections.find((s) => s.id === tab.id);
-                  const isOpen = openAccordionId === tab.id;
+{isMobile && (
+  <div className="accordion">
+    {tabs.map((tab) => {
+      const section = p.sections.find((s) => s.id === tab.id);
+      const isOpen = openAccordionId === tab.id;
 
-                  return (
-                    <div key={tab.id} className="accordion-item">
-                      <button
-                        className={`accordion-trigger${
-                          isOpen ? " open" : ""
-                        }`}
-                        onClick={() =>
-                          setOpenAccordionId(isOpen ? null : tab.id)
-                        }
-                        aria-expanded={isOpen}
-                      >
-                        <span>{tab.title}</span>
-                        <i
-                          className={`fas fa-chevron-${
-                            isOpen ? "up" : "down"
-                          } accordion-icon`}
-                        />
-                      </button>
+      return (
+        <div key={tab.id} className="accordion-item">
+          <button
+            className={`accordion-trigger${isOpen ? " open" : ""}`}
+            onClick={() => setOpenAccordionId(isOpen ? null : tab.id)}
+            aria-expanded={isOpen}
+          >
+            <span>{tab.title}</span>
+            <i
+              className={`fas fa-chevron-${
+                isOpen ? "up" : "down"
+              } accordion-icon`}
+            />
+          </button>
 
-                      <div
-                        className={`accordion-panel${isOpen ? " open" : ""}`}
-                      >
-                        <div className="accordion-content">
-                          {section && isSpecificationSection(section) ? (
-                            <div>
-                              {section.specifications.map((spec) => (
-                                <div key={spec.id} className="spec-row">
-                                  <span className="spec-key">{spec.label}</span>
-                                  <span className="spec-value">
-                                    {spec.value}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                          ) : section && isProductListSection(section) ? (
-                            section.items.length > 5 ? (
-                              <div className="list-grid">
-                                {section.items.map((item) => (
-                                  <div key={item} className="list-grid-item">
-                                    <i className="fas fa-circle-chevron-right"></i>{" "}
-                                    {item}
-                                  </div>
-                                ))}
-                              </div>
-                            ) : (
-                              <div className="list-column">
-                                {section.items.map((item) => (
-                                  <div key={item} className="list-grid-item">
-                                    <i className="fas fa-circle-chevron-right"></i>{" "}
-                                    {item}
-                                  </div>
-                                ))}
-                              </div>
-                            )
-                          ) : (
-                            <p className="text-muted">No content available.</p>
-                          )}
-                        </div>
-                      </div>
+          <div className={`accordion-panel${isOpen ? " open" : ""}`}>
+            <div className="accordion-content">
+              {section && isSpecificationSection(section) ? (
+                <div>
+                  {section.specifications.map((spec) => (
+                    <div key={spec.id} className="spec-row">
+                      <span className="spec-key">{spec.label}</span>
+                      <span className="spec-value">{spec.value}</span>
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
+              ) : section && isProductListSection(section) ? (
+                section.items.length > 5 ? (
+                  <div className="list-grid">
+                    {section.items.map((item) => (
+                      <div key={item} className="list-grid-item">
+                        <i className="fas fa-circle-chevron-right"></i>{" "}
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="list-column">
+                    {section.items.map((item) => (
+                      <div key={item} className="list-grid-item">
+                        <i className="fas fa-circle-chevron-right"></i>{" "}
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                )
+              ) : (
+                <p className="text-muted">No content available.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+)}
+
             </div>
           )}
 
-          {/* Related Products */}
-          <h3 className="section-title text-left mb-4">Related Products</h3>
-          <div className="related-products-grid grid grid-cols-3 gap-4">
-            {allProducts
-              .filter((rel) => rel.slug !== p.slug)
-              .slice(0, 3)
-              .map((rel) => (
-                <div
-                  key={rel.slug}
-                  className="related-card"
-                  onClick={() => handleNavigate("product-detail", rel)}
-                >
-                  <div className="related-card-img">
-                    <img src={rel.image.url} alt={rel.name} />
+            {/* Related Products (category‑based) */}
+            {(() => {
+              const relatedProducts = allProducts
+                .filter(
+                  (rel) => rel.category.name === p.category.name && rel.slug !== p.slug                     
+                )
+                .slice(0, 3); // limit to 3
+
+              if (relatedProducts.length === 0) return null;
+
+              return (
+                <>
+                  <h2 className="section-title text-center">
+                            Related <span className="text-accent">Products</span>
+                  </h2>
+                  <div className="product-grid">
+                    {relatedProducts.map((rel) => (
+                      <div
+                        key={rel.slug}
+                        className="related-card"
+                        onClick={() => handleNavigate("product-detail", rel)}
+                      >
+                        <div className="related-card-img">
+                          <img src={rel.image.url} alt={rel.name} />
+                        </div>
+                        <div className="related-card-body">
+                          <p className="category">{rel.category.name}</p>
+                          <h4>{rel.name}</h4>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="related-card-body">
-                    <p className="category">{rel.category.name}</p>
-                    <h4>{rel.name}</h4>
-                  </div>
-                </div>
-              ))}
-          </div>
+                </>
+              );
+            })()}
+
         </div>
       </div>
 
