@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "targets": [
+      "contactapi"
+    ],
+    "ignore": [],
+    "source": "functions"
+  }
+}

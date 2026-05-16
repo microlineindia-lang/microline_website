@@ -1,0 +1,15 @@
+{
+	"name": "contactapi",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "info@microlineindia.in",
+	"dependencies": {
+		"@upstash/ratelimit": "^2.0.8",
+		"@upstash/redis": "^1.38.0",
+		"cors": "^2.8.6",
+		"nodemailer": "^8.0.7",
+		"sanitize-html": "^2.17.4",
+		"zcatalyst-sdk-node": "latest",
+		"zod": "^4.4.3"
+	}
+}
