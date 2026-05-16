@@ -1,13 +1,19 @@
-import axios, { AxiosError } from "axios";
+// src/services/api.ts
+
+import axios, {
+  AxiosError,
+  type InternalAxiosRequestConfig,
+} from 'axios';
 
 // ======================
 // Base URL
 // ======================
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL;
 
 // ======================
-// Types
+// API Error Type
 // ======================
 
 export interface ApiError {
@@ -22,30 +28,98 @@ export interface ApiError {
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
+
   timeout: 15000,
+
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
+
+  withCredentials: false,
 });
+
+// ======================
+// Request Interceptor
+// ======================
+
+api.interceptors.request.use(
+
+  (
+    config: InternalAxiosRequestConfig
+  ) => {
+
+    // Optional:
+    // Trim string fields only.
+    // DO NOT sanitize tokens or auth values.
+
+    if (
+      config.data &&
+      typeof config.data === 'object'
+    ) {
+
+      const cleaned = { ...config.data };
+
+      Object.keys(cleaned).forEach((key) => {
+
+        const value = cleaned[key];
+
+        // Skip tokens
+        if (
+          key === 'cf-turnstile-response'
+        ) {
+          return;
+        }
+
+        if (
+          typeof value === 'string'
+        ) {
+
+          cleaned[key] = value.trim();
+
+        }
+      });
+
+      config.data = cleaned;
+    }
+
+    return config;
+  },
+
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // ======================
 // Response Interceptor
 // ======================
 
 api.interceptors.response.use(
-  (res) => res,
+
+  (response) => response,
+
   (error: AxiosError<any>) => {
-    const normalized: ApiError = {
+
+    console.error(
+      'API Error:',
+      error?.response?.data || error.message
+    );
+
+    const normalizedError: ApiError = {
+
       message:
         error.response?.data?.error ||
         error.message ||
-        "Request failed",
+        'Something went wrong',
 
-      status: error.response?.status || 500,
+      status:
+        error.response?.status || 500,
 
-      details: error.response?.data?.details,
+      details:
+        error.response?.data?.details ||
+        null,
     };
 
-    return Promise.reject(normalized);
+    return Promise.reject(normalizedError);
   }
 );

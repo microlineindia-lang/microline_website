@@ -54,7 +54,7 @@ export default function ProductDetail({ onNavigate }: ProductDetailProps) {
   const productFromState = location.state?.product as CMSProduct | undefined;
   const slug = location.pathname.split("/").pop();
   const productFromSlug = allProducts.find((p) => p.slug === slug);
-  const p = productFromState || productFromSlug || allProducts[0] || null;
+  const p = productFromState || productFromSlug || null;
 
   // Dynamic tabs (excluding "Features")
   const tabs = useMemo(() => {

@@ -16,8 +16,13 @@ const {
   TURNSTILE_SECRET_KEY,
   UPSTASH_REDIS_REST_URL,
   UPSTASH_REDIS_REST_TOKEN,
-  ALLOWED_ORIGIN = "https://www.microlineindia.in",
 } = process.env;
+
+const allowedOrigins = [
+  "https://www.microlineindia.in",
+  "https://microlineindia.in",
+  "http://localhost:5173"
+];
 
 // ======================
 // Redis + Rate Limit
