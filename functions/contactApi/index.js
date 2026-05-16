@@ -7,7 +7,7 @@ const { Redis } = require("@upstash/redis");
 const { Ratelimit } = require("@upstash/ratelimit");
 
 // ======================
-// Environment Variables
+// ENV
 // ======================
 
 const {
@@ -16,7 +16,7 @@ const {
   TURNSTILE_SECRET_KEY,
   UPSTASH_REDIS_REST_URL,
   UPSTASH_REDIS_REST_TOKEN,
-  ALLOWED_ORIGIN
+  ALLOWED_ORIGIN = "https://www.microlineindia.in",
 } = process.env;
 
 // ======================
@@ -25,17 +25,17 @@ const {
 
 const redis = new Redis({
   url: UPSTASH_REDIS_REST_URL,
-  token: UPSTASH_REDIS_REST_TOKEN
+  token: UPSTASH_REDIS_REST_TOKEN,
 });
 
 const ratelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(3, "10 m"),
-  analytics: true
+  analytics: true,
 });
 
 // ======================
-// Validation Schema
+// Schema
 // ======================
 
 const ContactSchema = z.object({
@@ -45,79 +45,97 @@ const ContactSchema = z.object({
   subject: z.string().min(3).max(200),
   message: z.string().min(10).max(5000),
 
-  // Honeypot
-  website: z.string().max(0).optional(),
-
-  // Turnstile token
+  website: z.string().max(0).optional(), // honeypot
   "cf-turnstile-response": z.string().min(1),
 
-  loadedAt: z.number().optional()
+  loadedAt: z.number().optional(),
 });
 
 // ======================
-// Main Function
+// Helper: IP
+// ======================
+
+function getIP(req) {
+  return (
+    (req.headers["x-forwarded-for"] || "")
+      .split(",")[0]
+      .trim() ||
+    req.socket?.remoteAddress ||
+    "unknown"
+  );
+}
+
+// ======================
+// MAIN HANDLER
 // ======================
 
 module.exports = async (req, res) => {
+  const origin = req.headers.origin;
+
+  // ======================
+  // CORS preflight
+  // ======================
+
+  if (req.method === "OPTIONS") {
+    res.writeHead(204, {
+      "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Vary": "Origin",
+    });
+    return res.end();
+  }
+
+  // ======================
+  // Block invalid origin
+  // ======================
+
+  if (origin && origin !== ALLOWED_ORIGIN) {
+    return res.writeHead(403, {
+      "Content-Type": "application/json",
+    }).end(JSON.stringify({ error: "Forbidden origin" }));
+  }
+
+  // ======================
+  // Headers
+  // ======================
+
+  res.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Vary", "Origin");
+
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "no-referrer");
+
+  // ======================
+  // Method check
+  // ======================
+
+  if (req.method !== "POST") {
+    return res
+      .writeHead(405, { "Content-Type": "application/json" })
+      .end(JSON.stringify({ error: "Method not allowed" }));
+  }
+
   try {
+    const ip = getIP(req);
 
     // ======================
-    // CORS
-    // ======================
-
-    const origin = req.headers.origin;
-
-    res.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
-    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-    if (req.method === "OPTIONS") {
-      res.writeHead(204);
-      return res.end();
-    }
-
-    if (origin !== ALLOWED_ORIGIN) {
-      res.writeHead(403, { "Content-Type": "application/json" });
-      return res.end(JSON.stringify({
-        error: "Forbidden origin"
-      }));
-    }
-
-    // ======================
-    // Allow only POST
-    // ======================
-
-    if (req.method !== "POST") {
-      res.writeHead(405, { "Content-Type": "application/json" });
-      return res.end(JSON.stringify({
-        error: "Method not allowed"
-      }));
-    }
-
-    // ======================
-    // Get IP
-    // ======================
-
-    const ip =
-      req.headers["x-forwarded-for"] ||
-      req.connection.remoteAddress ||
-      "unknown";
-
-    // ======================
-    // Rate Limiting
+    // Rate limit
     // ======================
 
     const { success } = await ratelimit.limit(ip);
 
     if (!success) {
-      res.writeHead(429, { "Content-Type": "application/json" });
-      return res.end(JSON.stringify({
-        error: "Too many requests"
-      }));
+      return res
+        .writeHead(429, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ error: "Too many requests" }));
     }
 
     // ======================
-    // Parse Body
+    // Parse body
     // ======================
 
     const body =
@@ -129,25 +147,20 @@ module.exports = async (req, res) => {
     // Honeypot
     // ======================
 
-    if (body.website && body.website.length > 0) {
-      res.writeHead(400, { "Content-Type": "application/json" });
-      return res.end(JSON.stringify({
-        error: "Spam detected"
-      }));
+    if (body.website?.length > 0) {
+      return res
+        .writeHead(400)
+        .end(JSON.stringify({ error: "Spam detected" }));
     }
 
     // ======================
-    // Timing Check
+    // Timing check
     // ======================
 
-    if (
-      body.loadedAt &&
-      Date.now() - body.loadedAt < 3000
-    ) {
-      res.writeHead(400, { "Content-Type": "application/json" });
-      return res.end(JSON.stringify({
-        error: "Suspicious submission"
-      }));
+    if (body.loadedAt && Date.now() - body.loadedAt < 3000) {
+      return res
+        .writeHead(400)
+        .end(JSON.stringify({ error: "Suspicious submission" }));
     }
 
     // ======================
@@ -157,12 +170,12 @@ module.exports = async (req, res) => {
     const parsed = ContactSchema.safeParse(body);
 
     if (!parsed.success) {
-      res.writeHead(400, { "Content-Type": "application/json" });
-
-      return res.end(JSON.stringify({
-        error: "Invalid form data",
-        details: parsed.error.issues
-      }));
+      return res
+        .writeHead(400)
+        .end(JSON.stringify({
+          error: "Invalid form data",
+          details: parsed.error.issues,
+        }));
     }
 
     const {
@@ -171,50 +184,44 @@ module.exports = async (req, res) => {
       phone,
       subject,
       message,
-      "cf-turnstile-response": turnstileToken
+      "cf-turnstile-response": token,
     } = parsed.data;
 
     // ======================
-    // Verify Turnstile
+    // Turnstile verify (FIXED)
     // ======================
+
+    const formData = new URLSearchParams();
+    formData.append("secret", TURNSTILE_SECRET_KEY);
+    formData.append("response", token);
 
     const turnstileRes = await fetch(
       "https://challenges.cloudflare.com/turnstile/v0/siteverify",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          secret: TURNSTILE_SECRET_KEY,
-          response: turnstileToken
-        })
+        body: formData,
       }
     );
 
     const turnstileData = await turnstileRes.json();
 
     if (!turnstileData.success) {
-      res.writeHead(400, {
-        "Content-Type": "application/json"
-      });
-
-      return res.end(JSON.stringify({
-        error: "Turnstile verification failed"
-      }));
+      return res
+        .writeHead(400)
+        .end(JSON.stringify({ error: "Turnstile failed" }));
     }
 
     // ======================
-    // Sanitize Message
+    // Sanitize
     // ======================
 
     const cleanMessage = sanitizeHtml(message, {
       allowedTags: [],
-      allowedAttributes: {}
+      allowedAttributes: {},
     });
 
     // ======================
-    // SMTP Transport
+    // SMTP
     // ======================
 
     const transporter = nodemailer.createTransport({
@@ -223,63 +230,44 @@ module.exports = async (req, res) => {
       secure: true,
       auth: {
         user: ZOHO_EMAIL,
-        pass: ZOHO_APP_PASSWORD
-      }
+        pass: ZOHO_APP_PASSWORD,
+      },
     });
-
-    // ======================
-    // Send Email
-    // ======================
 
     await transporter.sendMail({
       from: `"Website Contact" <${ZOHO_EMAIL}>`,
       to: ZOHO_EMAIL,
       replyTo: email,
-      subject: `[Website Contact] ${subject}`,
-      text:
-`Name: ${name}
+      subject: `[Contact] ${subject}`,
+      text: `
+Name: ${name}
 Email: ${email}
 Phone: ${phone || "N/A"}
 
 Message:
-${cleanMessage}`,
-
+${cleanMessage}
+      `,
       html: `
-        <h2>New Contact Form Submission</h2>
-
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone || "N/A"}</p>
-
-        <hr/>
-
+        <h2>New Contact</h2>
+        <p><b>Name:</b> ${name}</p>
+        <p><b>Email:</b> ${email}</p>
+        <p><b>Phone:</b> ${phone || "N/A"}</p>
         <p>${cleanMessage}</p>
-      `
+      `,
     });
 
-    // ======================
-    // Success Response
-    // ======================
-
-    res.writeHead(200, {
-      "Content-Type": "application/json"
-    });
-
-    return res.end(JSON.stringify({
-      success: true,
-      message: "Email sent successfully"
-    }));
+    return res
+      .writeHead(200, { "Content-Type": "application/json" })
+      .end(JSON.stringify({
+        success: true,
+        message: "Email sent successfully",
+      }));
 
   } catch (err) {
-
     console.error("CONTACT API ERROR:", err);
 
-    res.writeHead(500, {
-      "Content-Type": "application/json"
-    });
-
-    return res.end(JSON.stringify({
-      error: "Internal server error"
-    }));
+    return res
+      .writeHead(500)
+      .end(JSON.stringify({ error: "Internal server error" }));
   }
 };
