@@ -28,6 +28,7 @@
     "react-intersection-observer": "^9.5.3",
     "react-router-dom": "^6.22.0",
     "react-toastify": "^10.0.6",
+    "zcatalyst-sdk-node": "^3.4.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
