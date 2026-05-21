@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 
 /* ========================================
    Assets
@@ -15,10 +16,6 @@ import pcbLab from "../assets/images/pcb-fabrication-placeholder.png";
 /* ========================================
    Types
 ======================================== */
-
-interface HomeProps {
-  onNavigate: (page: string) => void;
-}
 
 interface ProductCategory {
   title: string;
@@ -128,7 +125,7 @@ const whyChoose: WhyChoose[] = [
     desc: "State-of-the-art RF & Microwave engineering solutions designed for research, academia, and industrial applications.",
   },
   {
-    icon: "fa-shield-check",
+    icon: "fa-clipboard-check",
     title: "Quality & Reliability",
     desc: "Precision-engineered systems with rigorous quality assurance and testing standards.",
   },
@@ -240,7 +237,7 @@ function AnimatedCounter({
    Home Component
 ======================================== */
 
-export default function Home({ onNavigate }: HomeProps) {
+export default function Home() {
   const statsRef = useRef<HTMLDivElement>(null);
 
   /* ========================================
@@ -281,15 +278,77 @@ export default function Home({ onNavigate }: HomeProps) {
 
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Microline India",
-    url: SITE_URL,
-    description:
-      "Manufacturer of RF & Microwave systems, antenna measurement systems, waveguide components, RF absorbers, and engineering laboratory solutions.",
-    publisher: {
-      "@type": "Organization",
-      name: "Microline India",
-    },
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "Microline India",
+        url: SITE_URL,
+        logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/favicon-96x96.png`,
+        },
+        foundingDate: "1997",
+        areaServed: "India",
+        description:
+          "Manufacturer of RF & Microwave systems, antenna measurement systems, waveguide components, RF absorbers, and engineering laboratory solutions.",
+        knowsAbout: [
+          "RF Systems",
+          "Microwave Engineering",
+          "Waveguide Components",
+          "Microwave Test Systems",
+          "Antenna Measurement Systems",
+          "RF Components",
+        ],
+        sameAs: [
+          "https://www.linkedin.com/company/microlineindia",
+        ],
+      },
+
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: "Microline India",
+        publisher: {
+          "@id": `${SITE_URL}/#organization`,
+        },
+      },
+
+      {
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/#webpage`,
+        url: SITE_URL,
+        name: "RF & Microwave Systems Manufacturer in India | Microline India",
+        description:
+          "Advanced RF & Microwave engineering solutions, antenna systems, waveguide components, microwave labs, and engineering technologies since 1997.",
+        isPartOf: {
+          "@id": `${SITE_URL}/#website`,
+        },
+        about: {
+          "@id": `${SITE_URL}/#organization`,
+        },
+      },
+
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${SITE_URL}/#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Products",
+            item: `${SITE_URL}/products`,
+          },
+        ],
+      },
+    ],
   };
 
   return (
@@ -299,6 +358,8 @@ export default function Home({ onNavigate }: HomeProps) {
       ======================================== */}
 
       <Helmet prioritizeSeoTags>
+        <html lang="en" />
+
         <title>
           RF & Microwave Systems Manufacturer in India | Microline India
         </title>
@@ -308,21 +369,24 @@ export default function Home({ onNavigate }: HomeProps) {
           content="Microline India is a leading Indian manufacturer of RF & Microwave systems, antenna measurement systems, waveguide components, microwave laboratory setups, RF absorbers, and engineering solutions since 1997."
         />
 
-        <link
-          rel="canonical"
-          href={SITE_URL}
+        <meta
+          name="keywords"
+          content="RF Microwave Systems India, Antenna Measurement Systems, Microwave Components, Waveguide Components, RF Engineering Solutions, Microwave Laboratory Setup"
         />
+
+        <meta name="robots" content="index, follow" />
+
+        <meta name="author" content="Microline India" />
+
+        <meta name="theme-color" content="#0b1220" />
+
+        <link rel="canonical" href={SITE_URL} />
 
         {/* Open Graph */}
-        <meta
-          property="og:type"
-          content="website"
-        />
 
-        <meta
-          property="og:site_name"
-          content="Microline India"
-        />
+        <meta property="og:type" content="website" />
+
+        <meta property="og:site_name" content="Microline India" />
 
         <meta
           property="og:title"
@@ -334,25 +398,13 @@ export default function Home({ onNavigate }: HomeProps) {
           content="Advanced RF & Microwave engineering solutions, antenna systems, waveguide components, microwave labs, and engineering technologies since 1997."
         />
 
-        <meta
-          property="og:url"
-          content={SITE_URL}
-        />
+        <meta property="og:url" content={SITE_URL} />
 
-        <meta
-          property="og:image"
-          content={OG_IMAGE}
-        />
+        <meta property="og:image" content={OG_IMAGE} />
 
-        <meta
-          property="og:image:width"
-          content="1024"
-        />
+        <meta property="og:image:width" content="1024" />
 
-        <meta
-          property="og:image:height"
-          content="1024"
-        />
+        <meta property="og:image:height" content="1024" />
 
         <meta
           property="og:image:alt"
@@ -360,6 +412,7 @@ export default function Home({ onNavigate }: HomeProps) {
         />
 
         {/* Twitter */}
+
         <meta
           name="twitter:card"
           content="summary_large_image"
@@ -381,298 +434,336 @@ export default function Home({ onNavigate }: HomeProps) {
         />
 
         {/* Structured Data */}
+
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
       </Helmet>
 
-      {/* ========================================
-         HERO SECTION
-      ======================================== */}
-
-      <section
-        className="hero"
-        aria-label="Hero Section"
-      >
-        <div className="container">
-          <div className="hero-text">
-            <p className="hero-tag">
-              RF & Microwave Engineering Excellence Since 1997
-            </p>
-
-            <h1>
-              Advanced RF &
-              <br />
-              Microwave Engineering
-              <br />
-              <span className="highlight">Solutions for India</span>
-            </h1>
-
-            <p className="hero-description">
-              Microline India designs and manufactures advanced RF &
-              Microwave systems, antenna measurement solutions, waveguide
-              components, laboratory setups, and engineering technologies
-              for research institutions, industries, and academia.
-            </p>
-
-            <div className="hero-actions">
-              <button
-                onClick={() => onNavigate("products")}
-                className="btn btn-primary"
-                aria-label="Explore Products"
-              >
-                Explore Products
-              </button>
-
-              <button
-                onClick={() => onNavigate("contact")}
-                className="btn btn-outline bg-glass"
-                aria-label="Contact Microline India"
-              >
-                Contact Us
-              </button>
-            </div>
-          </div>
-        </div>
-
+      <main>
         {/* ========================================
-           STATS
+           HERO SECTION
         ======================================== */}
 
-        <div
-          ref={statsRef}
-          className="stats-bar bg-marble"
+        <section
+          className="hero"
+          aria-label="Hero Section"
         >
-          <div className="stats-grid">
-            <div className="stat-item">
-              <div className="stat-icon">
-                <i className="fas fa-calendar-alt"></i>
-              </div>
+          <div className="container">
+            <div className="hero-text">
+              <p className="hero-tag">
+                RF & Microwave Engineering Excellence Since 1997
+              </p>
 
-              <div className="stat-text">
-                <strong>
-                  <AnimatedCounter targetValue="27+" />
-                </strong>
+              <h1>
+                Advanced RF &
+                <br />
+                Microwave Engineering
+                <br />
+                <span className="highlight">
+                  Solutions for India
+                </span>
+              </h1>
 
-                <span>Years of Engineering Excellence</span>
-              </div>
-            </div>
+              <p className="hero-description">
+                Microline India designs and manufactures advanced RF &
+                Microwave systems, antenna measurement solutions,
+                waveguide components, laboratory setups, and engineering
+                technologies for research institutions, industries,
+                and academia.
+              </p>
 
-            <div className="stat-item">
-              <div className="stat-icon">
-                <i className="fas fa-users"></i>
-              </div>
-
-              <div className="stat-text">
-                <strong>
-                  <AnimatedCounter targetValue="500+" />
-                </strong>
-
-                <span>Institutional & Industrial Clients</span>
-              </div>
-            </div>
-
-            <div className="stat-item">
-              <div className="stat-icon">
-                <i className="fas fa-cogs"></i>
-              </div>
-
-              <div className="stat-text">
-                <strong>
-                  <AnimatedCounter targetValue="100" suffix="%" />
-                </strong>
-
-                <span>In-House Engineering Development</span>
-              </div>
-            </div>
-
-            <div className="stat-item">
-              <div className="stat-icon">
-                <i className="fas fa-file-alt"></i>
-              </div>
-
-              <div className="stat-text">
-                <strong>
-                  <AnimatedCounter targetValue="1000+" />
-                </strong>
-
-                <span>Customized Engineering Solutions</span>
-              </div>
-            </div>
-
-            <div className="stat-item">
-              <div className="stat-icon">
-                <i className="fas fa-globe"></i>
-              </div>
-
-              <div className="stat-text">
-                <strong>Pan India</strong>
-
-                <span>Technical Support & Deployment</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================
-         PRODUCT CATEGORIES
-      ======================================== */}
-
-      <section className="section bg-light">
-        <div className="container">
-          <div className="section-title">
-            <p className="section-subtitle">
-              RF & Microwave Engineering Solutions
-            </p>
-
-            <h2>
-              Our
-              <span className="text-accent">
-                {" "}
-                Product Categories
-              </span>
-            </h2>
-
-            <p className="section-description">
-              Comprehensive RF & Microwave technologies designed for
-              research laboratories, engineering institutions, industrial
-              testing, and advanced communication systems.
-            </p>
-          </div>
-
-          <div className="product-grid">
-            {productCategories.map((cat, index) => (
-              <article
-                key={cat.title}
-                className="card product-card"
-                style={{
-                  animationDelay: `${index * 0.08}s`,
-                }}
-              >
-                <div className="card-image-wrapper">
-                  <img
-                    src={cat.img}
-                    alt={cat.title}
-                    className="card-img"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-
-                <div className="card-body">
-                  <h3>{cat.title}</h3>
-
-                  <p>{cat.description}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <div className="text-center pt-4">
-            <button
-              onClick={() => onNavigate("products")}
-              className="btn btn-primary"
-            >
-              View All Products
-              <i className="fas fa-arrow-right ms-2"></i>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================
-         CLIENTS
-      ======================================== */}
-
-      <section className="section">
-        <div className="container">
-          <div className="section-title">
-            <p className="section-subtitle">
-              Trusted Across India
-            </p>
-
-            <h2>
-              Our Esteemed
-              <span className="text-accent">
-                {" "}
-                Clients & Institutions
-              </span>
-            </h2>
-
-            <p className="section-description">
-              Serving premier research organizations, universities,
-              engineering institutes, and industrial clients across India.
-            </p>
-          </div>
-
-          <div className="client-logo-slider">
-            <div className="client-logo-track">
-              {[...clients, ...clients].map((client, index) => (
-                <div
-                  className="client-logo-item"
-                  key={`${client.abbr}-${index}`}
+              <div className="hero-actions">
+                <Link
+                  to="/products"
+                  className="btn btn-primary"
+                  aria-label="Explore RF and Microwave products"
                 >
-                  <img
-                    src={
-                      new URL(
-                        `/src/assets/images/clients/${client.abbr}.png`,
-                        import.meta.url,
-                      ).href
-                    }
-                    alt={`${client.name} logo`}
-                    loading="lazy"
-                    decoding="async"
-                  />
+                  Explore Products
+                </Link>
 
-                  <div className="client-logo-name">
-                    {client.name}
-                  </div>
+                <Link
+                  to="/contact"
+                  className="btn btn-outline bg-glass"
+                  aria-label="Contact Microline India"
+                >
+                  Contact Us
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* ========================================
+             STATS
+          ======================================== */}
+
+          <div
+            ref={statsRef}
+            className="stats-bar bg-marble"
+          >
+            <div className="stats-grid">
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <i className="fas fa-calendar-alt"></i>
                 </div>
+
+                <div className="stat-text">
+                  <strong>
+                    <AnimatedCounter targetValue="27+" />
+                  </strong>
+
+                  <span>Years of Engineering Excellence</span>
+                </div>
+              </div>
+
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <i className="fas fa-users"></i>
+                </div>
+
+                <div className="stat-text">
+                  <strong>
+                    <AnimatedCounter targetValue="500+" />
+                  </strong>
+
+                  <span>
+                    Institutional & Industrial Clients
+                  </span>
+                </div>
+              </div>
+
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <i className="fas fa-cogs fa-spin"></i>
+                </div>
+
+                <div className="stat-text">
+                  <strong>
+                    <AnimatedCounter
+                      targetValue="100"
+                      suffix="%"
+                    />
+                  </strong>
+
+                  <span>
+                    In-House Engineering Development
+                  </span>
+                </div>
+              </div>
+
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <i className="fas fa-file-alt"></i>
+                </div>
+
+                <div className="stat-text">
+                  <strong>
+                    <AnimatedCounter targetValue="1000+" />
+                  </strong>
+
+                  <span>
+                    Customized Engineering Solutions
+                  </span>
+                </div>
+              </div>
+
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <i className="fas fa-globe"></i>
+                </div>
+
+                <div className="stat-text">
+                  <strong>Pan India</strong>
+
+                  <span>
+                    Technical Support & Deployment
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================
+           PRODUCT CATEGORIES
+        ======================================== */}
+
+        <section
+          id="products"
+          className="section bg-light"
+        >
+          <div className="container">
+            <div className="section-title">
+              <p className="section-subtitle">
+                RF & Microwave Engineering Solutions
+              </p>
+
+              <h2>
+                Our
+                <span className="text-accent">
+                  {" "}
+                  Product Categories
+                </span>
+              </h2>
+
+              <p className="section-description">
+                Comprehensive RF & Microwave technologies designed
+                for research laboratories, engineering institutions,
+                industrial testing, and advanced communication
+                systems.
+              </p>
+            </div>
+
+            <div className="product-grid">
+              {productCategories.map((cat, index) => (
+                <Link
+                  key={cat.slug}
+                  to={`/products/${cat.slug}`}
+                  className="card product-card"
+                  aria-label={cat.title}
+                  style={{
+                    animationDelay: `${index * 0.08}s`,
+                  }}
+                >
+                  <div className="card-image-wrapper">
+                    <img
+                      src={cat.img}
+                      alt={cat.title}
+                      className="card-img"
+                      width="600"
+                      height="400"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+
+                  <div className="card-body">
+                    <h3>{cat.title}</h3>
+
+                    <p>{cat.description}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            <div className="text-center pt-4">
+              <Link
+                to="/products"
+                className="btn btn-primary"
+                aria-label="View all products"
+              >
+                View All Products
+
+                <i className="fas fa-arrow-right ms-2"></i>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================
+           CLIENTS
+        ======================================== */}
+
+        <section
+          id="clients"
+          className="section"
+        >
+          <div className="container">
+            <div className="section-title">
+              <p className="section-subtitle">
+                Trusted Across India
+              </p>
+
+              <h2>
+                Our Esteemed
+                <span className="text-accent">
+                  {" "}
+                  Clients & Institutions
+                </span>
+              </h2>
+
+              <p className="section-description">
+                Serving premier research organizations,
+                universities, engineering institutes, and
+                industrial clients across India.
+              </p>
+            </div>
+
+            <div className="client-logo-slider">
+              <div className="client-logo-track">
+                {[...clients, ...clients].map(
+                  (client, index) => (
+                    <div
+                      className="client-logo-item"
+                      key={`${client.abbr}-${index}`}
+                    >
+                      <img
+                        src={
+                          new URL(
+                            `/src/assets/images/clients/${client.abbr}.png`,
+                            import.meta.url,
+                          ).href
+                        }
+                        alt={`${client.name} logo`}
+                        width="180"
+                        height="90"
+                        loading="lazy"
+                        decoding="async"
+                      />
+
+                      <div className="client-logo-name">
+                        {client.name}
+                      </div>
+                    </div>
+                  ),
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================
+           WHY CHOOSE
+        ======================================== */}
+
+        <section
+          id="why-choose-us"
+          className="section bg-light"
+        >
+          <div className="container">
+            <div className="section-title">
+              <p className="section-subtitle">
+                Engineering Excellence
+              </p>
+
+              <h2>
+                Why Choose
+                <span className="text-accent">
+                  {" "}
+                  Microline India?
+                </span>
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-4">
+              {whyChoose.map((item) => (
+                <article
+                  key={item.title}
+                  className="feature-card"
+                >
+                  <div className="feature-icon-wrapper">
+                    <i className={`fas ${item.icon}`}></i>
+                  </div>
+
+                  <h3>{item.title}</h3>
+
+                  <p>{item.desc}</p>
+                </article>
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ========================================
-         WHY CHOOSE
-      ======================================== */}
-
-      <section className="section bg-light">
-        <div className="container">
-          <div className="section-title">
-            <p className="section-subtitle">
-              Engineering Excellence
-            </p>
-
-            <h2>
-              Why Choose
-              <span className="text-accent">
-                {" "}
-                Microline India?
-              </span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-4">
-            {whyChoose.map((item) => (
-              <article
-                key={item.title}
-                className="feature-card"
-              >
-                <div className="feature-icon-wrapper">
-                  <i className={`fas ${item.icon}`}></i>
-                </div>
-
-                <h3>{item.title}</h3>
-
-                <p>{item.desc}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </>
   );
 }

@@ -1,6 +1,6 @@
 // src/pages/ProductDetail.tsx
 import React, { useRef, useState, useMemo, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDatoProducts, type CMSProduct } from "../hooks/useDatoProducts";
 import { useMatchHeight } from "../hooks/useMatchHeight";
 import { useMediaQuery } from "../hooks/useMediaQuery";
@@ -79,7 +79,7 @@ export default function ProductDetail({ onNavigate }: ProductDetailProps) {
   const handleNavigate = (page: string, data?: unknown) => {
     if (data && page === "product-detail") {
       const product = data as CMSProduct;
-      navigate(`/product/${product.slug}`, { state: { product } });
+      navigate(`/products/${product.slug}`, { state: { product } });
     } else {
       onNavigate(page, data);
     }
@@ -415,9 +415,10 @@ if (!p) {
             The product you are looking for does not exist or may have been
             removed.
           </p>
-          <button className="btn btn-outline" onClick={() => onNavigate("products")}>
-            <i className="fas fa-arrow-left me-2"></i> Back to Products
-          </button>
+            <Link to={`/products`} className="btn btn-outline">
+              <i className="fas fa-arrow-left me-2"></i> Back to Products
+            </Link>
+          
         </div>
       </div>
     </div>
