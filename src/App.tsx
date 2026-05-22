@@ -60,16 +60,16 @@ export default function App() {
         >
           <Suspense fallback={<EnterprisePageLoader />}>
             <Routes location={location}>
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/products/:id" element={<ProductDetail />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/applications" element={<Applications />} />
-              <Route path="/achievements" element={<Achievements />} />
-              <Route path="/resources" element={<Resources />} />
-              <Route path="/contact" element={<Contact />} />
+              <Route path="/" element={<Home onNavigate={navigateTo} />} />
+              <Route path="/home" element={<Home onNavigate={navigateTo} />} />
+              <Route path="/about" element={<About onNavigate={navigateTo} />} />
+              <Route path="/products" element={<Products onNavigate={navigateTo} />} />
+              <Route path="/product/:id" element={<ProductDetail onNavigate={navigateTo} />} />
+              <Route path="/services" element={<Services onNavigate={navigateTo} />} />
+              <Route path="/applications" element={<Applications onNavigate={navigateTo} />} />
+              <Route path="/achievements" element={<Achievements onNavigate={navigateTo} />} />
+              <Route path="/resources" element={<Resources onNavigate={navigateTo} />} />
+              <Route path="/contact" element={<Contact onNavigate={navigateTo} />} />
             </Routes>
           </Suspense>
         </motion.main>
