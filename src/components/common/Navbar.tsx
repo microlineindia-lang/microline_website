@@ -87,12 +87,12 @@ useEffect(() => {
           <ul className="nav-links">
             {navLinks.map((link) => (
               <li key={link.page}>
-                <button
-                  onClick={() => onNavigate(link.page)}
-                  className={currentPage === link.page ? "active" : ""}
-                >
-                  {link.label}
-                </button>
+                 <a href={`/${link.page}`} onClick={(e) => {
+                      e.preventDefault();
+                      onNavigate(link.page);
+                    }} className={currentPage === link.page ? "active" : ""}>
+                    {link.label}
+                </a>
               </li>
             ))}
           </ul>

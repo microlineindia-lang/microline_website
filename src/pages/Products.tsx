@@ -21,9 +21,6 @@ import {
   type CMSProduct,
 } from "../hooks/useDatoProducts";
 
-interface ProductsProps {
-  onNavigate: (page: string, data?: unknown) => void;
-}
 
 /* ========================================
    Constants
@@ -49,9 +46,7 @@ function getCategoriesFromProducts(
   return ["All", ...Array.from(new Set(categories))];
 }
 
-export default function Products({
-  onNavigate,
-}: ProductsProps) {
+export default function Products() {
   const { isDarkMode } = useTheme();
 
   const {
@@ -349,14 +344,11 @@ export default function Products({
 
           <div className="container position-relative z-1">
             <div className="d-flex align-items-center gap-2 mb-2 text-uppercase ls-2 fw-700 fs-xs">
-              <button
-                onClick={() =>
-                  onNavigate("home")
-                }
-                className="breadcrumb-link text-info"
-              >
+
+              <Link to="/" className="breadcrumb-link text-info">
                 HOME
-              </button>
+              </Link>
+
 
               <span
                 className="text-white"

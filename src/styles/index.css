@@ -1512,7 +1512,7 @@ a {
   background: linear-gradient(90deg, var(--primary-accent), var(--primary-accent-light));
 }
 
-.nav-links button::after {
+.nav-links button::after, .nav-links a::after {
   content: "";
   position: absolute;
   left: 0;
@@ -1524,7 +1524,7 @@ a {
   transition: width 0.3s ease;
 }
 
-.nav-links button:hover::after {
+.nav-links button:hover::after, .nav-links a:hover::after {
   width: 100%;
 }
 
