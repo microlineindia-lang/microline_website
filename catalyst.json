@@ -5,5 +5,9 @@
     ],
     "ignore": [],
     "source": "functions"
+  },
+
+  "webclient": {
+    "source": "dist"
   }
 }

@@ -195,18 +195,18 @@ export default defineConfig({
         ========================================= */
 
         manualChunks(id) {
-          /* React Core */
+          if (!id.includes("node_modules")) return;
 
+          // React ecosystem
           if (
-            id.includes("react") ||
+            id.includes("/react/") ||
             id.includes("react-dom") ||
             id.includes("react-router-dom")
           ) {
             return "react-vendor";
           }
 
-          /* UI Libraries */
-
+          // UI libraries
           if (
             id.includes("framer-motion") ||
             id.includes("lucide-react") ||
@@ -215,8 +215,7 @@ export default defineConfig({
             return "ui-vendor";
           }
 
-          /* Utility Libraries */
-
+          // Utility libraries
           if (
             id.includes("axios") ||
             id.includes("lodash") ||
@@ -225,11 +224,8 @@ export default defineConfig({
             return "utils-vendor";
           }
 
-          /* Remaining node_modules */
-
-          if (id.includes("node_modules")) {
-            return "vendor";
-          }
+          // Remaining packages
+          return "vendor";
         },
 
         /* =========================================

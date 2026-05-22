@@ -6,29 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "postbuild": "react-snap",
     "lint": "eslint . --fix",
     "preview": "vite preview",
     "format": "prettier --write .",
     "security-check": "npm audit"
   },
-  "reactSnap": {
-  "inlineCss": true,
-  "source": "dist",
-  "skipThirdPartyRequests": true,
-  "puppeteerArgs": ["--no-sandbox"],
-  "removeBlobs": false,
-  "crawl": false,
-  "include": [
-    "/",
-    "/about",
-    "/products",
-    "/services",
-    "/applications",
-    "/achievements",
-    "/resources"
-  ]
-},
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@hookform/resolvers": "^3.3.4",
@@ -55,7 +37,7 @@
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
-    "@vitejs/plugin-react": "^5.2.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.18",
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",
@@ -63,10 +45,9 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.35",
     "prettier": "^3.2.5",
-    "react-snap": "^1.23.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
-    "vite": "^7.3.3",
+    "vite": "^5.4.19",
     "vite-plugin-sitemap": "^0.8.2"
   }
 }
