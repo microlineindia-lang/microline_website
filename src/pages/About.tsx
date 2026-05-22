@@ -3,14 +3,198 @@ import { useTheme } from "../components/ui/ThemeProvider.tsx";
 import collage from '../assets/images/product-collage.png';
 import aboutHeroLight from '../assets/images/about-us-light.png';
 import aboutHeroDark from '../assets/images/about-us-dark.png';
+import { Helmet } from "react-helmet-async";
 
+/* ========================================
+   Constants
+======================================== */
+
+const SITE_URL = "https://www.microlineindia.in";
+
+const PAGE_URL = `${SITE_URL}/about`;
+
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 interface AboutProps { onNavigate: (page: string) => void; }
 
 export default function About({ onNavigate }: AboutProps) {
   const { isDarkMode } = useTheme();
+
+    /* ========================================
+     Structured Data
+  ======================================== */
+
+    const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "Microline India",
+        url: SITE_URL,
+        logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/favicon-96x96.png`,
+        },
+        description:
+          "Leading Indian manufacturer of RF & Microwave systems, antenna measurement systems, microwave laboratory setups, and waveguide components.",
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: "Microline India",
+        publisher: {
+          "@id": `${SITE_URL}/#organization`,
+        },
+      },
+      {
+        "@type": "AboutPage",
+        "@id": `${PAGE_URL}/#webpage`,
+        url: PAGE_URL,
+        name: "About Microline India",
+        headline:
+          "About Microline India | RF & Microwave Engineering Company",
+        description:
+          "Learn about Microline India, a trusted RF & Microwave engineering company delivering advanced microwave systems, antenna solutions, and laboratory technologies since 1997.",
+        isPartOf: {
+          "@id": `${SITE_URL}/#website`,
+        },
+        about: {
+          "@id": `${SITE_URL}/#organization`,
+        },
+        breadcrumb: {
+          "@id": `${PAGE_URL}/#breadcrumb`,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${PAGE_URL}/#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "About",
+            item: PAGE_URL,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
-    <div className="pt-navbar">
+    <>
+    {/* ========================================
+         SEO
+      ======================================== */}
+
+      <Helmet prioritizeSeoTags>
+        <title>
+          About Microline India | RF & Microwave Engineering Company
+        </title>
+
+        <meta
+          name="description"
+          content="Learn about Microline India, a trusted manufacturer of RF & Microwave systems, antenna measurement solutions, waveguide components, and engineering laboratory technologies since 1997."
+        />
+
+        <meta
+          name="keywords"
+          content="About Microline India, RF Engineering Company India, Microwave Systems Manufacturer, Antenna Measurement Systems India, RF Microwave Solutions"
+        />
+
+        <meta
+          name="robots"
+          content="index, follow"
+        />
+
+        <link
+          rel="canonical"
+          href={PAGE_URL}
+        />
+
+        {/* Open Graph */}
+
+        <meta
+          property="og:type"
+          content="website"
+        />
+
+        <meta
+          property="og:site_name"
+          content="Microline India"
+        />
+
+        <meta
+          property="og:title"
+          content="About Microline India | RF & Microwave Engineering Company"
+        />
+
+        <meta
+          property="og:description"
+          content="Discover Microline India's expertise in RF & Microwave engineering, antenna systems, microwave laboratories, and advanced engineering solutions."
+        />
+
+        <meta
+          property="og:url"
+          content={PAGE_URL}
+        />
+
+        <meta
+          property="og:image"
+          content={OG_IMAGE}
+        />
+
+        <meta
+          property="og:image:width"
+          content="1200"
+        />
+
+        <meta
+          property="og:image:height"
+          content="630"
+        />
+
+        <meta
+          property="og:image:alt"
+          content="About Microline India RF & Microwave Engineering"
+        />
+
+        {/* Twitter */}
+
+        <meta
+          name="twitter:card"
+          content="summary_large_image"
+        />
+
+        <meta
+          name="twitter:title"
+          content="About Microline India | RF & Microwave Engineering Company"
+        />
+
+        <meta
+          name="twitter:description"
+          content="Trusted RF & Microwave engineering company delivering advanced microwave systems and engineering solutions since 1997."
+        />
+
+        <meta
+          name="twitter:image"
+          content={OG_IMAGE}
+        />
+
+        {/* Structured Data */}
+
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+    <main className="pt-navbar">
       {/* Hero */}
       <div className="page-hero bg-gradient-dark">
         <div
@@ -153,6 +337,7 @@ export default function About({ onNavigate }: AboutProps) {
           </div>
         </div>
       </div>
-    </div>
+    </main>
+    </>
   );
 }

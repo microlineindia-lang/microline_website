@@ -6,6 +6,9 @@ import { useMatchHeight } from "../hooks/useMatchHeight";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { Helmet } from "react-helmet-async";
+
+const SITE_URL = "https://www.microlineindia.in";
 
 interface ProductDetailProps {
   onNavigate: (page: string, data?: unknown) => void;
@@ -424,9 +427,98 @@ if (!p) {
   );
 }
 
+  // ---------- SEO ----------
+  const pageUrl = `${SITE_URL}/products/${p.slug}`;
+  const metaDescription = p.description?.replace(/<[^>]*>/g, "").substring(0, 160) || "";
+  const ogImageUrl = p.image?.url;
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "Microline India",
+        url: SITE_URL,
+        logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/favicon-96x96.png`,
+        },
+        description:
+          "Leading Indian manufacturer of RF & Microwave systems, antenna measurement systems, microwave laboratory setups, and waveguide components.",
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: "Microline India",
+        publisher: { "@id": `${SITE_URL}/#organization` },
+      },
+      {
+        "@type": "Product",
+        name: p.name,
+        description: p.description,
+        image: ogImageUrl,
+        category: p.category.name,
+        brand: {
+          "@type": "Brand",
+          name: "Microline India",
+        },
+        url: pageUrl,
+        ...(p.model && { sku: p.model }),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Products",
+            item: `${SITE_URL}/products`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: p.name,
+            item: pageUrl,
+          },
+        ],
+      },
+    ],
+  };
 
   return (
-    <div className="pt-navbar">
+    <>
+
+      <Helmet prioritizeSeoTags>
+        <title>{`${p.name} | Microline India`}</title>
+        <meta name="description" content={metaDescription} />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={pageUrl} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`${p.name} | Microline India`} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:url" content={pageUrl} />
+        {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${p.name} | Microline India`} />
+        <meta name="twitter:description" content={metaDescription} />
+        {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+
+    <main className="pt-navbar">
       {/* Hero */}
       <div className="product-detail-hero bg-gradient-dark">
         <div
@@ -770,6 +862,7 @@ if (!p) {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </main>
+    </>
   );
 }

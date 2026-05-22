@@ -4,7 +4,17 @@ import mircrowaveLab from '../assets/images/products/microwave-lab.png';
 import { useTheme } from "../components/ui/ThemeProvider.tsx";
 import achievementsHeroLight from '../assets/images/achievements-light.png';
 import achievementsHeroDark from '../assets/images/achievements-dark.png';
+import { Helmet } from 'react-helmet-async';
 
+/* ========================================
+   Constants
+======================================== */
+
+const SITE_URL = "[microlineindia.in](https://www.microlineindia.in)";
+
+const PAGE_URL = `${SITE_URL}/achievements`;
+
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 interface AchievementsProps {
   onNavigate: (page: string) => void;
@@ -48,8 +58,186 @@ const clients = [
 
 export default function Achievements({ onNavigate }: AchievementsProps) {
   const { isDarkMode } = useTheme();
+
+   /* ========================================
+     Structured Data
+  ======================================== */
+
+  const structuredData = {
+    "@context": "[schema.org](https://schema.org)",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "Microline India",
+        url: SITE_URL,
+        logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/favicon-96x96.png`,
+        },
+        description:
+          "Leading Indian manufacturer of RF & Microwave systems, antenna measurement systems, microwave laboratory setups, and waveguide components.",
+        foundingDate: "1997",
+        knowsAbout: [
+          "RF systems",
+          "Microwave systems",
+          "Antenna measurement systems",
+          "Microwave laboratory setup",
+          "Waveguide components",
+          "Anechoic chambers",
+          "Power electronics laboratories",
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: "Microline India",
+        publisher: {
+          "@id": `${SITE_URL}/#organization`,
+        },
+      },
+      {
+        "@type": "AboutPage",
+        "@id": `${PAGE_URL}/#aboutpage`,
+        url: PAGE_URL,
+        name: "Achievements | Microline India",
+        description:
+          "Explore Microline India's achievements in RF & Microwave systems, anechoic chambers, microwave laboratories, waveguide components, RIS control systems, and research collaborations across India.",
+        isPartOf: {
+          "@id": `${SITE_URL}/#website`,
+        },
+        about: {
+          "@id": `${SITE_URL}/#organization`,
+        },
+        breadcrumb: {
+          "@id": `${PAGE_URL}/#breadcrumb`,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${PAGE_URL}/#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Achievements",
+            item: PAGE_URL,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
-    <div className="pt-navbar">
+    <>
+      {/* ========================================
+         SEO
+      ======================================== */}
+
+      <Helmet prioritizeSeoTags>
+        <title>
+          Achievements in RF & Microwave Solutions | Microline India
+        </title>
+
+        <meta
+          name="description"
+          content="Explore Microline India's achievements in RF & Microwave systems, anechoic chambers, microwave laboratories, waveguide components, RIS control systems, and research collaborations across India."
+        />
+
+        <meta
+          name="keywords"
+          content="Microline India achievements, RF microwave achievements India, microwave laboratory setup India, anechoic chamber India, waveguide components India, antenna testing solutions, RIS control system, DRDO microwave components"
+        />
+
+        <meta
+          name="robots"
+          content="index, follow"
+        />
+
+        <link
+          rel="canonical"
+          href={PAGE_URL}
+        />
+
+        {/* Open Graph */}
+
+        <meta
+          property="og:type"
+          content="website"
+        />
+
+        <meta
+          property="og:site_name"
+          content="Microline India"
+        />
+
+        <meta
+          property="og:title"
+          content="Achievements in RF & Microwave Solutions | Microline India"
+        />
+
+        <meta
+          property="og:description"
+          content="Discover Microline India's achievements in RF & Microwave systems, anechoic chambers, microwave laboratories, RIS control systems, and research collaborations."
+        />
+
+        <meta
+          property="og:url"
+          content={PAGE_URL}
+        />
+
+        <meta
+          property="og:image"
+          content={OG_IMAGE}
+        />
+
+        <meta
+          property="og:image:width"
+          content="1200"
+        />
+
+        <meta
+          property="og:image:height"
+          content="630"
+        />
+
+        {/* Twitter */}
+
+        <meta
+          name="twitter:card"
+          content="summary_large_image"
+        />
+
+        <meta
+          name="twitter:title"
+          content="Achievements in RF & Microwave Solutions | Microline India"
+        />
+
+        <meta
+          name="twitter:description"
+          content="Explore Microline India's achievements in RF & Microwave systems, anechoic chambers, microwave laboratories, waveguide components, and antenna testing solutions."
+        />
+
+        <meta
+          name="twitter:image"
+          content={OG_IMAGE}
+        />
+
+        {/* Structured Data */}
+
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+      
+    <main className="pt-navbar">
       {/* Hero */}
       <div className="page-hero bg-gradient-dark">
         <div
@@ -169,6 +357,7 @@ export default function Achievements({ onNavigate }: AchievementsProps) {
           </div>
         </div>
       </div>
-    </div>
+    </main>
+    </>
   );
 }

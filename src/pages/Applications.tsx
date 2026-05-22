@@ -8,7 +8,17 @@ import automotiveRadar from '../assets/images/applications/automotive-radar.png'
 import { useTheme } from "../components/ui/ThemeProvider.tsx";
 import applicationsHeroLight from '../assets/images/applications-light.png';
 import applicationsHeroDark from '../assets/images/applications-dark.png';
+import { Helmet } from 'react-helmet-async';
 
+/* ========================================
+   Constants
+======================================== */
+
+const SITE_URL = "https://www.microlineindia.in";
+
+const PAGE_URL = `${SITE_URL}/applications`;
+
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 
 interface ApplicationsProps {
@@ -56,8 +66,173 @@ const apps = [
 
 export default function Applications({ onNavigate }: ApplicationsProps) {
   const { isDarkMode } = useTheme();
+
+    /* ========================================
+     Structured Data
+  ======================================== */
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "Microline India",
+        url: SITE_URL,
+        logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/favicon-96x96.png`,
+        },
+        description:
+          "Leading Indian manufacturer of RF & Microwave systems, antenna measurement systems, microwave laboratory setups, and waveguide components.",
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: "Microline India",
+        publisher: {
+          "@id": `${SITE_URL}/#organization`,
+        },
+      },
+      {
+        "@type": "CollectionPage",
+        "@id": `${PAGE_URL}/#collectionpage`,
+        url: PAGE_URL,
+        name: "RF & Microwave Applications | Microline India",
+        description:
+          "Explore RF & Microwave applications across Defence, Space, Academic Research, Industrial, Telecommunications, and Automotive Radar sectors. Custom solutions by Microline India.",
+        isPartOf: {
+          "@id": `${SITE_URL}/#website`,
+        },
+        breadcrumb: {
+          "@id": `${PAGE_URL}/#breadcrumb`,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${PAGE_URL}/#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Applications",
+            item: PAGE_URL,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
-    <div className="pt-navbar">
+    <>
+      {/* ========================================
+         SEO
+      ======================================== */}
+
+      <Helmet prioritizeSeoTags>
+        <title>
+          RF & Microwave Applications | Microline India
+        </title>
+
+        <meta
+          name="description"
+          content="Explore RF & Microwave applications across Defence, Space, Academic Research, Industrial, Telecommunications, and Automotive Radar. Custom solutions by Microline India."
+        />
+
+        <meta
+          name="keywords"
+          content="RF applications India, microwave applications, defence radar testing, space antenna measurement, 5G antenna testing, automotive radar testing, academic microwave lab"
+        />
+
+        <meta
+          name="robots"
+          content="index, follow"
+        />
+
+        <link
+          rel="canonical"
+          href={PAGE_URL}
+        />
+
+        {/* Open Graph */}
+
+        <meta
+          property="og:type"
+          content="website"
+        />
+
+        <meta
+          property="og:site_name"
+          content="Microline India"
+        />
+
+        <meta
+          property="og:title"
+          content="RF & Microwave Applications | Microline India"
+        />
+
+        <meta
+          property="og:description"
+          content="Discover how RF & Microwave solutions are applied in Defence, Space, Academic Research, Industrial, Telecommunications, and Automotive Radar sectors."
+        />
+
+        <meta
+          property="og:url"
+          content={PAGE_URL}
+        />
+
+        <meta
+          property="og:image"
+          content={OG_IMAGE}
+        />
+
+        <meta
+          property="og:image:width"
+          content="1200"
+        />
+
+        <meta
+          property="og:image:height"
+          content="630"
+        />
+
+        {/* Twitter */}
+
+        <meta
+          name="twitter:card"
+          content="summary_large_image"
+        />
+
+        <meta
+          name="twitter:title"
+          content="RF & Microwave Applications | Microline India"
+        />
+
+        <meta
+          name="twitter:description"
+          content="Explore RF & Microwave applications across Defence, Space, Academic Research, Industrial, Telecommunications, and Automotive Radar sectors."
+        />
+
+        <meta
+          name="twitter:image"
+          content={OG_IMAGE}
+        />
+
+        {/* Structured Data */}
+
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+      
+    <main className="pt-navbar">
       <div className="page-hero bg-gradient-dark">
         <div
           className="page-hero-overlay"
@@ -112,6 +287,7 @@ export default function Applications({ onNavigate }: ApplicationsProps) {
           </div>
         </div>
       </div>
-    </div>
+    </main>
+    </>
   );
 }

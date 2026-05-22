@@ -2,7 +2,17 @@
 import { useTheme } from "../components/ui/ThemeProvider.tsx";
 import servicesHeroLight from '../assets/images/services-light.png';
 import servicesHeroDark from '../assets/images/services-dark.png';
+import { Helmet } from "react-helmet-async";
 
+/* ========================================
+   Constants
+======================================== */
+
+const SITE_URL = "https://www.microlineindia.in";
+
+const PAGE_URL = `${SITE_URL}/services`;
+
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 interface ServicesProps {
   onNavigate: (page: string) => void;
@@ -43,8 +53,194 @@ const services = [
 
 export default function Services({ onNavigate }: ServicesProps) {
   const { isDarkMode } = useTheme();
+
+    /* ========================================
+     Structured Data
+  ======================================== */
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "Microline India",
+        url: SITE_URL,
+        logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/favicon-96x96.png`,
+        },
+        description:
+          "Leading Indian manufacturer of RF & Microwave systems, antenna measurement systems, microwave laboratory setups, and waveguide components.",
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: "Microline India",
+        publisher: {
+          "@id": `${SITE_URL}/#organization`,
+        },
+      },
+      {
+        "@type": "CollectionPage",
+        "@id": `${PAGE_URL}/#collectionpage`,
+        url: PAGE_URL,
+        name: "RF & Microwave Engineering Services | Microline India",
+        description:
+          "Comprehensive RF & Microwave services including microstrip antenna fabrication, planar circuits, laboratory setup, consultation, and project support by Microline India.",
+        isPartOf: {
+          "@id": `${SITE_URL}/#website`,
+        },
+        breadcrumb: {
+          "@id": `${PAGE_URL}/#breadcrumb`,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${PAGE_URL}/#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Services",
+            item: PAGE_URL,
+          },
+        ],
+      },
+      ...services.map((service) => ({
+        "@type": "Service",
+        name: service.title,
+        description: service.desc,
+        provider: {
+          "@id": `${SITE_URL}/#organization`,
+        },
+        areaServed: {
+          "@type": "Country",
+          name: "India",
+        },
+        ...(service.highlights.length > 0 && {
+          offers: {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: service.title,
+            },
+          },
+        }),
+      })),
+    ],
+  };
+
   return (
-    <div className="pt-navbar">
+    <>
+      {/* ========================================
+         SEO
+      ======================================== */}
+
+      <Helmet prioritizeSeoTags>
+        <title>
+          RF & Microwave Engineering Services | Microline India
+        </title>
+
+        <meta
+          name="description"
+          content="Explore comprehensive RF & Microwave engineering services by Microline India: microstrip antenna fabrication, planar circuits, laboratory setup, consultation, and project support."
+        />
+
+        <meta
+          name="keywords"
+          content="RF services India, microwave services, microstrip antenna fabrication, microwave lab setup, microwave PCB fabrication, RF consultation India"
+        />
+
+        <meta
+          name="robots"
+          content="index, follow"
+        />
+
+        <link
+          rel="canonical"
+          href={PAGE_URL}
+        />
+
+        {/* Open Graph */}
+
+        <meta
+          property="og:type"
+          content="website"
+        />
+
+        <meta
+          property="og:site_name"
+          content="Microline India"
+        />
+
+        <meta
+          property="og:title"
+          content="RF & Microwave Engineering Services | Microline India"
+        />
+
+        <meta
+          property="og:description"
+          content="Comprehensive RF & Microwave services including microstrip antenna fabrication, planar circuits, laboratory setup, consultation, and project support."
+        />
+
+        <meta
+          property="og:url"
+          content={PAGE_URL}
+        />
+
+        <meta
+          property="og:image"
+          content={OG_IMAGE}
+        />
+
+        <meta
+          property="og:image:width"
+          content="1200"
+        />
+
+        <meta
+          property="og:image:height"
+          content="630"
+        />
+
+        {/* Twitter */}
+
+        <meta
+          name="twitter:card"
+          content="summary_large_image"
+        />
+
+        <meta
+          name="twitter:title"
+          content="RF & Microwave Engineering Services | Microline India"
+        />
+
+        <meta
+          name="twitter:description"
+          content="Explore advanced RF & Microwave services including microstrip antenna fabrication, planar circuits, laboratory setup, and technical consultation."
+        />
+
+        <meta
+          name="twitter:image"
+          content={OG_IMAGE}
+        />
+
+        {/* Structured Data */}
+
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+
+    <main className="pt-navbar">
       <div className="page-hero bg-gradient-dark">
         <div
           className="page-hero-overlay"
@@ -105,6 +301,7 @@ export default function Services({ onNavigate }: ServicesProps) {
           </div>
         </div>
       </div>
-    </div>
+    </main>
+    </>
   );
 }

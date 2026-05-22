@@ -8,6 +8,14 @@ import { contactService } from '../services/contactService';
 
 import contactHeroLight from '../assets/images/contact-us-light.png';
 import contactHeroDark from '../assets/images/contact-us-dark.png';
+import { Helmet } from 'react-helmet-async';
+
+/* ========================================
+   SEO Constants
+======================================== */
+const SITE_URL = 'https://www.microlineindia.in';
+const PAGE_URL = `${SITE_URL}/contact`;
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 interface ContactProps {
   onNavigate: (page: string) => void;
@@ -40,7 +48,81 @@ export default function Contact({ onNavigate }: ContactProps) {
   const mapSrc =
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3687.0611614284185!2d88.37951717829274!3d22.464335826888878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a02719f1f67499b%3A0x4403e37013f04bc6!2s27%2C%20Harimati%20Sarani%2C%20Barhans%2C%20Garia%2C%20Kolkata%2C%20West%20Bengal%20700084%2C%20India!5e0!3m2!1sen!2sus!4v1778250086506!5m2!1sen!2sus';
 
-  // ======================
+    /* ========================================
+     Structured Data (JSON-LD)
+  ======================================== */
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${SITE_URL}/#organization`,
+        name: 'Microline India',
+        url: SITE_URL,
+        logo: {
+          '@type': 'ImageObject',
+          url: `${SITE_URL}/favicon-96x96.png`,
+        },
+        description:
+          'Leading Indian manufacturer of RF & Microwave systems, antenna measurement systems, microwave laboratory setups, and waveguide components.',
+        foundingDate: '1997',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: '27 Harimati Sarani, Garia',
+          addressLocality: 'Kolkata',
+          addressRegion: 'West Bengal',
+          postalCode: '700084',
+          addressCountry: 'IN',
+        },
+        contactPoint: [
+          {
+            '@type': 'ContactPoint',
+            telephone: '+91-98747-90272',
+            contactType: 'sales',
+          },
+          {
+            '@type': 'ContactPoint',
+            telephone: '+91-87773-84302',
+            contactType: 'customer service',
+          },
+          {
+            '@type': 'ContactPoint',
+            telephone: '+91-33-79620301',
+            contactType: 'customer support',
+          },
+        ],
+        sameAs: [],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: 'Microline India',
+        publisher: { '@id': `${SITE_URL}/#organization` },
+      },
+      {
+        '@type': 'ContactPage',
+        '@id': `${PAGE_URL}/#contactpage`,
+        url: PAGE_URL,
+        name: 'Contact Us | Microline India',
+        description:
+          'Contact Microline India for RF & microwave systems, antenna measurement solutions, laboratory setups, and waveguide components. Reach us by phone, email, or visit our Kolkata office.',
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        about: { '@id': `${SITE_URL}/#organization` },
+        breadcrumb: { '@id': `${PAGE_URL}/#breadcrumb` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${PAGE_URL}/#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'Contact Us', item: PAGE_URL },
+        ],
+      },
+    ],
+  };
+  
+    // ======================
   // Submit Handler
   // ======================
 
@@ -99,8 +181,51 @@ export default function Contact({ onNavigate }: ContactProps) {
     }
   };
 
-  return (
-    <div className="pt-navbar">
+    return (
+    <>
+      {/* ========================================
+         SEO Meta Tags
+      ======================================== */}
+      <Helmet prioritizeSeoTags>
+        <title>Contact Us | Microline India</title>
+        <meta
+          name="description"
+          content="Contact Microline India for RF & microwave systems, antenna measurement solutions, laboratory setups, and waveguide components. Reach us by phone, email, or visit our Kolkata office."
+        />
+        <meta
+          name="keywords"
+          content="contact Microline India, RF microwave supplier contact, antenna testing company India, microwave lab manufacturer contact, waveguide components contact, Kolkata RF company, Microline phone email"
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={PAGE_URL} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Microline India" />
+        <meta property="og:title" content="Contact Us | Microline India" />
+        <meta
+          property="og:description"
+          content="Contact Microline India for RF & microwave systems, antenna measurement solutions, laboratory setups, and waveguide components."
+        />
+        <meta property="og:url" content={PAGE_URL} />
+        <meta property="og:image" content={OG_IMAGE} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Us | Microline India" />
+        <meta
+          name="twitter:description"
+          content="Contact Microline India for RF & microwave systems, antenna measurement solutions, laboratory setups, and waveguide components."
+        />
+        <meta name="twitter:image" content={OG_IMAGE} />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
+    
+    <main className="pt-navbar">
 
       {/* Hero */}
       <div className="page-hero bg-gradient-dark">
@@ -458,6 +583,7 @@ export default function Contact({ onNavigate }: ContactProps) {
 
       </div>
 
-    </div>
+    </main>
+    </>
   );
 }

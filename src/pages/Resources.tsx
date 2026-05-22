@@ -5,7 +5,14 @@ import videoThumb from '../assets/images/video_thumbnail.jpeg';
 import { useTheme } from "../components/ui/ThemeProvider.tsx";
 import resourcesHeroLight from '../assets/images/resources-light.png';
 import resourcesHeroDark from '../assets/images/resources-dark.png';
+import { Helmet } from 'react-helmet-async';
 
+/* ========================================
+   SEO Constants
+======================================== */
+const SITE_URL = 'https://www.microlineindia.in';
+const PAGE_URL = `${SITE_URL}/resources`;
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 
 // ----------------------------------------------------------------------
@@ -321,6 +328,73 @@ export default function Resources({ onNavigate }: ResourcesProps) {
   const openPdfViewer = (url: string, title: string) => setActivePdf({ url, title });
   const closePdfViewer = () => setActivePdf(null);
 
+  /* ========================================
+     Structured Data (VideoObject items)
+  ======================================== */
+  const videoObjects = videos.map((video) => {
+    const thumb = getVideoThumbnail(video);
+    const videoUrl =
+      video.videoFile?.video?.streamingUrl ||
+      video.videoFile?.video?.mp4High ||
+      video.videoUrl ||
+      '';
+    return {
+      '@type': 'VideoObject',
+      name: video.title,
+      description: video.title,
+      thumbnailUrl: thumb,
+      contentUrl: videoUrl,
+      uploadDate: new Date().toISOString().split('T')[0],
+      duration: video.duration || undefined,
+    };
+  });
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${SITE_URL}/#organization`,
+        name: 'Microline India',
+        url: SITE_URL,
+        logo: {
+          '@type': 'ImageObject',
+          url: `${SITE_URL}/favicon-96x96.png`,
+        },
+        description:
+          'Leading Indian manufacturer of RF & Microwave systems, antenna measurement systems, microwave laboratory setups, and waveguide components.',
+        foundingDate: '1997',
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: 'Microline India',
+        publisher: { '@id': `${SITE_URL}/#organization` },
+      },
+      {
+        '@type': 'CollectionPage',
+        '@id': `${PAGE_URL}/#collectionpage`,
+        url: PAGE_URL,
+        name: 'Resources: Brochures & Product Videos | Microline India',
+        description:
+          'Explore Microline India\'s product catalogues, brochures, and product demonstration videos. Download PDFs or watch videos showcasing our RF & microwave solutions.',
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        about: { '@id': `${SITE_URL}/#organization` },
+        breadcrumb: { '@id': `${PAGE_URL}/#breadcrumb` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${PAGE_URL}/#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'Resources', item: PAGE_URL },
+        ],
+      },
+      ...videoObjects,
+    ],
+  };
+  
 // Loading UI – enterprise grade
 if (loading) {
   return (
@@ -360,7 +434,50 @@ if (error) {
 
 
   return (
-    <div className="pt-navbar">
+    <>
+      {/* ========================================
+         SEO
+      ======================================== */}
+      <Helmet prioritizeSeoTags>
+        <title>Resources: Brochures & Product Videos | Microline India</title>
+        <meta
+          name="description"
+          content="Explore Microline India's product catalogues, brochures, and product demonstration videos. Download PDFs or watch videos showcasing our RF & microwave solutions."
+        />
+        <meta
+          name="keywords"
+          content="Microline India resources, microwave brochures, product catalogue, RF videos, anechoic chamber brochure, microwave lab PDF, waveguide components PDF, antenna testing videos"
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={PAGE_URL} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Microline India" />
+        <meta property="og:title" content="Resources: Brochures & Product Videos | Microline India" />
+        <meta
+          property="og:description"
+          content="Explore Microline India's product catalogues, brochures, and product demonstration videos."
+        />
+        <meta property="og:url" content={PAGE_URL} />
+        <meta property="og:image" content={OG_IMAGE} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Resources: Brochures & Product Videos | Microline India" />
+        <meta
+          name="twitter:description"
+          content="Explore Microline India's product catalogues, brochures, and product demonstration videos."
+        />
+        <meta name="twitter:image" content={OG_IMAGE} />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
+    
+    <main className="pt-navbar">
       {/* Hero Section */}
       <div className="page-hero bg-gradient-dark">
         <div
@@ -489,7 +606,8 @@ if (error) {
           </div>
         </div>
       )}
-    </div>
+    </main>
+    </>
   );
 }
 

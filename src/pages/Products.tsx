@@ -1,8 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTheme } from "../components/ui/ThemeProvider";
 import productsHeroLight from '../assets/images/products-light.png';
 import productsHeroDark from '../assets/images/products-dark.png';
 import { useDatoProducts, type CMSProduct } from '../hooks/useDatoProducts';
+import { Helmet } from 'react-helmet-async';
+
+/* ========================================
+   Constants
+======================================== */
+
+const SITE_URL = "https://www.microlineindia.in";
+
+const PAGE_URL = `${SITE_URL}/products`;
+
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 interface ProductsProps {
   onNavigate: (page: string, data?: unknown) => void;
@@ -26,6 +37,62 @@ export default function Products({ onNavigate }: ProductsProps) {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+          /* ========================================
+     Structured Data
+  ======================================== */
+
+  const structuredData = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "CollectionPage",
+          "@id": `${PAGE_URL}/#collectionpage`,
+          url: PAGE_URL,
+          name: "RF & Microwave Products | Microline India",
+          description:
+            "Explore RF & Microwave systems, antenna measurement systems, waveguide components, microwave laboratory setups, RF absorbers, and engineering solutions by Microline India.",
+        },
+
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: SITE_URL,
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Products",
+              item: PAGE_URL,
+            },
+          ],
+        },
+
+        ...allProducts
+          .slice(0, 20)
+          .map((product) => ({
+            "@type": "Product",
+            name: product.name,
+            description:
+              product.shortDescription,
+            image: product.image?.url,
+            category:
+              product.category.name,
+            brand: {
+              "@type": "Brand",
+              name: "Microline India",
+            },
+            url: `${SITE_URL}/products/${product.slug}`,
+          })),
+      ],
+    }),
+    [allProducts]
+  );
 
   // Loading UI – same as Resources page
   if (loading) {
@@ -75,8 +142,77 @@ export default function Products({ onNavigate }: ProductsProps) {
       ? allProducts
       : allProducts.filter(p => p.category.name === activeCategory);
 
-  return (
-    <div className="pt-navbar">
+
+
+    return (
+    <>
+      {/* ========================================
+         SEO
+      ======================================== */}
+
+      <Helmet prioritizeSeoTags>
+        <title>
+          RF & Microwave Products |
+          Microline India
+        </title>
+
+        <meta
+          name="description"
+          content="Explore advanced RF & Microwave engineering products, antenna systems, microwave laboratories, waveguide components, and RF technologies."
+        />
+
+        <meta
+          name="robots"
+          content="index, follow"
+        />
+
+        <link
+          rel="canonical"
+          href={PAGE_URL}
+        />
+
+        {/* Open Graph */}
+
+        <meta
+          property="og:type"
+          content="website"
+        />
+
+        <meta
+          property="og:title"
+          content="RF & Microwave Products | Microline India"
+        />
+
+        <meta
+          property="og:url"
+          content={PAGE_URL}
+        />
+
+        <meta
+          property="og:image"
+          content={OG_IMAGE}
+        />
+
+        {/* Twitter */}
+
+        <meta
+          name="twitter:card"
+          content="summary_large_image"
+        />
+
+        <meta
+          name="twitter:image"
+          content={OG_IMAGE}
+        />
+
+        {/* Structured Data */}
+
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+
+    <main className="pt-navbar">
       {/* Hero */}
       <div className="page-hero bg-gradient-dark">
         <div
@@ -159,6 +295,7 @@ export default function Products({ onNavigate }: ProductsProps) {
           </div>
         </div>
       </div>
-    </div>
+    </main>
+    </>
   );
 }

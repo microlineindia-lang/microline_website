@@ -298,6 +298,7 @@ export default function Home({ onNavigate }: HomeProps) {
          SEO
       ======================================== */}
 
+      <main>
       <Helmet prioritizeSeoTags>
         <title>
           RF & Microwave Systems Manufacturer in India | Microline India
@@ -673,6 +674,7 @@ export default function Home({ onNavigate }: HomeProps) {
           </div>
         </div>
       </section>
+      </main>
     </>
   );
 }
