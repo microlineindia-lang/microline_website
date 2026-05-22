@@ -74,7 +74,7 @@ export default function App() {
           </Suspense>
         </motion.main>
       </AnimatePresence>
-      <Footer />
+      <Footer onNavigate={navigateTo} />
     </>
   );
 }

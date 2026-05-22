@@ -1,7 +1,12 @@
 // src/components/common/Footer.tsx
-import { Link } from 'react-router-dom';
+// src/components/common/Footer.tsx
+import type { FC } from "react";
 
-const Footer = () => {
+interface FooterProps {
+  onNavigate: (page: string) => void;
+}
+
+const Footer: FC<FooterProps> = ({ onNavigate }) => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -24,16 +29,24 @@ const Footer = () => {
             <h4>Quick Links</h4>
             <ul>
               <li>
-                <Link to="/about">About Us</Link>
+                <button onClick={() => onNavigate("about")}>
+                  About Us
+                </button>
               </li>
               <li>
-                <Link to="/products">Products</Link>
+                <button onClick={() => onNavigate("products")}>
+                  Products
+                </button>
               </li>
               <li>
-                <Link to="/services">Services</Link>
+                <button onClick={() => onNavigate("services")}>
+                  Services
+                </button>
               </li>
               <li>
-                <Link to="/applications">Applications</Link>
+                <button onClick={() => onNavigate("applications")}>
+                  Applications
+                </button>
               </li>
             </ul>
           </div>
@@ -42,21 +55,19 @@ const Footer = () => {
           <div className="footer-section">
             <h4>Contact Info</h4>
             <div className="footer-contact-item">
-              <i className="fas fa-map-marker-alt" aria-hidden="true"></i>
-              <address className="footer-address">
-                27 Harimati Sarani, Garia, Kolkata - 700084, West Bengal, India
-              </address>
+              <i className="fas fa-map-marker-alt"></i>
+              <span>Kolkata, West Bengal, India</span>
             </div>
             <div className="footer-contact-item">
-              <i className="fas fa-envelope" aria-hidden="true"></i>
-              <a href="mailto:info@microlineindia.in">info@microlineindia.in</a>
+              <i className="fas fa-envelope"></i>
+              <span>info@microlineindia.in</span>
             </div>
             <div className="footer-contact-item">
-              <i className="fas fa-phone-alt" aria-hidden="true"></i>
-              <a href="tel:+919874790272">+91 98747 90272</a>
+              <i className="fas fa-phone-alt"></i>
+              <span>+91 98747 90272</span>
             </div>
             <div className="footer-contact-item">
-              <i className="fas fa-clock" aria-hidden="true"></i>
+              <i className="fas fa-clock"></i>
               <span>Mon - Sat: 9:00 AM - 6:00 PM</span>
             </div>
           </div>
