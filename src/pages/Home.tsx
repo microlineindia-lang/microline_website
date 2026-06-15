@@ -128,7 +128,7 @@ const whyChoose: WhyChoose[] = [
     desc: "State-of-the-art RF & Microwave engineering solutions designed for research, academia, and industrial applications.",
   },
   {
-    icon: "fa-shield-check",
+    icon: "fa-check-circle",
     title: "Quality & Reliability",
     desc: "Precision-engineered systems with rigorous quality assurance and testing standards.",
   },
