@@ -75,3 +75,71 @@ export const PRODUCTS_QUERY = gql`
     }
   }
 `;
+
+
+export const BRANDS_QUERY = gql`
+  query AllBrands {
+    allBrands(orderBy: order_ASC) {
+      id
+      name
+      slug
+      shortDescription
+      order
+      logo {
+        url
+        alt
+        title
+      }
+      logoDark {         # For dark mode
+        url
+        alt
+        title
+      }
+    }
+  }
+`;
+
+export const BRAND_DETAIL_QUERY = gql`
+  query BrandDetail($slug: String!) {
+    brand(filter: { slug: { eq: $slug } }) {
+      id
+      name
+      slug
+      shortDescription
+      description
+      order
+      logo {
+        url
+        alt
+        title
+      }
+      logoDark {
+        url
+        alt
+        title
+      }
+      seo: _seoMetaTags {
+        attributes
+        content
+        tag
+      }
+      products {
+        productId
+        productName
+        shortDescription
+        productOverview
+        officialUrl
+        resource
+        productImages {
+          responsiveImage(imgixParams: { fit: crop, auto: format }) {
+            src
+            srcSet
+            alt
+            width
+            height
+          }
+        }
+      }
+    }
+  }
+`;

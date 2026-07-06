@@ -1481,7 +1481,7 @@ a {
 .nav-links a {
   font-size: 0.8rem;
   font-weight: 700;
-  text-transform: uppercase;
+
   letter-spacing: 1px;
   background: transparent;
   border: none;
@@ -1524,7 +1524,8 @@ a {
   transition: width 0.3s ease;
 }
 
-.nav-links button:hover::after {
+.nav-links button:hover::after,
+.nav-links a:hover::after {
   width: 100%;
 }
 
@@ -1606,7 +1607,8 @@ a {
   margin-bottom: 0.5rem;
 }
 
-.mobile-menu li button {
+.mobile-menu li button,
+.mobile-menu li a {
   width: 100%;
   text-align: left;
   background: transparent;
@@ -1620,7 +1622,8 @@ a {
   border-radius: 8px;
 }
 
-.mobile-menu li button:hover {
+.mobile-menu li button:hover,
+.mobile-menu li a:hover {
   color: var(--primary-accent-light);
   padding-left: 0.5rem;
   background: var(--bg-tertiary);
@@ -1652,10 +1655,10 @@ a {
   text-transform: none;
 }
 
-/* ---------- RESPONSIVE BREAKPOINTS (key change: 1200px) ---------- */
+/* ---------- RESPONSIVE BREAKPOINTS (key change: 1400px) ---------- */
 
-/* Below 1200px → show mobile menu & hide desktop nav */
-@media (max-width: 1199px) {
+/* Below 1400px → show mobile menu & hide desktop nav */
+@media (max-width: 1399px) {
   .nav-links,
   .desktop-cta,
   .desktop-theme-toggle {
@@ -1678,8 +1681,8 @@ a {
   }
 }
 
-/* 1200px and above → show desktop nav, hide mobile elements */
-@media (min-width: 1200px) {
+/* 1400px and above → show desktop nav, hide mobile elements */
+@media (min-width: 1400px) {
   .nav-links,
   .desktop-cta,
   .desktop-theme-toggle {
@@ -1708,6 +1711,313 @@ a {
   .mobile-menu {
     width: 100%;
     right: 0;
+  }
+}
+
+/* =========================================================
+   NAVBAR DROPDOWN (Authorized Brands)
+   ========================================================= */
+
+/* ==========================================================
+   Desktop Dropdown Wrapper
+========================================================== */
+
+.dropdown-wrapper {
+    position: relative;
+}
+
+/* ==========================================================
+   Desktop Dropdown Menu
+========================================================== */
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 260px;
+    max-width: 320px;
+    max-height: 420px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.18),
+        0 2px 8px rgba(0,0,0,.08);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+/* Optional scrollbar */
+
+.dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 999px;
+}
+
+/* ==========================================================
+   Dropdown Item
+========================================================== */
+
+.dropdown-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    padding: 10px 12px !important;
+    text-decoration: none !important;
+    color: var(--text-primary) !important;
+    border-radius: 10px !important;
+}
+.dropdown-item:hover {
+    background: var(--bg-tertiary);
+    color: var(--primary-accent);
+    transform: translateX(2px);
+}
+
+/* ==========================================================
+   Brand Logo
+========================================================== */
+
+.dropdown-item .brand-logo {
+    width: 48px !important;
+    height: 48px !important;
+    flex: 0 0 48px !important;
+    object-fit: contain !important;
+    padding: 6px !important;
+    background: var(--bg-granite) !important;
+    border: 1px solid var(--border-light) !important;
+    border-radius: 10px !important;
+}
+.dropdown-item:hover .brand-logo {
+    border-color: var(--primary-accent);
+    transform: scale(1.04);
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.15);
+}
+
+/* ==========================================================
+   Brand Name
+========================================================== */
+
+.dropdown-item span {
+    display: flex !important;
+    align-items: center !important;
+    flex: 1 !important;
+    height: 48px !important;
+    margin: 0 !important;
+    font-size: .95rem !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+
+
+
+
+/* ----- Mobile Submenu (unchanged, already perfect) ----- */
+.mobile-dropdown-wrapper {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.mobile-dropdown-wrapper > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 0;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--nav-link-color);
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: 8px;
+}
+
+.mobile-dropdown-wrapper > button:hover {
+  color: var(--primary-accent-light);
+  background: var(--bg-tertiary);
+}
+
+.mobile-dropdown-wrapper > button.active-mobile {
+  color: var(--primary-accent-light);
+}
+
+.mobile-submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobile-submenu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+  border-radius: 8px;
+}
+
+.mobile-submenu-item:hover {
+  background: var(--bg-tertiary);
+  color: var(--primary-accent-light);
+}
+
+.mobile-submenu-item .brand-logo-mobile {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Ensure mobile links are clickable and styled */
+.mobile-menu li a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--nav-link-color);
+  cursor: pointer;
+  padding: 0.75rem 0;
+  transition: var(--transition);
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.mobile-menu li a:hover {
+  color: var(--primary-accent-light);
+  padding-left: 0.5rem;
+  background: var(--bg-tertiary);
+}
+
+.mobile-menu .active-mobile {
+  color: var(--primary-accent-light);
+  background: var(--bg-soft);
+  padding-left: 0.5rem;
+}
+
+
+/* ----- Ensure desktop nav links (a) inherit button styles ----- */
+.nav-links a {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--nav-link-color);
+  padding: 0.5rem 0.2rem;
+  transition: var(--transition);
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  color: var(--nav-link-hover);
+}
+
+.nav-links a.active {
+  color: var(--primary-accent-light);
+}
+
+.nav-links a.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 2px;
+  width: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--primary-accent), var(--primary-accent-light));
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 2px;
+  width: 0;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--primary-accent), var(--primary-accent-light));
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* --- Ensure dropdown trigger (a) also gets proper styling --- */
+.dropdown-wrapper > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* --- Dropdown chevron icon adjustment --- */
+.dropdown-wrapper > a svg {
+  transition: transform 0.25s ease;
+}
+
+.dropdown-wrapper:hover > a svg,
+.dropdown-wrapper > a[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+/* ----- Dark theme overrides (if needed) ----- */
+[data-theme="dark"] .dropdown-menu {
+  background: var(--bg-secondary);
+  border-color: var(--border-medium);
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+  background: var(--bg-tertiary);
+}
+
+[data-theme="dark"] .mobile-submenu-item:hover {
+  background: var(--bg-tertiary);
+}
+
+/* ----- Responsive: ensure dropdown menu fits on smaller desktop screens ----- */
+@media (max-width: 1400px) {
+  .dropdown-menu {
+    min-width: 180px;
+  }
+}
+
+/* ----- On mobile, dropdown wrapper becomes normal list item ----- */
+@media (max-width: 1399px) {
+  .dropdown-wrapper {
+    position: static;
+  }
+  .dropdown-menu {
+    display: none !important; /* hide desktop dropdown on mobile */
   }
 }
 
@@ -5661,6 +5971,7 @@ textarea.form-input {
   align-items: center;
   justify-content: center;
   padding: 3rem 1.5rem;
+  margin-top: 2rem;
 }
 
 
@@ -5911,5 +6222,846 @@ textarea.form-input {
     height: 60px;
     bottom: 0.75rem;
     left: 0.75rem;
+  }
+}
+
+
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: -140;
+  }
+}
+
+/* Fallback adjustment for mobile responsive viewports */
+@media (max-width: 768px) {
+  .error-page .grid-cols-2 {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .error-page .hero-actions {
+    justify-content: center;
+  }
+}
+
+
+
+/* =========================================================
+   BRANDS PAGE
+   ========================================================= */
+
+/* ----- Brand Card (reuses product-grid layout) ----- */
+.brand-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(14, 165, 233, 0.35);
+}
+
+.brand-card-inner {
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* ----- Brand Header (logo + name side‑by‑side) ----- */
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ----- Brand Logo Container ----- */
+.brand-logo-wrapper {
+  width: 160px;
+  height: 60px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  padding: 8px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.brand-card:hover .brand-logo-wrapper {
+  border-color: var(--primary-accent);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+}
+
+.brand-logo-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ----- Brand Name ----- */
+.brand-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.3;
+  flex: 1;
+}
+
+/* ----- Brand Description ----- */
+.brand-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0.5rem 0 1rem;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ----- Learn More CTA ----- */
+.brand-cta {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--primary-accent);
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.brand-cta i {
+  transition: transform 0.25s ease;
+}
+
+.brand-card:hover .brand-cta {
+  color: var(--primary-accent-light);
+}
+
+.brand-card:hover .brand-cta i {
+  transform: translateX(4px);
+}
+
+/* ----- Dark Theme Overrides ----- */
+[data-theme="dark"] .brand-logo-wrapper {
+  background: var(--bg-secondary);
+  border-color: var(--border-medium);
+}
+
+[data-theme="dark"] .brand-card:hover .brand-logo-wrapper {
+  border-color: var(--primary-accent);
+}
+
+[data-theme="dark"] .brand-desc {
+  color: var(--text-muted);
+}
+
+/* ----- Responsive Adjustments ----- */
+@media (max-width: 1024px) {
+  .brand-logo-wrapper {
+    max-width: auto;
+    height: 52px;
+    padding: 6px;
+  }
+  .brand-name {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .brand-card-inner {
+    padding: 1.25rem;
+  }
+  .brand-logo-wrapper {
+    max-width: 100vw;
+    height: 48px;
+  }
+  .brand-name {
+    font-size: 0.9rem;
+  }
+  .brand-desc {
+    font-size: 0.8rem;
+  }
+}
+
+/* =========================================================
+   BRANDS GRID – 2 columns on tablet/desktop
+   ========================================================= */
+.brands-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;  /* 1 column on mobile */
+}
+
+@media (min-width: 768px) {
+  .brands-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns from tablet up */
+  }
+}
+
+/* .product-overview h2,
+.product-overview h3,
+.product-overview h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+.product-overview p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+.product-overview ul,
+.product-overview ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+} */
+
+/* =========================================================
+   BRAND HERO WITH LOGO BACKGROUND
+========================================================= */
+.brand-hero {
+  min-height: 18rem;
+}
+
+.brand-hero-overlay {
+  background-repeat: no-repeat;
+  background-position: right 20px center; /* 20px padding from right edge */
+  background-size: 50% auto; /* 50% of container width, maintain aspect ratio */
+  background-color: var(--bg-glass-strong);
+}
+
+@media (max-width: 768px) {
+  .brand-hero {
+    min-height: 14rem;
+  }
+  .brand-hero-overlay {
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-hero {
+    min-height: 12rem;
+  }
+  .brand-hero-overlay {
+    background-size: auto 70%;
+    background-position: right center;
+  }
+}
+
+/* =========================================================
+   PRODUCT NAVIGATION RIBBON (sticky, container‑width)
+========================================================= */
+.product-nav-ribbon {
+  position: sticky;
+  top: 68px;
+  z-index: 100;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  padding: 0.5rem 0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* background-color: var(--bg-artistic-marble); */
+  transition: var(--transition);
+}
+
+[data-theme="dark"] .product-nav-ribbon {
+  /* background-color: rgba(var(--card-bg-rgb, 30, 30, 40), 0.92); */
+  /* background-color: var(--bg-cloud-3); */
+  border-bottom-color: var(--border-medium);
+}
+
+.ribbon-scroll {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  padding: 0.25rem 0;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ribbon-scroll::-webkit-scrollbar {
+  height: 3px;
+}
+.ribbon-scroll::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+.ribbon-scroll::-webkit-scrollbar-thumb {
+  background: var(--primary-accent);
+  border-radius: 4px;
+}
+
+.ribbon-link {
+  flex-shrink: 0;
+  padding: 0.45rem 1rem;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.ribbon-link:hover {
+  background: var(--bg-soft-3);
+  color: var(--primary-accent-2);
+}
+
+.ribbon-link:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 768px) {
+  .product-nav-ribbon {
+    top: 60px;
+    padding: 0.35rem 0;
+  }
+  .ribbon-link {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.75rem;
+  }
+}
+
+/* =========================================================
+   FULL‑WIDTH PRODUCT CARDS
+========================================================= */
+.full-width-products {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding-top: 1.5rem;
+}
+
+.product-card-full {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  transition: var(--transition);
+  overflow: hidden;
+  padding: 1.5rem 2rem 2rem;
+  position: relative;
+}
+
+/* clearfix to contain floats */
+.product-card-full::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.product-card-full:hover {
+  box-shadow: var(--shadow-lg);
+  /* border-color: var(--primary-accent-light); */
+}
+
+/* ── floated gallery + actions ── */
+.product-float-right {
+  float: right;
+  width: 45%;
+  max-width: 460px;
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── details that flow around the float ── */
+.product-details-flow {
+  /* No overflow: hidden – allows natural text wrap under the float */
+  display: block;
+}
+
+.product-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--primary-accent);
+  background: var(--primary-accent-light);
+  padding: 0.2rem 0.75rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 0.75rem;
+}
+
+.product-title {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.product-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+.product-desc p {
+  margin-bottom: 0.5rem;
+}
+
+/* Overview – flows around float and then full width */
+.product-overview-left {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.product-overview-left h2,
+.product-overview-left h3,
+.product-overview-left h4 {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.product-overview-left h2:first-child,
+.product-overview-left h3:first-child,
+.product-overview-left h4:first-child {
+  margin-top: 0;
+}
+
+.product-overview-left p {
+  margin-bottom: 0.75rem;
+}
+
+.product-overview-left ul,
+.product-overview-left ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.product-overview-left li {
+  margin-bottom: 0.3rem;
+}
+
+.product-overview-left blockquote {
+  border-left: 4px solid var(--primary-accent);
+  padding-left: 1.2rem;
+  margin: 1rem 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.product-overview-left table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.product-overview-left table th,
+.product-overview-left table td {
+  border: 1px solid var(--border-light);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.product-overview-left table th {
+  background: var(--bg-secondary);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ── actions below gallery ── */
+.product-actions-under-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.product-actions-under-gallery .btn-sm {
+  padding: 0.5rem 1.2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  border-radius: var(--radius-pill);
+}
+
+/* =========================================================
+   E‑COMMERCE GALLERY
+========================================================= */
+.product-gallery-ecommerce {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+}
+
+.gallery-main {
+  width: 100%;
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  aspect-ratio: 1 / 1;      /* keep square */
+  position: relative;
+}
+
+.gallery-main-image {
+  border: none;
+  background: none;
+  cursor: zoom-in;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.gallery-main-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  padding: 0.75rem;
+}
+
+.gallery-main-image:hover img {
+  transform: scale(1.04);
+}
+
+.gallery-thumb-strip {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  overflow-x: auto;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-light);
+  scrollbar-width: thin;
+}
+
+.gallery-thumb-strip::-webkit-scrollbar {
+  height: 3px;
+}
+.gallery-thumb-strip::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+.gallery-thumb-strip::-webkit-scrollbar-thumb {
+  background: var(--primary-accent);
+  border-radius: 4px;
+}
+
+.gallery-thumb {
+  flex-shrink: 0;
+  width: 60px;
+  height: 54px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.gallery-thumb:hover {
+  border-color: var(--primary-accent);
+}
+
+.gallery-thumb.active {
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25);
+}
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================================================
+   BRAND LOGO WRAPPER
+========================================================= */
+.brand-logo-wrapper {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-artistic-marble);
+}
+
+[data-theme="dark"] .brand-logo-wrapper {
+  background: var(--bg-elevated);
+  border-color: var(--border-medium);
+}
+
+/* =========================================================
+   LIGHTBOX
+========================================================= */
+.image-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.25s ease;
+  cursor: zoom-out;
+}
+
+.image-modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  background: transparent;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: default;
+}
+
+.image-modal-content img {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  display: block;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.image-modal-close {
+  position: absolute;
+  top: -2.8rem;
+  right: 0;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE – float removed on smaller screens
+========================================================= */
+@media (max-width: 992px) {
+  .product-float-right {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .product-card-full {
+    padding: 1.5rem;
+  }
+
+  .gallery-main {
+    aspect-ratio: auto;
+    min-height: 240px;
+  }
+
+  .gallery-main-image img {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-card-full {
+    padding: 1rem;
+  }
+
+  .gallery-main {
+    min-height: 180px;
+  }
+
+  .gallery-main-image img {
+    max-height: 240px;
+  }
+
+  .gallery-thumb {
+    width: 48px;
+    height: 42px;
+  }
+
+  .product-title {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card-full {
+    padding: 0.75rem;
+  }
+
+  .gallery-main {
+    min-height: 140px;
+  }
+
+  .gallery-main-image img {
+    max-height: 180px;
+    padding: 0.25rem;
+  }
+
+  .gallery-thumb {
+    width: 40px;
+    height: 36px;
+  }
+
+  .gallery-thumb-strip {
+    padding: 0.4rem 0.5rem;
+    gap: 0.35rem;
+  }
+
+  .product-title {
+    font-size: 1.05rem;
+  }
+
+  .product-desc,
+  .product-overview-left {
+    font-size: 0.85rem;
+  }
+
+  .product-actions-under-gallery .btn-sm {
+    padding: 0.35rem 0.8rem;
+    font-size: 0.65rem;
+  }
+}
+
+.product-overview-left a {
+  color: var(--primary-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+
+.product-overview-left a:hover {
+  color: var(--primary-accent-dark, #0b7bb5);
+}
+
+/* Adds a right arrow after the link */
+.product-overview-left a::after {
+  content: ' →';
+  font-size: 0.9em;
+  margin-left: 0.2rem;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.product-overview-left a:hover::after {
+  transform: translateX(2px);
+}
+
+/* ─── Disclaimer – Professional ─── */
+.disclaimer-wrapper {
+  max-width: 900px;
+  margin: 2rem auto 0;
+  padding-top: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.disclaimer-text {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+  opacity: 0.75;
+}
+
+.disclaimer-text i {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  opacity: 0.5;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .disclaimer-wrapper {
+    padding-top: 1rem;
+    margin-top: 1.5rem;
+    gap: 0.6rem;
+  }
+  .disclaimer-text {
+    font-size: 0.7rem;
+    line-height: 1.5;
+  }
+  .disclaimer-text i {
+    font-size: 0.8rem;
+    margin-top: 0.1rem;
   }
 }

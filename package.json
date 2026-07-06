@@ -15,6 +15,7 @@
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@hookform/resolvers": "^3.3.4",
     "@marsidev/react-turnstile": "^1.5.2",
+    "aos": "^2.3.4",
     "axios": "^1.6.7",
     "dompurify": "^3.0.9",
     "framer-motion": "^11.0.3",
@@ -32,6 +33,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/aos": "^3.0.8",
     "@types/node": "^25.7.0",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",

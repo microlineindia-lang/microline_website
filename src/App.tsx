@@ -1,4 +1,3 @@
-// src/App.tsx
 import { Suspense, lazy } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -17,6 +16,10 @@ const Applications = lazy(() => import("./pages/Applications"));
 const Achievements = lazy(() => import("./pages/Achievements"));
 const Resources = lazy(() => import("./pages/Resources"));
 const Contact = lazy(() => import("./pages/Contact"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+const Brands = lazy(() => import("./pages/Brands"));
+const BrandDetail = lazy(() => import("./pages/BrandDetail"));
 
 const EnterprisePageLoader = () => (
   <div className="suspense-loader-wrapper">
@@ -69,7 +72,12 @@ export default function App() {
               <Route path="/applications" element={<Applications onNavigate={navigateTo} />} />
               <Route path="/achievements" element={<Achievements onNavigate={navigateTo} />} />
               <Route path="/resources" element={<Resources onNavigate={navigateTo} />} />
+              <Route path="/brands" element={<Brands onNavigate={navigateTo} />} />
+              <Route path="/brands/:slug" element={<BrandDetail  />} />
               <Route path="/contact" element={<Contact onNavigate={navigateTo} />} />
+              
+              {/* Catch-all Wildcard Route to intercept non-existent endpoints */}
+              <Route path="*" element={<NotFound onNavigate={navigateTo} />} />
             </Routes>
           </Suspense>
         </motion.main>
