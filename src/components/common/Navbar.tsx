@@ -151,7 +151,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
   };
 
   // --- Navigation handler (for main links) using parent's onNavigate ---
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, page: string, path: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, page: string, _path: string) => {
     e.preventDefault();
     onNavigate(page);
     closeMenu();
