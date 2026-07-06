@@ -7020,6 +7020,321 @@ textarea.form-input {
   transform: translateX(2px);
 }
 
+
+/* =========================================================
+   RICH TEXT – Product Overview (DVXplorer, etc.)
+   ========================================================= */
+
+/* ─── Base container ─── */
+.product-overview-left,
+.rich-text {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+/* ─── Headings ─── */
+.product-overview-left h2,
+.rich-text h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 0.5rem;
+}
+
+.product-overview-left h3,
+.rich-text h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.product-overview-left h4,
+.rich-text h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ─── Paragraphs ─── */
+.product-overview-left p,
+.rich-text p {
+  margin-bottom: 0.75rem;
+}
+
+/* ─── Strong / Bold ─── */
+.product-overview-left strong,
+.rich-text strong {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ─── Lists ─── */
+.product-overview-left ul,
+.product-overview-left ol,
+.rich-text ul,
+.rich-text ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.product-overview-left li,
+.rich-text li {
+  margin-bottom: 0.3rem;
+  line-height: 1.6;
+}
+
+.product-overview-left ul li,
+.rich-text ul li {
+  list-style-type: disc;
+}
+
+.product-overview-left ol li,
+.rich-text ol li {
+  list-style-type: decimal;
+}
+
+/* ─── Links ─── */
+.product-overview-left a,
+.rich-text a {
+  color: var(--primary-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.product-overview-left a:hover,
+.rich-text a:hover {
+  color: var(--primary-accent-2);
+}
+
+.product-overview-left a::after,
+.rich-text a::after {
+  content: " →";
+  font-size: 0.9em;
+  margin-left: 0.2rem;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.product-overview-left a:hover::after,
+.rich-text a:hover::after {
+  transform: translateX(2px);
+}
+
+/* ─── Code / Inline Code ─── */
+.product-overview-left code,
+.rich-text code {
+  font-family: "Courier New", monospace;
+  font-size: 0.85em;
+  background: var(--bg-tertiary);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+}
+
+/* ─── Code Blocks ─── */
+.product-overview-left pre,
+.rich-text pre {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.product-overview-left pre code,
+.rich-text pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* ─── Tables ─── */
+.product-overview-left table,
+.rich-text table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.product-overview-left table th,
+.product-overview-left table td,
+.rich-text table th,
+.rich-text table td {
+  border: 1px solid var(--border-light);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.product-overview-left table th,
+.rich-text table th {
+  background: var(--bg-secondary);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.product-overview-left table tr:nth-child(even),
+.rich-text table tr:nth-child(even) {
+  background: var(--bg-secondary);
+}
+
+/* ─── Blockquotes ─── */
+.product-overview-left blockquote,
+.rich-text blockquote {
+  border-left: 4px solid var(--primary-accent);
+  padding-left: 1.2rem;
+  margin: 1rem 0;
+  color: var(--text-secondary);
+  font-style: italic;
+  background: var(--bg-secondary);
+  padding: 0.75rem 1.2rem;
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Images ─── */
+.product-overview-left img,
+.rich-text img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  margin: 1rem 0;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ─── Admonitions (Note, Warning, Todo) ─── */
+.product-overview-left .admonition,
+.rich-text .admonition {
+  padding: 0.75rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: var(--radius-sm);
+  border-left: 4px solid transparent;
+  background: var(--bg-secondary);
+}
+
+.product-overview-left .admonition-todo,
+.rich-text .admonition-todo {
+  border-left-color: var(--text-muted);
+  background: var(--bg-tertiary);
+  opacity: 0.8;
+}
+
+.product-overview-left .admonition.note,
+.rich-text .admonition.note {
+  border-left-color: var(--primary-accent);
+  background: rgba(14, 165, 233, 0.08);
+}
+
+.product-overview-left .admonition.warning,
+.rich-text .admonition.warning {
+  border-left-color: #f97316;
+  background: rgba(249, 115, 22, 0.08);
+}
+
+.product-overview-left .admonition-title,
+.rich-text .admonition-title {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.product-overview-left .admonition.note .admonition-title,
+.rich-text .admonition.note .admonition-title {
+  color: var(--primary-accent);
+}
+
+.product-overview-left .admonition.warning .admonition-title,
+.rich-text .admonition.warning .admonition-title {
+  color: #f97316;
+}
+
+/* ─── Todo admonition (greyed out) ─── */
+.product-overview-left .admonition-todo .admonition-title,
+.rich-text .admonition-todo .admonition-title {
+  color: var(--text-muted);
+}
+
+.product-overview-left .todo-source,
+.rich-text .todo-source {
+  display: none; /* hides the source link of todos */
+}
+
+/* ─── Responsive tweaks ─── */
+@media (max-width: 768px) {
+  .product-overview-left,
+  .rich-text {
+    font-size: 0.9rem;
+  }
+  .product-overview-left h2,
+  .rich-text h2 {
+    font-size: 1.4rem;
+  }
+  .product-overview-left h3,
+  .rich-text h3 {
+    font-size: 1.2rem;
+  }
+  .product-overview-left h4,
+  .rich-text h4 {
+    font-size: 1rem;
+  }
+  .product-overview-left table,
+  .rich-text table {
+    font-size: 0.8rem;
+  }
+  .product-overview-left pre,
+  .rich-text pre {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-overview-left,
+  .rich-text {
+    font-size: 0.85rem;
+  }
+  .product-overview-left h2,
+  .rich-text h2 {
+    font-size: 1.2rem;
+  }
+  .product-overview-left h3,
+  .rich-text h3 {
+    font-size: 1.05rem;
+  }
+  .product-overview-left table,
+  .rich-text table {
+    font-size: 0.7rem;
+  }
+  .product-overview-left table th,
+  .product-overview-left table td,
+  .rich-text table th,
+  .rich-text table td {
+    padding: 0.3rem 0.4rem;
+  }
+  .product-overview-left pre,
+  .rich-text pre {
+    font-size: 0.7rem;
+    padding: 0.5rem;
+  }
+}
+
+
 /* ─── Disclaimer – Professional ─── */
 .disclaimer-wrapper {
   max-width: 900px;

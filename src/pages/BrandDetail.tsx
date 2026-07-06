@@ -418,12 +418,12 @@ export default function BrandDetail() {
             </div>
 
             {/* ─── DISCLAIMER ─── */}
-<div className="disclaimer-wrapper mt-4 pt-3 border-top border-light">
-  <p className="disclaimer-text text-muted">
-    <i className="fas fa-info-circle me-2" />
-    For the most accurate, up‑to‑date product information, specifications, and availability, please refer to the official brand website.
-  </p>
-</div>
+          <div className="disclaimer-wrapper mt-4 pt-3 border-top border-light">
+            <p className="disclaimer-text text-muted">
+              <i className="fas fa-info-circle me-2" />
+              For the most accurate, up‑to‑date product information, specifications, and availability, please refer to the official brand website.
+            </p>
+          </div>
 
             {/* ─── BACK TO BRANDS ─── */}
             <div className="container mt-5">
