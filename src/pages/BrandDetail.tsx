@@ -38,6 +38,7 @@ interface BrandDetailData {
   slug: string;
   shortDescription?: string;
   description?: string;
+  brandResource?: string;
   order?: number;
   logo: { url: string; alt?: string; title?: string };
   logoDark?: { url: string; alt?: string; title?: string };
@@ -307,6 +308,18 @@ export default function BrandDetail() {
                     style={{ fontSize: '1.05rem', lineHeight: '1.7' }}
                     dangerouslySetInnerHTML={{ __html: brand.description }}
                   />
+                )}
+                {brand.brandResource && (
+                  <div className="mt-3">
+                    <a
+                      href={brand.brandResource}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-primary"
+                    >
+                      About {brand.name} <i className="fas fa-external-link-alt ms-2" />
+                    </a>
+                  </div>
                 )}
               </div>
             </div>

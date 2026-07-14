@@ -107,6 +107,7 @@ export const BRAND_DETAIL_QUERY = gql`
       slug
       shortDescription
       description
+      brandResource
       order
       logo {
         url
