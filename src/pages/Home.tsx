@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { useTheme } from "../components/ui/ThemeProvider";
+import { datoClient } from "../lib/datocms";
 
 /* ========================================
    Assets
@@ -36,6 +38,21 @@ interface WhyChoose {
   icon: string;
   title: string;
   desc: string;
+}
+
+interface BrandPartner {
+  id: string;
+  name: string;
+  slug: string;
+  shortDescription?: string;
+  logo: {
+    url: string;
+    alt?: string;
+  };
+  logoDark?: {
+    url: string;
+    alt?: string;
+  };
 }
 
 /* ========================================
@@ -242,6 +259,53 @@ function AnimatedCounter({
 
 export default function Home({ onNavigate }: HomeProps) {
   const statsRef = useRef<HTMLDivElement>(null);
+  const [brandPartners, setBrandPartners] = useState<BrandPartner[]>([]);
+  const { isDarkMode } = useTheme();
+
+  /* ========================================
+     Fetch Brand Partners
+  ======================================== */
+
+  useEffect(() => {
+  const fetchBrandPartners = async () => {
+    try {
+      const data = await datoClient.request(`
+        query BrandPartners {
+          allBrands(
+            filter: {
+              slug: {
+                in: ["synsense", "inivation"]
+              }
+            }
+            orderBy: order_ASC
+          ) {
+            id
+            name
+            slug
+            shortDescription
+            logo {
+              url
+              alt
+            }
+            logoDark {
+              url
+              alt
+            }
+          }
+        }
+      `);
+
+      setBrandPartners(data.allBrands || []);
+    } catch (error) {
+      console.error(
+        "Failed to load SynSense and iniVation brand logos:",
+        error,
+      );
+    }
+  };
+
+  fetchBrandPartners();
+}, []);
 
   /* ========================================
      Dynamic Stats Height
@@ -279,18 +343,40 @@ export default function Home({ onNavigate }: HomeProps) {
      Structured Data
   ======================================== */
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Microline India",
-    url: SITE_URL,
-    description:
-      "Manufacturer of RF & Microwave systems, antenna measurement systems, waveguide components, RF absorbers, and engineering laboratory solutions.",
-    publisher: {
-      "@type": "Organization",
-      name: "Microline India",
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Microline India",
+  url: SITE_URL,
+  logo: `${SITE_URL}/favicon-96x96.png`,
+  description:
+    "Microline India is an Indian manufacturer of RF and Microwave systems and an authorized distributor of SynSense and iniVation neuromorphic vision, event-based sensing, and edge AI technologies in India.",
+  areaServed: {
+    "@type": "Country",
+    name: "India",
+  },
+  knowsAbout: [
+    "RF and Microwave Systems",
+    "Antenna Measurement Systems",
+    "Microwave Laboratory Equipment",
+    "Neuromorphic Engineering",
+    "Event-Based Vision Sensors",
+    "Neuromorphic Cameras",
+    "Edge AI",
+    "SynSense Products",
+    "iniVation Products",
+  ],
+  brand: [
+    {
+      "@type": "Brand",
+      name: "SynSense",
     },
-  };
+    {
+      "@type": "Brand",
+      name: "iniVation",
+    },
+  ],
+};
 
   return (
     <>
@@ -301,13 +387,13 @@ export default function Home({ onNavigate }: HomeProps) {
       <main>
       <Helmet prioritizeSeoTags>
         <title>
-          RF & Microwave Systems Manufacturer in India | Microline India
+          RF & Microwave Systems & Neuromorphic AI Solutions in India | Microline India
         </title>
 
         <meta
-          name="description"
-          content="Microline India is a leading Indian manufacturer of RF & Microwave systems, antenna measurement systems, waveguide components, microwave laboratory setups, RF absorbers, and engineering solutions since 1997."
-        />
+        name="description"
+        content="Microline India is a manufacturer of RF & Microwave systems and an authorized distributor of SynSense and iniVation technologies in India, offering neuromorphic AI processors, event-based vision sensors, cameras, antenna systems, microwave laboratories, and advanced engineering solutions."
+      />
 
         <link
           rel="canonical"
@@ -327,13 +413,13 @@ export default function Home({ onNavigate }: HomeProps) {
 
         <meta
           property="og:title"
-          content="RF & Microwave Systems Manufacturer in India | Microline India"
+          content="RF & Microwave Systems & Neuromorphic AI Solutions in India | Microline India"
         />
 
         <meta
-          property="og:description"
-          content="Advanced RF & Microwave engineering solutions, antenna systems, waveguide components, microwave labs, and engineering technologies since 1997."
-        />
+        property="og:description"
+        content="Microline India manufactures advanced RF & Microwave systems and is an authorized distributor of SynSense and iniVation technologies in India."
+      />
 
         <meta
           property="og:url"
@@ -368,13 +454,13 @@ export default function Home({ onNavigate }: HomeProps) {
 
         <meta
           name="twitter:title"
-          content="RF & Microwave Systems Manufacturer in India | Microline India"
+          content="RF & Microwave Systems & Neuromorphic AI Solutions in India | Microline India"
         />
 
         <meta
-          name="twitter:description"
-          content="Advanced RF & Microwave systems, antenna measurement systems, waveguide components, microwave laboratories, and RF engineering solutions."
-        />
+        property="og:description"
+        content="Microline India manufactures advanced RF & Microwave systems and is an authorized distributor of SynSense and iniVation technologies in India."
+      />
 
         <meta
           name="twitter:image"
@@ -515,6 +601,87 @@ export default function Home({ onNavigate }: HomeProps) {
           </div>
         </div>
       </section>
+
+      {/* ========================================
+   AUTHORIZED TECHNOLOGY PARTNERS
+======================================== */}
+
+<section className="section bg-light">
+  <div className="container">
+    <div className="section-title">
+      <p className="section-subtitle">
+        Authorized Technology Distribution
+      </p>
+
+      <h2>
+        Our Authorized
+        <span className="text-accent">
+          {" "}
+          Technology Partners
+        </span>
+      </h2>
+
+      <p className="section-description">
+        Microline India is an authorized distributor of SynSense
+        and iniVation technologies in India. We provide advanced
+        neuromorphic AI processors, event-based vision sensors,
+        dynamic vision cameras, edge AI solutions, and technical
+        support for research institutions, universities, industries,
+        and technology developers.
+      </p>
+    </div>
+
+    <div className="brand-partner-grid">
+      {brandPartners.map((brand) => {
+        const logoUrl =
+          isDarkMode && brand.logoDark
+            ? brand.logoDark.url
+            : brand.logo.url;
+
+        const logoAlt =
+          isDarkMode && brand.logoDark?.alt
+            ? brand.logoDark.alt
+            : brand.logo.alt || `${brand.name} logo`;
+
+        return (
+          <article
+            key={brand.id}
+            className="brand-partner-card"
+          >
+            <div className="brand-partner-logo">
+              <img
+                src={logoUrl}
+                alt={logoAlt}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+
+            <div className="brand-partner-content">
+              <h3>{brand.name}</h3>
+
+              <p>
+                {brand.name === "SynSense"
+                  ? "Authorized distributor of SynSense neuromorphic AI processors, ultra-low-power intelligent sensing technologies, and edge AI solutions in India."
+                  : "Authorized distributor of iniVation event-based vision sensors, Dynamic Vision Sensors, neuromorphic cameras, and advanced machine vision technologies in India."}
+              </p>
+
+              <button
+                className="btn btn-outline btn-sm"
+                onClick={() =>
+                  onNavigate(`brands/${brand.slug}`)
+                }
+              >
+                Explore {brand.name}
+                <i className="fas fa-arrow-right ms-2" />
+              </button>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
 
       {/* ========================================
          PRODUCT CATEGORIES
