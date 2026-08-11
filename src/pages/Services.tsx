@@ -138,6 +138,14 @@ export default function Services({ onNavigate }: ServicesProps) {
     ],
   };
 
+  const websiteStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Microline India",
+  "alternateName": "Microline",
+  "url": SITE_URL,
+};
+
   return (
     <>
       {/* ========================================
@@ -237,6 +245,10 @@ export default function Services({ onNavigate }: ServicesProps) {
 
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
+        </script>
+
+        <script type="application/ld+json">
+          {JSON.stringify(websiteStructuredData)}
         </script>
       </Helmet>
 

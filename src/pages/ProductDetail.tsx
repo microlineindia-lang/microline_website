@@ -493,6 +493,14 @@ if (!p) {
     ],
   };
 
+const websiteStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Microline India",
+  "alternateName": "Microline",
+  "url": SITE_URL,
+};
+
   return (
     <>
 
@@ -516,6 +524,10 @@ if (!p) {
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
+
+        <script type="application/ld+json">
+        {JSON.stringify(websiteStructuredData)}
+      </script>
       </Helmet>
 
     <main className="pt-navbar">
